@@ -282,3 +282,14 @@ header p {
     font-size: 20px;
     font-weight: bold;
 }
+
+.add-p {
+
+}
+
+.add-p:hover {
+    background-color: rgb(27, 37, 41);
+    cursor: pointer;
+    color: white;
+    border-radius: 10px;
+}

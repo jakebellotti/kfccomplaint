@@ -92,23 +92,21 @@
         <!--        TODO display aloneside each-->
 
         <div class="select-view-2">
-            <div class="add-button-container-div">
-                <p>Nature Of Complaint</p>
+            <div>
+                <p class="add-p" onclick="addToComplaintNaturePrompt()">Nature Of Complaint</p>
                 <select id="add-complaint-nature-select" class="complaint-nature-select" multiple></select>
-                <i class="add-button-button material-icons" onclick="addToComplaintNaturePrompt()">add</i>
             </div>
 
             <div class="add-button-container-div">
-                <p>Credit Offered By</p>
+                <p class="add-p" onclick=" showEditManagerListWindow()">Credit Offered By</p>
                 <select id="add-complaint-credit-offered-by-select" class="credit-offered-by-select"
                         name="credit-offered-by" multiple>
                 </select>
-                <i class="add-button-button material-icons" onclick="addToManagerListPrompt()">add</i>
             </div>
         </div>
 
         <div>
-            <p>Staff Involved</p>
+            <p class="add-p" onclick="addToStaffListPrompt();">Staff Involved</p>
             <div class="staff-involved-container">
                 <select id="staff-involved-select" class="show-select">
                     <option>Jake A</option>
@@ -125,7 +123,9 @@
                     <option>Burger Bar</option>
                     <option>Kitchen</option>
                 </select>
-                <button id="staff-involved-add-button" onclick="staffInvolvedAddButtonClicked()" class="waves-light btn">Add</button>
+                <button id="staff-involved-add-button" onclick="staffInvolvedAddButtonClicked()"
+                        class="waves-light btn">Add
+                </button>
             </div>
             <table class="centered card-panel teal lighten-2">
                 <thead>
@@ -179,13 +179,12 @@
         <p class="modal-window-header">Resolve Complaint</p>
 
         <div>
-            <div class="add-button-container-div">
-                <p>Credit Closed By</p>
+            <div>
+                <p class="add-p" onclick="addToManagerListPrompt();">Credit Closed By</p>
                 <select id="resolve-complaint-closed-by-select" style="min-height: 140px;"
                         class="credit-offered-by-select"
                         name="credit-offered-by" multiple>
                 </select>
-                <i class="add-button-button material-icons" onclick="addToManagerListPrompt()">add</i>
             </div>
             <div>
                 <input id="resolve-complaint-promo-free" type="text" placeholder="Promo Free Receipt Number">
@@ -207,6 +206,21 @@
         <div class="settings-window-button-container">
             <button class="waves-light btn" onclick="hideReportsWindow();">Close</button>
         </div>
+    </div>
+</div>
+
+<!--Edit list-->
+<div id="edit-list-modal-window" style="display: none;" class="modal-window-overlay">
+    <div class="modal-window">
+        <p class="modal-window-header">Edit <span id="edit-list-span"></span></p>
+        <div style="display: flex; justify-content: center;align-items: center">
+            <input id="edit-list-input" type="text" placeholder="Name">
+            <button id="edit-list-save-button" class="waves-light btn">Add</button>
+            <button id="edit-list-cancel-button" style="display: none" class="waves-light btn red darken-2">Cancel
+            </button>
+        </div>
+        <select id="edit-list-select" style="height: 300px;" class="show-select" size="10"></select>
+        <button class="waves-light btn" onclick="closeEditListWindow();">Close</button>
     </div>
 </div>
 
