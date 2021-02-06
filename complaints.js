@@ -47,6 +47,16 @@ let openComplaint = null;
 
 let filterButtons = document.querySelectorAll("#show-complaints-buttons button");
 
+
+//Edit list window
+let editListWindowModalWindow = document.getElementById("edit-list-modal-window");
+let editListWindowHeaderSpan = document.getElementById("edit-list-span");
+let editListWindowSelect = document.getElementById("edit-list-select");
+let editListWindowSaveButton = document.getElementById("edit-list-save-button");
+let editListWindowCancelButton = document.getElementById("edit-list-cancel-button");
+let editListWindowInput = document.getElementById("edit-list-input");
+
+
 /**
  * Gets the type of filter we are applying. Open, closed or all.
  * @returns {null|*}
@@ -230,21 +240,16 @@ function createTD(innerData) {
     return td;
 }
 
-function addToComplaintNaturePrompt() {
-    let input = prompt("Enter a new complaint nature");
-    if (input !== null) {
-        //    TODO add, then reset fields
-        //    TODO if exists already, reject
-        loadedData.complaintNatureList.push(input);
-        addOptionsToComplaintNatureSelect();
-        saveData(loadedData);
-    }
-}
-
-function addToStaffListPrompt() {
-//    TODO implement
-
-}
+// function addToComplaintNaturePrompt() {
+//     let input = prompt("Enter a new complaint nature");
+//     if (input !== null) {
+//         //    TODO add, then reset fields
+//         //    TODO if exists already, reject
+//         loadedData.complaintNatureList.push(input);
+//         addOptionsToComplaintNatureSelect();
+//         saveData(loadedData);
+//     }
+// }
 
 function createButton(text) {
     let buttonElement = document.createElement("button");
@@ -617,7 +622,7 @@ function createStaffInvolvedTR(staffName, role) {
 
 function staffInvolvedAddButtonClicked() {
     let staffName = staffInvolvedSelect.value;
-    if (staffName === null) {
+    if (staffName === null || staffName.length === 0) {
         return;
     }
 
@@ -648,7 +653,8 @@ function closeEditListWindow() {
 function editListWindowAddButtonClicked(verifyFunction, data, saveFunction) {
     let input = document.getElementById("edit-list-input");
 
-    let result = verifyFunction(input.value);
+    let value = input.value.trim();
+    let result = verifyFunction(value);
     if (result === undefined) {
         result = true;
     }
@@ -657,90 +663,156 @@ function editListWindowAddButtonClicked(verifyFunction, data, saveFunction) {
         return;
     }
 
-    data.push(input.value);
+    data.push(value);
     input.value = "";
     saveFunction(data);
     addDataToShowEditListWindow(data, verifyFunction, saveFunction);
 }
 
 function addDataToShowEditListWindow(data, verifyFunction, saveFunction) {
-    let saveButton = document.getElementById("edit-list-save-button");
-    let cancelButton = document.getElementById("edit-list-cancel-button");
-    let input = document.getElementById("edit-list-input");
-    let select = document.getElementById("edit-list-select");
+    //TODO delete button maybe
 
-    select.innerHTML = "";
+    editListWindowSelect.innerHTML = "";
     for (let i = 0; i < data.length; i++) {
         let option = document.createElement("option");
         option.innerText = data[i];
-        //TODO do option on select
         option.onclick = function () {
-            saveButton.innerText = "Update";
-            input.value = data[i];
-            cancelButton.style.display = "inline-block";
-            saveButton.onclick = function () {
-                let result = verifyFunction(input.value);
+            editListWindowSaveButton.innerText = "Update";
+            editListWindowInput.value = data[i];
+            editListWindowCancelButton.style.display = "inline-block";
+            editListWindowSaveButton.onclick = function () {
+                let value = editListWindowInput.value.trim();
+                let result = verifyFunction(value);
                 if (result === false) {
                     return;
                 }
-                data[i] = input.value;
-                option.innerText = input.value;
+                data[i] = value;
+                option.innerText = value;
                 saveFunction(data);
             };
 
-            cancelButton.onclick = function () {
-                cancelButton.style.display = "none";
-                saveButton.innerText = "Add";
-                select.selectedIndex = -1;
-                input.value = "";
-                input.focus();
-                saveButton.onclick = function () {
+            editListWindowCancelButton.onclick = function () {
+                editListWindowCancelButton.style.display = "none";
+                editListWindowSaveButton.innerText = "Add";
+                editListWindowSelect.selectedIndex = -1;
+                editListWindowInput.value = "";
+                editListWindowInput.focus();
+                editListWindowSaveButton.onclick = function () {
                     editListWindowAddButtonClicked(verifyFunction, data, saveFunction);
                 };
             };
         };
-        select.appendChild(option);
+        editListWindowSelect.appendChild(option);
     }
 }
 
+function stringIsNullOrEmpty(text) {
+    if (text === null || text === undefined) {
+        return true;
+    } else if (text.trim().length === 0) {
+        return true;
+    }
+    return false;
+}
+
 function showEditListWindow(title, data, verifyFunction, saveFunction) {
-    let window = document.getElementById("edit-list-modal-window");
-    window.style.display = "block";
+    editListWindowModalWindow.style.display = "block";
+    editListWindowHeaderSpan.innerText = title;
 
-    document.getElementById("edit-list-span").innerText = title;
+    editListWindowCancelButton.style.display = "none";
+    editListWindowSaveButton.innerText = "Add";
+    editListWindowInput.value = "";
 
-    let saveButton = document.getElementById("edit-list-save-button");
-    let cancelButton = document.getElementById("edit-list-cancel-button");
-    let input = document.getElementById("edit-list-input");
-    let select = document.getElementById("edit-list-select");
-
-    saveButton.onclick = function () {
+    editListWindowSaveButton.onclick = function () {
         editListWindowAddButtonClicked(verifyFunction, data, saveFunction);
     };
-    saveButton.innerText = "Add";
-    input.innerText = "";
-
 
     addDataToShowEditListWindow(data, verifyFunction, saveFunction);
 }
 
-function showEditManagerListWindow() {
-//    TODO implement everywhere
+function showEditComplaintNatureWindow() {
     let verifyFunction = function (text) {
-        //    TODO verify propert
-        if (text.length < 4) {
-            alert("Toio small");
+        if (stringIsNullOrEmpty(text)) {
+            alert("You need to enter something!");
+            return false;
+        }
+        for (let i = 0; i < loadedData.complaintNatureList.length; i++) {
+            if (textEqualsCaseInsensitive(text, loadedData.complaintNatureList[i])) {
+                alert("That entry already exists!");
+                return false;
+            }
+        }
+    };
+    let saveFunction = function (data) {
+        loadedData.complaintNatureList = data;
+        //TODO maybe just when we retrieve the data we should format it nicely rather than on entry
+        saveData(loadedData);
+        addOptionsToComplaintNatureSelect();
+    };
+    showEditListWindow("Complaint Nature", loadedData.complaintNatureList, verifyFunction, saveFunction);
+}
+
+function showEditStaffListWindow() {
+    let verifyFunction = function (text) {
+        if (stringIsNullOrEmpty(text)) {
+            alert("You need to enter something!");
+            return false;
+        }
+        for (let i = 0; i < loadedData.staffList.length; i++) {
+            if (textEqualsCaseInsensitive(text, loadedData.staffList[i])) {
+                alert("That staff member already exists!");
+                return false;
+            }
+        }
+
+        if (text.split(" ").length === 1) {
+            alert("You need to enter a first name and a surname!");
+            return false;
+        }
+    };
+    let saveFunction = function (data) {
+        loadedData.staffList = data;
+        saveData(loadedData);
+        addOptionsToStaffInvolvedSelect();
+    };
+    showEditListWindow("Staff List", loadedData.staffList, verifyFunction, saveFunction);
+}
+
+function showEditManagerListWindow() {
+    let verifyFunction = function (text) {
+        if (stringIsNullOrEmpty(text)) {
+            alert("You need to enter something!");
+            return false;
+        }
+        for (let i = 0; i < loadedData.managerList.length; i++) {
+            if (textEqualsCaseInsensitive(text, loadedData.managerList[i])) {
+                alert("That manager already exists!");
+                return false;
+            }
+        }
+
+        if (text.split(" ").length === 1) {
+            alert("You need to enter a first name and a surname!");
             return false;
         }
     };
 
     let saveFunction = function (data) {
         loadedData.managerList = data;
-        //TODO update selects
         saveData(loadedData);
+        addOptionsToCreditOfferedBySelect();
     };
 
     showEditListWindow("Manager List", loadedData.managerList, verifyFunction, saveFunction);
+}
+
+function addOptionsToStaffInvolvedSelect() {
+    staffInvolvedSelect.innerHTML = "";
+    for (let i = 0; i < loadedData.staffList.length; i++) {
+        let option = document.createElement("option");
+        option.innerText = loadedData.staffList[i];
+        staffInvolvedSelect.appendChild(option);
+    }
 }
 
 //Loads the data
@@ -748,6 +820,7 @@ getData();
 
 addOptionsToComplaintNatureSelect();
 addOptionsToCreditOfferedBySelect();
+addOptionsToStaffInvolvedSelect();
 
 //Select the default filter, trigger the display of the complaints
 filterButtonClicked(document.getElementById("filter-button-open"));

@@ -93,7 +93,7 @@
 
         <div class="select-view-2">
             <div>
-                <p class="add-p" onclick="addToComplaintNaturePrompt()">Nature Of Complaint</p>
+                <p class="add-p" onclick="showEditComplaintNatureWindow();">Nature Of Complaint</p>
                 <select id="add-complaint-nature-select" class="complaint-nature-select" multiple></select>
             </div>
 
@@ -106,14 +106,9 @@
         </div>
 
         <div>
-            <p class="add-p" onclick="addToStaffListPrompt();">Staff Involved</p>
+            <p class="add-p" onclick="showEditStaffListWindow();">Staff Involved</p>
             <div class="staff-involved-container">
                 <select id="staff-involved-select" class="show-select">
-                    <option>Jake A</option>
-                    <option>Jake B</option>
-                    <option>Jake C</option>
-                    <option>Jake D</option>
-                    <option>Ian</option>
                 </select>
                 <select id="staff-involved-role-select" class="show-select">
                     <option>D/T Order Taking</option>
@@ -180,7 +175,7 @@
 
         <div>
             <div>
-                <p class="add-p" onclick="addToManagerListPrompt();">Credit Closed By</p>
+                <p class="add-p" onclick="showEditManagerListWindow();">Credit Closed By</p>
                 <select id="resolve-complaint-closed-by-select" style="min-height: 140px;"
                         class="credit-offered-by-select"
                         name="credit-offered-by" multiple>
