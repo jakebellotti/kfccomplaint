@@ -35,7 +35,7 @@
             <button onclick="filterButtonClicked(this)" class="waves-light btn darken-4">All</button>
         </div>
         <input oninput="updateResultsAccordingToSearch()" id="show-complaints-filter-search-name-input" type="text"
-               placeholder="Search name...">
+               placeholder="Search name or number...">
         <p id="total-results-text">Showing 0 of 10 results</p>
     </div>
 
@@ -75,6 +75,11 @@
             <div>
                 <p>Date</p>
                 <input id="add-complaint-date" type="date">
+            </div>
+
+            <div>
+                <p>Time</p>
+                <input id="add-complaint-time" type="time">
             </div>
 
             <div>

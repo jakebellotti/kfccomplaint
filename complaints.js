@@ -28,6 +28,7 @@ let resolveComplaintWindow = document.getElementById("resolve-complaint-window")
 
 //Add complaint window
 let complaintDateInput = document.getElementById("add-complaint-date");
+let complaintTimeInput = document.getElementById("add-complaint-time");
 let customerNameInput = document.getElementById("add-complaint-customer-name");
 let customerNumberInput = document.getElementById("add-complaint-customer-number");
 let complaintNatureSelect = document.getElementById("add-complaint-nature-select");
@@ -82,9 +83,17 @@ function filterButtonClicked(e) {
     showComplaints();
 }
 
+function getTimeStringFromDate(date) {
+    let hour = (date.getHours() < 10 ? "0" : "") + date.getHours();
+    let minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+
+    return hour + ":" + minutes;
+}
+
 function showAddComplaintWindow() {
     addComplaintWindowClearInputs();
     complaintDateInput.valueAsDate = new Date();
+    complaintTimeInput.value = getTimeStringFromDate(new Date());
 
     document.getElementById("add-complaint-modal").style.display = "block";
     customerNameInput.focus();
@@ -92,6 +101,7 @@ function showAddComplaintWindow() {
 
 function addComplaintWindowClearInputs() {
     complaintDateInput.value = "";
+    complaintTimeInput.value = "";
     customerNameInput.value = "";
     customerNumberInput.value = "";
     complaintNatureSelect.selectedIndex = -1;
@@ -124,8 +134,6 @@ function getData() {
             loadedData.staffList.push(string);
         }
 
-        // loadedData.complaintNatureList
-        //TODO add manager list data
         return;
     }
     loadedData = JSON.parse(item);
@@ -151,6 +159,13 @@ function addComplaintWindow_AddButtonClicked() {
     if (complaintDate === null || complaintDate.length === 0) {
         alert("You must enter a date!");
         complaintDateInput.focus();
+        return;
+    }
+
+    let complaintTime = complaintTimeInput.value;
+    if (complaintTime === null || complaintTime === undefined || complaintTime.length === 0) {
+        alert("You must enter the time of the complaint!");
+        complaintTimeInput.focus();
         return;
     }
 
@@ -195,6 +210,7 @@ function addComplaintWindow_AddButtonClicked() {
     hideAddComplaintWindow();
     loadedData.complaints.push({
         complaintDate: complaintDate,
+        complaintTime: complaintTime,
         customerName: customerName,
         customerNumber: customerNumber,
         natureOfComplaint: complaintNatureValues,
@@ -240,24 +256,12 @@ function createTD(innerData) {
     return td;
 }
 
-// function addToComplaintNaturePrompt() {
-//     let input = prompt("Enter a new complaint nature");
-//     if (input !== null) {
-//         //    TODO add, then reset fields
-//         //    TODO if exists already, reject
-//         loadedData.complaintNatureList.push(input);
-//         addOptionsToComplaintNatureSelect();
-//         saveData(loadedData);
-//     }
-// }
 
 function createButton(text) {
     let buttonElement = document.createElement("button");
     buttonElement.classList.add("waves-light");
     buttonElement.classList.add("btn");
     buttonElement.innerText = text;
-    // <button className="waves-light btn" onClick="showAddComplaintWindow();">Add Complaint</button>
-
     return buttonElement;
 }
 
@@ -282,14 +286,27 @@ function createSelectMultiple() {
     return htmlSelectElement;
 }
 
+function formatTime(time) {
+    let split = time.split(":");
+    let hours = parseInt(split[0]);
+    let minutes = parseInt(split[1]);
+
+
+    return (hours > 12 ? (hours - 12) : hours) + ":" + (minutes < 10 ? "0" : "") + minutes +" " + (hours >= 12 ? "PM" : "AM");
+}
+
 function createComplaintTableRow(complaint) {
     let tr = document.createElement("tr");
 
     let filterType = getComplaintsFilterType();
     //TODO change depending on filter type
 
-    tr.appendChild(createTD(dateToYMD(complaint.complaintDate)));
-    tr.appendChild(createTD(complaint.customerName));
+    let dateTimeTD = document.createElement("td");
+    dateTimeTD.appendChild(createP(dateToYMD(complaint.complaintDate)));
+    dateTimeTD.appendChild(createP(formatTime(complaint.complaintTime)));
+    tr.appendChild(dateTimeTD);
+
+    tr.appendChild(createTD(capitalizeTheFirstLetterOfEachWord(complaint.customerName)));
     tr.appendChild(createTD(complaint.customerNumber));
 
     let cnSelect = createSelectMultiple();
@@ -380,10 +397,11 @@ function getComplaintsMatchingSearchCriteria() {
 
     let results = [];
 
-    let nameSearch = document.getElementById("show-complaints-filter-search-name-input").value;
+    let searchInput = document.getElementById("show-complaints-filter-search-name-input").value;
 
     for (const complaint of loadedData.complaints) {
-        let nameMatch = textContainsCaseInsensitive(nameSearch, complaint.customerName);
+        let nameMatch = textContainsCaseInsensitive(searchInput, complaint.customerName);
+        let numberMatch = textContainsCaseInsensitive(searchInput, complaint.customerNumber);
         let filterMatch = textEqualsCaseInsensitive(filterType, "all");
 
         if (textEqualsCaseInsensitive(filterType, "open")) {
@@ -392,7 +410,8 @@ function getComplaintsMatchingSearchCriteria() {
             filterMatch = complaint.resolutionDate !== null;
         }
 
-        if (nameMatch && filterMatch) {
+        // if (nameMatch && filterMatch) {
+        if (filterMatch && (nameMatch || numberMatch)) {
             results.push(complaint);
         }
     }
@@ -404,7 +423,6 @@ function getComplaintsMatchingSearchCriteria() {
 function showComplaints() {
 //    TODO allow filtering etc
 //    TODO use document fragments
-//    TODO put text area in table for descriptions, click on it and it'll show in modal box
 
     shownComplaintsTBody.innerHTML = "";
 
@@ -452,7 +470,7 @@ function clearSelectOptions(select) {
 function addOptionsToComplaintNatureSelect() {
     clearSelectOptions(complaintNatureSelect);
     for (const string of loadedData.complaintNatureList) {
-        complaintNatureSelect.appendChild(createOptionWithData(string));
+        complaintNatureSelect.appendChild(createOptionWithData(capitalizeTheFirstLetterOfEachWord(string)));
     }
 }
 
@@ -460,7 +478,7 @@ function addOptionsToCreditOfferedBySelect() {
     for (const e of document.querySelectorAll(".credit-offered-by-select")) {
         clearSelectOptions(e);
         for (const string of loadedData.managerList) {
-            e.appendChild(createOptionWithData(string));
+            e.appendChild(createOptionWithData(capitalizeTheFirstLetterOfEachWord(string)));
         }
     }
 }
@@ -675,7 +693,7 @@ function addDataToShowEditListWindow(data, verifyFunction, saveFunction) {
     editListWindowSelect.innerHTML = "";
     for (let i = 0; i < data.length; i++) {
         let option = document.createElement("option");
-        option.innerText = data[i];
+        option.innerText = capitalizeTheFirstLetterOfEachWord(data[i]);
         option.onclick = function () {
             editListWindowSaveButton.innerText = "Update";
             editListWindowInput.value = data[i];
@@ -687,7 +705,7 @@ function addDataToShowEditListWindow(data, verifyFunction, saveFunction) {
                     return;
                 }
                 data[i] = value;
-                option.innerText = value;
+                option.innerText = capitalizeTheFirstLetterOfEachWord(value);
                 saveFunction(data);
             };
 
@@ -806,11 +824,20 @@ function showEditManagerListWindow() {
     showEditListWindow("Manager List", loadedData.managerList, verifyFunction, saveFunction);
 }
 
+function capitalizeTheFirstLetterOfEachWord(words) {
+    let separateWord = words.toLowerCase().split(' ');
+    for (let i = 0; i < separateWord.length; i++) {
+        separateWord[i] = separateWord[i].charAt(0).toUpperCase() +
+            separateWord[i].substring(1);
+    }
+    return separateWord.join(' ');
+}
+
 function addOptionsToStaffInvolvedSelect() {
     staffInvolvedSelect.innerHTML = "";
     for (let i = 0; i < loadedData.staffList.length; i++) {
         let option = document.createElement("option");
-        option.innerText = loadedData.staffList[i];
+        option.innerText = capitalizeTheFirstLetterOfEachWord(loadedData.staffList[i]);
         staffInvolvedSelect.appendChild(option);
     }
 }
