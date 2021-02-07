@@ -9,8 +9,24 @@ body {
     font-family: Arial;
 }
 
+.worksheet-name-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.recon-wrapper {
+    width: fit-content;
+}
+
+.worksheet-name {
+    font-weight: bold;
+    font-size: 22px;
+}
+
 .page-header {
     display: flex;
+    padding: 10px 0px 10px 10px;
 }
 
 .header-box {
@@ -31,6 +47,10 @@ body {
 
 .header-box-content input {
     height: 100%;
+}
+
+.data-tr:nth-child(even) {
+    background-color: #dddddd;
 }
 
 .header-box-text {
@@ -60,15 +80,14 @@ td {
 }
 
 /*TODO custom class for only editable tds*/
-td:hover {
-    background-color: rgba(0,0,0,0.7);
+
+.editable-td:hover {
+    background-color: rgba(0, 0, 0, 0.7);
     cursor: pointer;
 }
 
 td, th {
-    /*background-color: rgb(60, 60, 60);*/
-
-    border: 1px solid #dddddd;
+    border: 1px solid black;
     padding: 8px;
 }
 
@@ -86,4 +105,62 @@ td, th {
 
 .name-td {
     width: 150px;
+}
+
+.modal-window-background {
+    background-color: rgba(0,0,0,0.7);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.modal-window {
+    width: fit-content;
+    background-color: white;
+    margin: auto;
+    padding: 10px;
+}
+
+.unit-input-container {
+    display: flex;
+    justify-content: center;
+}
+
+.unit-input-container div p {
+    text-align: center;
+}
+
+.unit-input-container div {
+    padding: 4px;
+}
+
+.unit-input-container div input {
+    background-color: rgb(60, 60, 60);
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    width: 90px;
+    margin-top: 3px;
+}
+
+.unit-input-accept-button {
+    cursor: pointer;
+    background-color: rgb(60, 60, 60);
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    width: 90px;
+    margin-top: 3px;
+}
+
+.unit-input-header {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
 }

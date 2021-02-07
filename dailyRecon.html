@@ -8,45 +8,83 @@
 </head>
 <body>
 
-<div class="page-header">
-    <p>Daily Reconciliation Worksheet</p>
-    <div class="header-box">
-        <p class="header-box-text">Day/Date</p>
-        <div class="header-box-content">
-            <input type="date">
-            <input style="margin-top:3px;">
+<div class="recon-wrapper">
+    <div class="page-header">
+        <div class="worksheet-name-wrapper">
+            <p class="worksheet-name">Daily Reconciliation Worksheet</p>
         </div>
-    </div>
-    <div class="header-box">
-        <p class="header-box-text">AM Manager</p>
-        <div class="header-box-content">
-            <input>
+        <div class="header-box">
+            <p class="header-box-text">Day/Date</p>
+            <div class="header-box-content">
+                <input type="date">
+                <input style="margin-top:3px;">
+            </div>
         </div>
-    </div>
+        <div class="header-box">
+            <p class="header-box-text">AM Manager</p>
+            <div class="header-box-content">
+                <input>
+            </div>
+        </div>
 
-    <div class="header-box">
-        <p class="header-box-text">PM Manager</p>
-        <div class="header-box-content">
-            <input>
+        <div class="header-box">
+            <p class="header-box-text">PM Manager</p>
+            <div class="header-box-content">
+                <input>
+            </div>
         </div>
     </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Open</th>
+            <th>Received</th>
+            <th>Wasted</th>
+            <th>Total</th>
+            <th>Close</th>
+            <th>Sold/Used</th>
+        </tr>
+        </thead>
+        <tbody id="products">
+        </tbody>
+    </table>
 </div>
 
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Open</th>
-        <th>Received</th>
-        <th>Wasted</th>
-        <th>Total</th>
-        <th>Close</th>
-        <th>Sold/Used</th>
-    </tr>
-    </thead>
-    <tbody id="products">
-    </tbody>
-</table>
+<!--<div class="modal-window-background">-->
+<!--    <div class="modal-window">-->
+<!--        <p class="unit-input-header">Original Recipe</p>-->
+<!--        <div class="unit-input-container">-->
+<!--            <div>-->
+<!--                <p>Crates</p>-->
+<!--                <input class="data-input-single-unit" onkeyup="onIndividualUnitUpdated(this)" type="number" data-unit-count="108">-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <p>Bags</p>-->
+<!--                <input class="data-input-single-unit" onkeyup="onIndividualUnitUpdated(this)" type="number" data-unit-count="18">-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <p>Individual</p>-->
+<!--                <input class="data-input-single-unit" onkeyup="onIndividualUnitUpdated(this)" type="number" data-unit-count="1">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="unit-input-container">-->
+<!--            <div>-->
+<!--                <p>Total</p>-->
+<!--                <input onkeyup="onTotalInputUpdated(this)" type="number" class="data-input-total-count">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="unit-input-container">-->
+<!--            <div>-->
+<!--                <p>Head</p>-->
+<!--                <input onkeyup="onHeadInputUpdated(this)" type="number" class="data-input-total-count-head">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <button class="unit-input-accept-button">Accept</button>-->
+<!--        <button class="unit-input-accept-button">Cancel</button>-->
+<!--    </div>-->
+<!--</div>-->
+
 
 </body>
 </html>
