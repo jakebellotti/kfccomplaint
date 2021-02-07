@@ -81,6 +81,10 @@ td {
 
 /*TODO custom class for only editable tds*/
 
+.editable-td p {
+    text-align: center;
+}
+
 .editable-td:hover {
     background-color: rgba(0, 0, 0, 0.7);
     cursor: pointer;

@@ -8,7 +8,7 @@ function createDividerRow(name) {
     return row;
 }
 
-function createTableEntry(name) {
+function createTableEntry(name, structure, returnType = "total") {
     let row = document.createElement("tr");
     row.classList.add("data-tr");
 
@@ -20,7 +20,8 @@ function createTableEntry(name) {
     openTD.classList.add("editable-td");
     openTD.onclick = function () {
         //TODO rename
-        createOriginalModalWindow();
+        //TODO on accept
+        createCountInputModalWindow(name, structure, openTD, returnType);
     };
 
     let receivedTD = document.createElement("td");
@@ -46,12 +47,12 @@ function createTableEntry(name) {
 
 function createTableEntries() {
     let products = document.getElementById("products");
-    //TODO dividers
     products.appendChild(createDividerRow("Chicken"));
-    products.appendChild(createTableEntry("Original Recipe"));
-    products.appendChild(createTableEntry("Hot & Spicy"));
-    products.appendChild(createTableEntry("Original Fillets"));
-    products.appendChild(createTableEntry("Zinger Fillets"));
+    //TODO pass structure here
+    products.appendChild(createTableEntry("Original Recipe", cobStructure, "head"));
+    products.appendChild(createTableEntry("Hot & Spicy", cobStructure, "head"));
+    products.appendChild(createTableEntry("Original Fillets", filletsStructure));
+    products.appendChild(createTableEntry("Zinger Fillets", filletsStructure));
     products.appendChild(createTableEntry("Wicked Wings"));
 
     products.appendChild(createDividerRow("Freezer"));
@@ -138,7 +139,7 @@ function onIndividualUnitUpdated(event) {
 
 }
 
-function createOriginalModalWindow() {
+function createCountInputModalWindow(headerText, structure, field, returnType) {
     let modalWindowBackground = document.createElement("div");
     modalWindowBackground.classList.add("modal-window-background");
 
@@ -147,31 +148,12 @@ function createOriginalModalWindow() {
 
     let header = document.createElement("p");
     header.classList.add("unit-input-header");
-    header.innerText = "Original Recipe";
-    //TODO custom header
-
-    let structure = [
-        [
-            {
-                name: "Crates",
-                unit: "data-input-single-unit",
-                unitCount: 108
-            },
-            {
-                name: "Bags",
-                unit: "data-input-single-unit",
-                unitCount: 18
-            },
-            {
-                name: "Individual",
-                unit: "data-input-single-unit",
-                unitCount: 1
-            }
-        ]
-    ];
+    header.innerText = headerText;
 
     modalWindow.appendChild(header);
 
+
+    //TODO if there is a value in the field, set it
     for (let i = 0; i < structure.length; i++) {
         let currentRow = structure[i];
         let container = document.createElement("div");
@@ -190,61 +172,51 @@ function createOriginalModalWindow() {
             //TODO only do if present
             currentDivInput.setAttribute("data-unit-count", currentInput.unitCount);
 
-            if (currentInput.unit.toLowerCase().indexOf("data-input-single-unit".toLowerCase()) > -1) {
-                currentDivInput.onkeyup = function () {
-                    onIndividualUnitUpdated(currentDivInput);
-                };
+            if (currentInput.unit.toLowerCase() === "data-input-single-unit".toLowerCase()) {
+                currentDivInput.onkeyup = () => onIndividualUnitUpdated(currentDivInput);
+            } else if (currentInput.unit.toLowerCase() === "data-input-total-count".toLowerCase()) {
+                currentDivInput.onkeyup = () => onTotalInputUpdated(currentDivInput);
+            } else if (currentInput.unit.toLowerCase() === "data-input-total-count-head") {
+                currentDivInput.onkeyup = () => onHeadInputUpdated(currentDivInput);
             }
 
             currentDiv.appendChild(currentDivInput);
-
             container.appendChild(currentDiv);
-
-            //     <!-- <input class="data-input-single-unit" onkeyup="onIndividualUnitUpdated(this)" type="number" data-unit-count="108">-->
-            //    TODO create input div and fields, then add to main
         }
 
         modalWindow.appendChild(container);
     }
 
+    //TODO append buttons
+    let acceptButton = document.createElement("button");
+    acceptButton.classList.add("unit-input-accept-button");
+    acceptButton.innerText = "Accept";
+    acceptButton.onclick = function () {
+        let returnValue;
+        if (returnType === "head") {
+            //    TODO get head
+            returnValue = modalWindow.querySelector(".data-input-total-count-head").value;
+        } else if (returnType === "total") {
+            returnValue = modalWindow.querySelector(".data-input-total-count").value;
+        }
+        field.innerHTML = "";
+        let valueP = document.createElement("p");
+        valueP.innerText = returnValue;
+        field.appendChild(valueP);
+        document.body.removeChild(document.querySelector(".modal-window-background"));
+    //    TODO set value, trigger event listeners for closing numbers etc
+    }
+
+    let cancelButton = document.createElement("button");
+    cancelButton.classList.add("unit-input-accept-button");
+    cancelButton.innerText = "Cancel";
+    cancelButton.onclick = () => document.body.removeChild(document.querySelector(".modal-window-background"));
+
+    modalWindow.appendChild(acceptButton);
+    modalWindow.appendChild(cancelButton);
 
     modalWindowBackground.appendChild(modalWindow);
     document.body.appendChild(modalWindowBackground);
-    /**
-     * <div class="modal-window-background">
-     <div class="modal-window">
-     <p class="unit-input-header">Original Recipe</p>
-     <div class="unit-input-container">
-     <div>
-     <p>Crates</p>
-     <input class="data-input-single-unit" onkeyup="onIndividualUnitUpdated(this)" type="number" data-unit-count="108">
-     </div>
-     <div>
-     <p>Bags</p>
-     <input class="data-input-single-unit" onkeyup="onIndividualUnitUpdated(this)" type="number" data-unit-count="18">
-     </div>
-     <div>
-     <p>Individual</p>
-     <input class="data-input-single-unit" onkeyup="onIndividualUnitUpdated(this)" type="number" data-unit-count="1">
-     </div>
-     </div>
-     <div class="unit-input-container">
-     <div>
-     <p>Total</p>
-     <input onkeyup="onTotalInputUpdated(this)" type="number" class="data-input-total-count">
-     </div>
-     </div>
-     <div class="unit-input-container">
-     <div>
-     <p>Head</p>
-     <input onkeyup="onHeadInputUpdated(this)" type="number" class="data-input-total-count-head">
-     </div>
-     </div>
-     <button class="unit-input-accept-button">Accept</button>
-     <button class="unit-input-accept-button">Cancel</button>
-     </div>
-     </div>
-     */
 }
 
 //TODO programatically create input popup
