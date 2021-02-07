@@ -84,12 +84,14 @@
 
             <div>
                 <p>Customer Name</p>
-                <input id="add-complaint-customer-name" type="text" placeholder="Customer Name">
+                <input id="add-complaint-customer-name" type="text"
+                       onkeyup="addComplaintWindowUpdateMatchingContacts();" placeholder="Customer Name">
             </div>
 
             <div>
                 <p>Customer Number</p>
-                <input id="add-complaint-customer-number" type="text" placeholder="Customer Number">
+                <input id="add-complaint-customer-number" onkeyup="addComplaintWindowUpdateMatchingContacts();"
+                       type="text" placeholder="Customer Number">
             </div>
         </div>
 
@@ -155,6 +157,20 @@
             <button class="waves-light btn" onclick="addComplaintWindow_AddButtonClicked();">Add Complaint</button>
             <button class="waves-light btn" onclick="addComplaintWindow_CancelButtonClicked()">Cancel</button>
         </div>
+    </div>
+
+    <div class="small-modal-window">
+        <p class="modal-window-header">Existing Contacts</p>
+        <table class="centered card-panel teal lighten-2">
+            <thead>
+            <tr>
+                <th>Contact Name</th>
+                <th>Contact Number</th>
+            </tr>
+            </thead>
+            <tbody id = "existing-contacts-tbody">
+            </tbody>
+        </table>
     </div>
 </div>
 

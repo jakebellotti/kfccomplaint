@@ -45,6 +45,8 @@ let resolveComplaintClosedBySelect = document.getElementById("resolve-complaint-
 let resolveComplaintPromoFreeInput = document.getElementById("resolve-complaint-promo-free");
 
 let openComplaint = null;
+let uniqueCustomerContacts = null;
+let existingContactsTBody = document.getElementById("existing-contacts-tbody");
 
 let filterButtons = document.querySelectorAll("#show-complaints-buttons button");
 
@@ -92,10 +94,13 @@ function getTimeStringFromDate(date) {
 
 function showAddComplaintWindow() {
     addComplaintWindowClearInputs();
+    uniqueCustomerContacts = getCustomerContacts();
+
+    //Set default values to fields
     complaintDateInput.valueAsDate = new Date();
     complaintTimeInput.value = getTimeStringFromDate(new Date());
 
-    document.getElementById("add-complaint-modal").style.display = "block";
+    document.getElementById("add-complaint-modal").style.display = "flex";
     customerNameInput.focus();
 }
 
@@ -109,6 +114,7 @@ function addComplaintWindowClearInputs() {
     orderDescriptionTextArea.value = "";
     creditDescriptionTextArea.value = "";
     staffInvolvedTBody.innerHTML = "";
+    existingContactsTBody.innerHTML = "";
 }
 
 function getData() {
@@ -227,8 +233,44 @@ function addComplaintWindow_AddButtonClicked() {
     showComplaints();
 }
 
+function addComplaintWindowUpdateMatchingContacts() {
+//TODO get matching results and update window
+    let matching = [];
+
+    let name = customerNameInput.value.trim();
+    let number = customerNumberInput.value.trim();
+
+    for (const c of uniqueCustomerContacts) {
+        let nameMatch = (name.length > 0) && textContainsCaseInsensitive(name, c.customerName);
+        let numberMatch = (number.length > 0) && textContainsCaseInsensitive(number, c.customerNumbers[0]);
+
+        if (nameMatch || numberMatch) {
+            matching.push(c);
+        }
+    }
+
+    existingContactsTBody.innerHTML = "";
+
+    for (const m of matching) {
+        let tr = document.createElement("tr");
+        tr.classList.add("matching-result-tr");
+        tr.onclick = function () {
+            customerNameInput.value = capitalizeTheFirstLetterOfEachWord(m.customerName);
+            customerNumberInput.value = m.customerNumbers[0];
+            addComplaintWindowUpdateMatchingContacts();
+        };
+
+        tr.appendChild(createTD(capitalizeTheFirstLetterOfEachWord(m.customerName)));
+        tr.appendChild(createTD(m.customerNumbers[0]));
+
+        existingContactsTBody.appendChild(tr);
+    }
+
+}
+
 function hideAddComplaintWindow() {
     document.getElementById("add-complaint-modal").style.display = "none";
+    uniqueCustomerContacts = null;
 }
 
 function addComplaintWindow_CancelButtonClicked() {
@@ -291,8 +333,7 @@ function formatTime(time) {
     let hours = parseInt(split[0]);
     let minutes = parseInt(split[1]);
 
-
-    return (hours > 12 ? (hours - 12) : hours) + ":" + (minutes < 10 ? "0" : "") + minutes +" " + (hours >= 12 ? "PM" : "AM");
+    return (hours > 12 ? (hours - 12) : hours) + ":" + (minutes < 10 ? "0" : "") + minutes + " " + (hours >= 12 ? "PM" : "AM");
 }
 
 function createComplaintTableRow(complaint) {
@@ -383,6 +424,7 @@ function textEqualsCaseInsensitive(text1, text2) {
 function textContainsCaseInsensitive(search, text2) {
     search = search.toLowerCase();
     text2 = text2.toLowerCase();
+    //TODO the order matters
     return text2.toLowerCase().indexOf(search.toLowerCase()) >= 0;
 }
 
@@ -842,6 +884,25 @@ function addOptionsToStaffInvolvedSelect() {
     }
 }
 
+function getCustomerContacts() {
+    let map = new Map();
+    for (const complaint of loadedData.complaints) {
+        if (!map.has(complaint.customerName.toLowerCase())) {
+            map.set(complaint.customerName.toLowerCase(), []);
+        }
+        map.get(complaint.customerName.toLowerCase()).push(complaint.customerNumber);
+        map.set(complaint.customerName.toLowerCase(), map.get(complaint.customerName.toLowerCase()).filter((x, i, a) => a.indexOf(x) === i));
+    }
+    let returning = [];
+    for (const mapElement of map) {
+        returning.push({
+            customerName: mapElement[0],
+            customerNumbers: mapElement[1]
+        });
+    }
+    return returning;
+}
+
 //Loads the data
 getData();
 
@@ -852,4 +913,5 @@ addOptionsToStaffInvolvedSelect();
 //Select the default filter, trigger the display of the complaints
 filterButtonClicked(document.getElementById("filter-button-open"));
 
-// showEditManagerListWindow();
+
+showAddComplaintWindow();

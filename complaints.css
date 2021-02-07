@@ -46,6 +46,16 @@ header p {
     right: 0;
     top: 0;
     bottom: 0;
+    justify-content: center;
+}
+
+.small-modal-window {
+    background-color: whitesmoke;
+    width: 300px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+    height: fit-content;
 }
 
 .modal-window {
@@ -59,7 +69,8 @@ header p {
 .add-complaint-window {
     background-color: whitesmoke;
     width: 650px;
-    margin: auto;
+    /*margin: auto;*/
+    height: fit-content;
     padding: 10px;
     margin-top: 10px;
 }
@@ -86,6 +97,7 @@ header p {
     justify-content: center;
     align-items: center;
 }
+
 .staff-involved-container * {
     margin: 2px;
 }
@@ -292,4 +304,12 @@ header p {
     cursor: pointer;
     color: white;
     border-radius: 10px;
+}
+
+.matching-result-tr {
+    cursor: pointer;
+}
+
+.matching-result-tr:hover {
+    background-color: rgba(0, 0, 0, 0.4);
 }
