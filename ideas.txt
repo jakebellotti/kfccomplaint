@@ -1,0 +1,3 @@
+Freezer stock with dates etc
+
+daily recon which adds end of day sales data and can calculate a chicken order

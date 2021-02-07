@@ -161,6 +161,8 @@ function getSelectValues(element) {
 }
 
 function addComplaintWindow_AddButtonClicked() {
+    let issues = [];
+
     let complaintDate = complaintDateInput.value;
     if (complaintDate === null || complaintDate.length === 0) {
         alert("You must enter a date!");
@@ -181,12 +183,26 @@ function addComplaintWindow_AddButtonClicked() {
         customerNameInput.focus();
         return;
     }
+    if (customerName.length < 3) {
+        issues.push("Customer name is short in length");
+    }
+
+    //TODO also any other characters
+    if (/\d/.test(customerName)) {
+        alert("Invalid characters in customer name field. Can not contain numbers!");
+        customerNameInput.focus();
+        return;
+    }
 
     let customerNumber = customerNumberInput.value.trim();
     if (customerNumber === null || customerNumber.length === 0) {
         alert("You must enter a customer number!");
         customerNumberInput.focus();
         return;
+    }
+
+    if (customerNumber.length !== 10 && customerNumber.length !== 8) {
+        issues.push("Phone number length is irregular (not length of mobile or landline number)");
     }
 
     let complaintNatureValues = getSelectValues(complaintNatureSelect);
@@ -211,6 +227,15 @@ function addComplaintWindow_AddButtonClicked() {
     if (creditDescription.length === 0) {
         alert("You must enter a description of the credit!");
         return;
+    }
+
+    //TODO maybe if there are multiple existing contacts shown but they are different from input, raise the issue
+
+    if (issues.length > 0) {
+        let continuing = confirm("Encountered the following issues: \n\n" + issues.join("\n") + "\n\nAre you sure you would like to add this complaint?");
+        if (!continuing) {
+            return;
+        }
     }
 
     hideAddComplaintWindow();
@@ -468,15 +493,16 @@ function showComplaints() {
 
     shownComplaintsTBody.innerHTML = "";
 
-    //TODO make sure to order correctly by date
-
     let matching = getComplaintsMatchingSearchCriteria();
+    //TODO now that we have the results, order by whatever
+
     document.getElementById("total-results-text").innerText = `Showing ${matching.length} of ${loadedData.complaints.length} results`;
+
+    matching.sort((a, b) => new Date(a.complaintDate) - new Date(b.complaintDate));
 
     for (const complaint of matching) {
         shownComplaintsTBody.appendChild(createComplaintTableRow(complaint));
     }
-
 }
 
 function showSettingsWindow() {
@@ -912,6 +938,3 @@ addOptionsToStaffInvolvedSelect();
 
 //Select the default filter, trigger the display of the complaints
 filterButtonClicked(document.getElementById("filter-button-open"));
-
-
-showAddComplaintWindow();
