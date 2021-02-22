@@ -47,32 +47,33 @@ function createTableEntry(name, structure, returnType = "total") {
 
 function createTableEntries() {
     let products = document.getElementById("products");
+
     products.appendChild(createDividerRow("Chicken"));
-    //TODO pass structure here
     products.appendChild(createTableEntry("Original Recipe", cobStructure, "head"));
     products.appendChild(createTableEntry("Hot & Spicy", cobStructure, "head"));
     products.appendChild(createTableEntry("Original Fillets", filletsStructure));
     products.appendChild(createTableEntry("Zinger Fillets", filletsStructure));
-    products.appendChild(createTableEntry("Wicked Wings"));
+    products.appendChild(createTableEntry("Tenders", tendersStructure));
+    products.appendChild(createTableEntry("Wicked Wings", wickedWingsStructure));
 
     products.appendChild(createDividerRow("Freezer"));
-    products.appendChild(createTableEntry("Chicken Nuggets"));
-    products.appendChild(createTableEntry("Popcorn Chicken"));
-    products.appendChild(createTableEntry("Chips"));
-    products.appendChild(createTableEntry("Bacon"));
-    products.appendChild(createTableEntry("Chocolate Mousse"));
+    products.appendChild(createTableEntry("Chicken Nuggets", nuggetsStructure));
+    products.appendChild(createTableEntry("Popcorn Chicken", popcornChickenStructure));
+    products.appendChild(createTableEntry("Chips", chipsStructure));
+    products.appendChild(createTableEntry("Bacon", baconStructure));
+    products.appendChild(createTableEntry("Chocolate Mousse", chocolateMousseStructure));
 
     products.appendChild(createDividerRow("Salads"));
-    products.appendChild(createTableEntry("Diced Tomato"));
-    products.appendChild(createTableEntry("Lettuce"));
-    products.appendChild(createTableEntry("Coleslaw (Small)"));
-    products.appendChild(createTableEntry("Coleslaw (Large)"));
+    products.appendChild(createTableEntry("Diced Tomato", tomatoStructure));
+    products.appendChild(createTableEntry("Lettuce", lettuceStructure));
+    products.appendChild(createTableEntry("Coleslaw (Small)", smallColeslawStructure));
+    products.appendChild(createTableEntry("Coleslaw (Large)", largeColeslawStructure));
 
     products.appendChild(createDividerRow("Breads"));
-    products.appendChild(createTableEntry("Burger Buns"));
-    products.appendChild(createTableEntry("Dinner Rolls"));
-    products.appendChild(createTableEntry("Flatbread"));
-    products.appendChild(createTableEntry("Tortillas"));
+    products.appendChild(createTableEntry("Burger Buns", burgerBunsStructure));
+    products.appendChild(createTableEntry("Dinner Rolls", dinnerRollsStructure));
+    products.appendChild(createTableEntry("Flatbread", flatbreadSlidersStructure));
+    products.appendChild(createTableEntry("Tortillas", tortillasStructure));
 
     //TODO handle promo different
     products.appendChild(createDividerRow("Misc"));

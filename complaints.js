@@ -92,13 +92,63 @@ function getTimeStringFromDate(date) {
     return hour + ":" + minutes;
 }
 
-function showAddComplaintWindow() {
+function showAddComplaintWindow(editingComplaint = null) {
+    //TODO set variable to tell whether or not we are updating etc
+
+
+    document.getElementById("add-complaint-header").innerText = editingComplaint == null ? "Add A Complaint" : "Edit Complaint";
+    document.getElementById("add-complaint-button").innerText = editingComplaint == null ? "Add Complaint" : "Save Changes";
+
+    //TODO change text of buttons, header etc
+
     addComplaintWindowClearInputs();
     uniqueCustomerContacts = getCustomerContacts();
 
     //Set default values to fields
     complaintDateInput.valueAsDate = new Date();
     complaintTimeInput.value = getTimeStringFromDate(new Date());
+
+    //TODO set into edit mode
+    if (editingComplaint !== null) {
+        openComplaint = editingComplaint;
+        //    TODO add data
+        console.log(editingComplaint);
+        complaintDateInput.valueAsDate = new Date(editingComplaint.complaintDate);
+        complaintTimeInput.value = editingComplaint.complaintTime;
+        customerNameInput.value = editingComplaint.customerName;
+        customerNumberInput.value = editingComplaint.customerNumber;
+
+        //Add the staff involved
+        for (let i = 0; i < editingComplaint.staffInvolved.length; i++) {
+            let currentStaffInvolved = editingComplaint.staffInvolved[i];
+            addStaffInvolved(currentStaffInvolved.staffName, currentStaffInvolved.staffRole);
+        }
+
+        //Select the complaint natures
+        for (let i = 0; i < editingComplaint.natureOfComplaint.length; i++) {
+            let currentComplaintNature = editingComplaint.natureOfComplaint[i];
+
+            for (let i2 = 0; i2 < complaintNatureSelect.options.length; i2++) {
+                let currentOption = complaintNatureSelect.options[i2];
+
+                if (textEqualsCaseInsensitive(currentOption.value, currentComplaintNature)) {
+                    currentOption.selected = true;
+                }
+            }
+        }
+
+        //Select the credit offered by
+        for (let i = 0; i < creditOfferedBySelect.options.length; i++) {
+            let currentOption = creditOfferedBySelect.options[i];
+
+            if (textEqualsCaseInsensitive(currentOption.value, editingComplaint.creditOfferedBy)) {
+                currentOption.selected = true;
+            }
+        }
+
+        orderDescriptionTextArea.value = editingComplaint.orderDescription;
+        creditDescriptionTextArea.value = editingComplaint.creditDescription;
+    }
 
     document.getElementById("add-complaint-modal").style.display = "flex";
     customerNameInput.focus();
@@ -239,7 +289,10 @@ function addComplaintWindow_AddButtonClicked() {
     }
 
     hideAddComplaintWindow();
-    loadedData.complaints.push({
+
+    //TODO create the object, decide whether or not to push or replace it
+
+    let newComplaintData = {
         complaintDate: complaintDate,
         complaintTime: complaintTime,
         customerName: customerName,
@@ -252,7 +305,17 @@ function addComplaintWindow_AddButtonClicked() {
         resolutionDate: null,
         resolvedBy: null,
         creditReceiptNumber: null
-    });
+    };
+
+    if (openComplaint !== null) {
+        //TODO on cancel,set open complaint to null too
+        let indexOf = loadedData.complaints.indexOf(openComplaint);
+        loadedData.complaints[indexOf] = newComplaintData;
+        openComplaint = null;
+    } else {
+        loadedData.complaints.push(newComplaintData);
+    }
+
     saveData(loadedData);
 
     showComplaints();
@@ -296,10 +359,12 @@ function addComplaintWindowUpdateMatchingContacts() {
 function hideAddComplaintWindow() {
     document.getElementById("add-complaint-modal").style.display = "none";
     uniqueCustomerContacts = null;
+
 }
 
 function addComplaintWindow_CancelButtonClicked() {
     hideAddComplaintWindow();
+    openComplaint = null;
 }
 
 function createTextAreaTD(innerData) {
@@ -420,6 +485,19 @@ function createComplaintTableRow(complaint) {
             showResolveComplaintWindow();
         };
         actionsTD.appendChild(resolveButton);
+
+
+        //    TODO edit button here
+
+        let editButton = createButton("Edit");
+        editButton.classList.add("btn-small");
+        editButton.onclick = function () {
+            openComplaint = complaint;
+            showAddComplaintWindow(complaint);
+            //    TODO need to make sure open complaint is set to null
+        };
+
+        actionsTD.appendChild(editButton);
     }
 
     let deleteButton = createButton("Delete");
@@ -511,6 +589,14 @@ function showSettingsWindow() {
 
 function hideSettingsWindow() {
     document.getElementById("settings-window").style.display = "none";
+}
+
+function settings_resetDataButtonClicked() {
+    let reset = confirm("Are you sure you want to reset all data?");
+    if (reset) {
+        localStorage.clear();
+        location.reload();
+    }
 }
 
 function settings_backupDataButtonClicked() {
@@ -713,7 +799,10 @@ function staffInvolvedAddButtonClicked() {
     }
 
     let staffRole = staffInvolvedRoleSelect.value;
+    addStaffInvolved(staffName, staffRole);
+}
 
+function addStaffInvolved(staffName, staffRole) {
     let valuesFromStaffInvolvedTable = getValuesFromStaffInvolvedTable();
     for (const v of valuesFromStaffInvolvedTable) {
         if (textEqualsCaseInsensitive(staffName, v.staffName)) {

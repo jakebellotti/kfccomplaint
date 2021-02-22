@@ -69,7 +69,7 @@
 <div style="display: none;" class="modal-window-overlay" id="add-complaint-modal">
 
     <div class="add-complaint-window">
-        <p class="modal-window-header">Add A Complaint</p>
+        <p id="add-complaint-header" class="modal-window-header">Add A Complaint</p>
 
         <div class="customer-details-container">
             <div>
@@ -154,7 +154,7 @@
         </div>
 
         <div class="add-complaint-window-buttons">
-            <button class="waves-light btn" onclick="addComplaintWindow_AddButtonClicked();">Add Complaint</button>
+            <button id="add-complaint-button" class="waves-light btn" onclick="addComplaintWindow_AddButtonClicked();">Add Complaint</button>
             <button class="waves-light btn" onclick="addComplaintWindow_CancelButtonClicked()">Cancel</button>
         </div>
     </div>
@@ -182,6 +182,7 @@
             <!--            TODO finish-->
             <button class="waves-light btn" onclick="settings_backupDataButtonClicked()">Backup Data</button>
             <button class="waves-light btn" onclick="alert('Not yet implemented.')">Import Data</button>
+            <button class="waves-light btn" onclick="settings_resetDataButtonClicked();">Reset Data</button>
         </div>
         <div class="settings-window-button-container">
             <button class="waves-light btn" onclick="hideSettingsWindow();">Close</button>
