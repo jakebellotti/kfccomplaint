@@ -2,7 +2,7 @@ let countTableBody = document.getElementById("count-table-body");
 let countAreaHeader = document.getElementById("current-count-area-text");
 
 let openCountArea = null;
-let countData = [];
+let countData = new Map();
 
 
 //TODO we need to add support for promo
@@ -88,33 +88,6 @@ function updateTotal(row) {
     if (parsedData.unitAmount !== null) {
         totalCount += parsedData.unitAmount;
     }
-
-    // console.log(getRowData(row));
-    //
-    // //TODO transfer this to a separate function
-    // let selCase = row.querySelector(".item-count-container-case");
-    // let selInner = row.querySelector(".item-count-container-inner");
-    // let selUnit = row.querySelector(".item-count-container-unit");
-    //
-    // let totalCount = 0;
-    // if (selCase !== null) {
-    //     let parsedSelCase = parseFloat(selCase.querySelector(".total-count").value);
-    //     if (!isNaN(parsedSelCase)) {
-    //         totalCount += parsedSelCase;
-    //     }
-    // }
-    // if (selInner !== null) {
-    //     let parsedSelInner = parseFloat(selInner.querySelector(".total-count").value);
-    //     if (!isNaN(parsedSelInner)) {
-    //         totalCount += parsedSelInner;
-    //     }
-    // }
-    // if (selUnit !== null) {
-    //     let parsedSelUnit = parseFloat(selUnit.querySelector(".number-input").value);
-    //     if (!isNaN(parsedSelUnit)) {
-    //         totalCount += parsedSelUnit;
-    //     }
-    // }
 
     let totalSelect = row.querySelectorAll(".item-count-container-total .total-count");
 
@@ -241,12 +214,19 @@ function createRowFromStructure(currentStructure, showCase, showInner, showUnit)
 }
 
 function showAllCount() {
-    openCountArea = null;
+    //TODO make a function to save this
+    if (openCountArea !== null) {
+        countData.set(openCountArea, getAllTableData());
+        openCountArea = null;
+    }
     deselectOpenCountButtons();
     //TODO select ths
 
     countAreaHeader.innerText = "All";
     countTableBody.innerHTML = "";
+
+    let mergedData = getMergedData();
+    // console.log(mergedData);
 
     for (let i = 0; i < allStructures.length; i++) {
         let currentCategory = allStructures[i];
@@ -255,7 +235,39 @@ function showAllCount() {
 
         for (let i2 = 0; i2 < currentStructures.length; i2++) {
             let currentStructure = currentStructures[i2];
-            countTableBody.appendChild(createRowFromStructure(currentStructure, true, true, true));
+            let createdRow = createRowFromStructure(currentStructure, true, true, true);
+
+            //TODO default to 0
+            let caseInput = createdRow.querySelector(".item-count-container-case .number-input");
+            let innerInput = createdRow.querySelector(".item-count-container-inner .number-input");
+            let unitInput = createdRow.querySelector(".item-count-container-unit .number-input");
+
+            //TODO some may be null
+            if (caseInput !== null || undefined) {
+                caseInput.value = 0;
+            }
+            if (innerInput !== null || undefined) {
+                innerInput.value = 0;
+            }
+            if (unitInput !== null || undefined) {
+                unitInput.value = 0;
+            }
+
+            if (mergedData.has(currentStructure.identifier)) {
+                let currentMerged = mergedData.get(currentStructure.identifier);
+                console.log(currentMerged);
+                if (caseInput !== null) {
+                    caseInput.value = currentMerged.caseAmount === undefined ? 0 : currentMerged.caseAmount;
+                }
+                if (innerInput !== null) {
+                    innerInput.value = currentMerged.innerAmount === undefined ? 0 : currentMerged.innerAmount;
+                }
+                if (unitInput !== null) {
+                    unitInput.value = currentMerged.unitAmount === undefined ? 0 : currentMerged.unitAmount;
+                }
+            }
+
+            countTableBody.appendChild(createdRow);
         }
     }
 }
@@ -268,7 +280,7 @@ function deselectOpenCountButtons() {
 
 function displayCountArea(button, area) {
     if (openCountArea !== null) {
-        countData[openCountArea] = getAllTableData();
+        countData.set(openCountArea, getAllTableData());
     }
     openCountArea = area.areaName;
 
@@ -290,7 +302,7 @@ function displayCountArea(button, area) {
         }
     }
 
-    let currentData = countData[area.areaName];
+    let currentData = countData.get(area.areaName);
     if (currentData == null) {
         return;
     }
@@ -348,6 +360,23 @@ function displayCountLocations() {
     allButton.onclick = () => showAllCount();
     allButtonLineDiv.appendChild(allButton);
     countAreaContainer.appendChild(allButtonLineDiv);
+}
+
+function getMergedData() {
+    let returnObj = new Map();
+
+    for (const fullObj of countData) {
+        for (const line of fullObj[1]) {
+            if (!returnObj.has(line.identifier)) {
+                returnObj.set(line.identifier, {caseAmount: 0, innerAmount: 0, unitAmount: 0});
+            }
+
+            returnObj.get(line.identifier).caseAmount += line.caseAmount;
+            returnObj.get(line.identifier).innerAmount += line.innerAmount;
+            returnObj.get(line.identifier).unitAmount += line.unitAmount;
+        }
+    }
+    return returnObj;
 }
 
 
