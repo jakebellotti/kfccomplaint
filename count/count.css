@@ -126,6 +126,7 @@ border spacing for table
     font-size: 30px;
     color: white;
     font-family: Roboto;
+    padding: 5px;
 }
 
 #count-type-container {
@@ -133,11 +134,25 @@ border spacing for table
     display: flex;
 }
 
+/*TODO some colors please*/
+
 #count-type-container button {
     width: 100%;
+    font-size: 16px;
+    padding: 5px;
+    font-family: Arial;
+    cursor: pointer;
 }
 
 .count-area-open {
     color: white;
     background-color: #2c8ee4;
+}
+
+.fresh-button-selected {
+    background-color: limegreen;
+}
+
+.wasted-button-selected {
+    background-color: red;
 }

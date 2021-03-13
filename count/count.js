@@ -1,13 +1,22 @@
 let countTableBody = document.getElementById("count-table-body");
 let countAreaHeader = document.getElementById("current-count-area-text");
 
-let openCountArea = null;
-let countData = new Map();
+let freshButton = document.getElementById("fresh-button");
+let wastedButton = document.getElementById("wasted-button");
 
+let openCountArea = null;
+// let countData = new Map();
+
+let lastClickedButton = null;
+
+let freshData = new Map();
+let wastedData = new Map();
+
+let countMode = null;
+
+//TODO handle wastage
 
 //TODO we need to add support for promo
-//TODO we need to add support for linking count areas
-//TODO now build all count units
 
 function createCountTableHeader(name) {
     let tr = document.createElement("tr");
@@ -84,11 +93,8 @@ function getAllTableData() {
 function updateTotal(row) {
     let parsedData = getRowData(row);
 
-    //TODO now we need to update the individual inputs ahhh
-
     let totalCount = 0;
     if (parsedData.caseAmount !== null) {
-        //TODO need to multiply by amount
         totalCount += parsedData.caseAmount * parsedData.caseMultiplier;
     }
     if (parsedData.innerAmount !== null) {
@@ -110,6 +116,7 @@ function updateTotal(row) {
             console.log("Calculation method not set.");
         }
     }
+    saveCountData();
 }
 
 
@@ -140,7 +147,9 @@ function countChanged(row, input, total) {
         total.value = (parsedValue) * input.dataset.unitQuantity;
     }
     updateTotal(row);
+    // saveCountData();
 
+//    TODO save data here rather than only on change
 //    TODO handle to 2dp
 //    TODO handle decimals too
 //    TODO update based on unit
@@ -244,12 +253,21 @@ function createRowFromStructure(currentStructure, showCase, showInner, showUnit)
     return currentRow;
 }
 
-function showAllCount() {
-    //TODO make a function to save this
+function saveCountData() {
+    let countData = countMode === "fresh" ? freshData : wastedData;
     if (openCountArea !== null) {
         countData.set(openCountArea, getAllTableData());
-        openCountArea = null;
     }
+}
+
+function showAllCount() {
+    openCountArea = null;
+    // let countData = countMode === "fresh" ? freshData : wastedData;
+    // //TODO make a function to save this
+    // if (openCountArea !== null) {
+    //     countData.set(openCountArea, getAllTableData());
+    //     openCountArea = null;
+    // }
     deselectOpenCountButtons();
     //TODO select ths
 
@@ -313,9 +331,11 @@ function deselectOpenCountButtons() {
 }
 
 function displayCountArea(button, area) {
-    if (openCountArea !== null) {
-        countData.set(openCountArea, getAllTableData());
-    }
+    let countData = countMode === "fresh" ? freshData : wastedData;
+
+    // if (openCountArea !== null) {
+    //     countData.set(openCountArea, getAllTableData());
+    // }
     openCountArea = area.areaName;
 
     deselectOpenCountButtons();
@@ -382,7 +402,10 @@ function displayCountLocations() {
             let areaButton = document.createElement("button");
             areaButton.innerText = area.areaName;
 
-            areaButton.onclick = () => displayCountArea(areaButton, area);
+            areaButton.onclick = () => {
+                lastClickedButton = areaButton;
+                displayCountArea(areaButton, area);
+            };
 
             currentLineDiv.appendChild(areaButton);
             //    TODO event handlers
@@ -395,12 +418,17 @@ function displayCountLocations() {
     allButtonLineDiv.classList.add("count-area-line");
     let allButton = document.createElement("button");
     allButton.innerText = "All";
-    allButton.onclick = () => showAllCount();
+    allButton.onclick = () => {
+        lastClickedButton = allButton;
+        showAllCount();
+    };
     allButtonLineDiv.appendChild(allButton);
     countAreaContainer.appendChild(allButtonLineDiv);
 }
 
 function getMergedData() {
+    let countData = countMode === "fresh" ? freshData : wastedData;
+
     let returnObj = new Map();
 
     for (const fullObj of countData) {
@@ -417,10 +445,28 @@ function getMergedData() {
     return returnObj;
 }
 
+function freshButtonClicked() {
+    countMode = "fresh";
+    freshButton.classList.add("fresh-button-selected");
+    wastedButton.classList.remove("wasted-button-selected");
 
-showAllCount();
+    if (lastClickedButton !== null) {
+        lastClickedButton.click();
+    }
+}
+
+function wastedButtonClicked() {
+    countMode = "wasted";
+    freshButton.classList.remove("fresh-button-selected");
+    wastedButton.classList.add("wasted-button-selected");
+
+    if (lastClickedButton !== null) {
+        lastClickedButton.click();
+    }
+//    TODO method to 'refresh' data
+}
+
 displayCountLocations();
 
-
-//TODO by default select first count location, generate
+freshButton.click();
 document.getElementById("count-area-container").querySelector("button").click();
