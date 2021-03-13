@@ -21,7 +21,7 @@ let cobStructure = {
         },
         {
             name: "Head",
-            calculationMethod: "divideByNine"
+            calculationMethod: "heads"
         }
     ]
 };
@@ -45,7 +45,7 @@ let template = {
     total: [
         {
             name: "Pieces",
-            calculationMethod: "individual"
+            calculationMethod: "heads"
         }
     ]
 };
@@ -412,31 +412,37 @@ let allStructures = [
         structures: [
             {
                 name: "Original Recipe",
+                identifier: "original_recipe_cob",
                 data: cobStructure,
                 returnType: "head"
             },
             {
                 name: "Hot & Spicy",
+                identifier: "hot_and_spicy_cob",
                 data: cobStructure,
                 returnType: "head"
             },
             {
                 name: "Original Fillets",
+                identifier: "original_recipe_fillets",
                 data: filletsStructure,
                 returnType: "each"
             },
             {
                 name: "Zinger Fillets",
+                identifier: "zinger_fillets",
                 data: filletsStructure,
                 returnType: "each"
             },
             {
                 name: "Tenders",
+                identifier: "original_tenders",
                 data: tendersStructure,
                 returnType: "each"
             },
             {
                 name: "Wicked Wings",
+                identifier: "wicked_wings",
                 data: wickedWingsStructure,
                 returnType: "each"
             }
@@ -447,26 +453,31 @@ let allStructures = [
         structures: [
             {
                 name: "Chicken Nuggets",
+                identifier: "chicken_nuggets",
                 data: nuggetsStructure,
                 returnType: "each"
             },
             {
                 name: "Popcorn Chicken",
+                identifier: "popcorn_chicken",
                 data: popcornChickenStructure,
                 returnType: "each"
             },
             {
                 name: "Chips",
+                identifier: "chips_aviko",
                 data: chipsStructure,
                 returnType: "each"
             },
             {
                 name: "Bacon",
+                identifier: "bacon_streaky",
                 data: baconStructure,
                 returnType: "each"
             },
             {
                 name: "Chocolate Mousse",
+                identifier: "chocolate_mousse",
                 data: chocolateMousseStructure,
                 returnType: "each"
             }
@@ -477,21 +488,25 @@ let allStructures = [
         structures: [
             {
                 name: "Diced Tomato",
+                identifier: "diced_tomato",
                 data: tomatoStructure,
                 returnType: "each"
             },
             {
                 name: "Lettuce",
+                identifier: "lettuce",
                 data: lettuceStructure,
                 returnType: "each"
             },
             {
                 name: "Coleslaw (Small)",
+                identifier: "coleslaw_small",
                 data: smallColeslawStructure,
                 returnType: "each"
             },
             {
                 name: "Coleslaw (Large)",
+                identifier: "coleslaw_large",
                 data: largeColeslawStructure,
                 returnType: "each"
             }
@@ -502,21 +517,25 @@ let allStructures = [
         structures: [
             {
                 name: "Burger Buns",
+                identifier: "burger_buns_arby",
                 data: burgerBunsStructure,
                 returnType: "each"
             },
             {
                 name: "Dinner Rolls",
+                identifier: "dinner_rolls",
                 data: dinnerRollsStructure,
                 returnType: "each"
             },
             {
                 name: "Flatbread",
+                identifier: "flatbread",
                 data: flatbreadSlidersStructure,
                 returnType: "each"
             },
             {
                 name: "Tortillas",
+                identifier: "tortillas",
                 data: tortillasStructure,
                 returnType: "each"
             }

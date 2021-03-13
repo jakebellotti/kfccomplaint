@@ -4,6 +4,7 @@
     <title>KFC Count</title>
     <link rel="stylesheet" href="count.css">
     <script src="../dailyReconData_new.js"></script>
+    <script src="countAreas.js"></script>
     <script src="count.js" defer></script>
 </head>
 
@@ -12,28 +13,18 @@
 <p>Date:</p>
 <p>Time:</p>
 <p>Count Area</p>
+<button onclick="console.log(countData)">all data</button>
+<button onclick="getAllTableData()">Press</button>
 
-<div>
-    <button>Front Fridge</button>
-    <button>Drive Fridge</button>
-    <button>Coolroom (Salads)</button>
-    <button>Coolroom (Chicken)</button>
-    <button>Freezer (Drive Thru)</button>
-    <button>Freezer (Main)</button>
-    <button>Bread (Drive Thru)</button>
-    <button>Bread (Rear)</button>
-    <button>All</button>
+<div id="count-area-container">
+
 </div>
 
-<!--<div class="item-count-container">-->
-<!--    <p class="item-count-name">Wicked Wings</p>-->
-<!--    <div class="item-count-container-inner">-->
-<!--        <input class="number-input" type="text" placeholder="5">-->
-<!--        <p>Crate x 225 EA = </p>-->
-<!--        <input class="number-input total-count" type="text" placeholder="5">-->
-<!--    </div>-->
-<!--</div>-->
-
+<p id = "current-count-area-text">Count area</p>
+<div id ="count-type-container">
+    <button>Fresh</button>
+    <button>Wasted</button>
+</div>
 <table class="count-table">
     <thead>
     <tr>

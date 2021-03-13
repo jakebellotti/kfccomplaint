@@ -19,7 +19,7 @@ body {
 
 .item-count-container-case {
     display: flex;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 10px;
     border-radius: 10px;
     align-items: center;
@@ -27,7 +27,7 @@ body {
 
 .item-count-container-inner {
     display: flex;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 10px;
     border-radius: 10px;
     align-items: center;
@@ -35,7 +35,15 @@ body {
 
 .item-count-container-unit {
     display: flex;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.item-count-container-total {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 10px;
     border-radius: 10px;
     align-items: center;
@@ -63,6 +71,7 @@ body {
 }
 
 .count-table {
+    width: 100%;
     font-family: Roboto;
 }
 
@@ -90,4 +99,41 @@ border spacing for table
 .calc-div {
     display: flex;
     align-items: center;
+}
+
+#count-area-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.count-area-line {
+    display: flex;
+}
+
+.count-area-line button {
+    margin: 2px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+#current-count-area-text {
+    text-align: center;
+    background-color: rgba(75, 75, 75, 1);
+    font-size: 30px;
+    color: white;
+    font-family: Roboto;
+}
+
+#count-type-container {
+    width: 100%;
+    display: flex;
+}
+
+#count-type-container button {
+    width: 100%;
+}
+
+.count-area-open {
+    color: white;
+    background-color: #2c8ee4;
 }
