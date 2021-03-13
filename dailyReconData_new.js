@@ -184,7 +184,7 @@ let chipsStructure = {
     unit: {
         name: "Individual",
         quantity: 1,
-        unitName: "EA"
+        unitName: "KG"
     },
     total: [
         {
@@ -321,7 +321,7 @@ let chocolateMousseStructure = {
 };
 
 let burgerBunsStructure = {
-    case: {
+    inner: {
         name: "Bags",
         quantity: 12,
         unitName: "EA"
@@ -364,7 +364,7 @@ let flatbreadSlidersStructure = {
 };
 
 let dinnerRollsStructure = {
-    case: {
+    inner: {
         name: "Bags",
         quantity: 12,
         unitName: "EA"

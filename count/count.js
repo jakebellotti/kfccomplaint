@@ -31,6 +31,7 @@ function createUnitDiv(data, row) {
     let input = document.createElement("input");
     input.classList.add("number-input");
     input.setAttribute("type", "text");
+    input.setAttribute("data-unit-quantity", data.quantity);
 
     input.oninput = () => updateTotal(row);
 
@@ -50,15 +51,20 @@ function parseFloatOrNull(val) {
 function getRowData(row) {
     let identifier = row.dataset.productIdentifier;
 
-    let selCase = row.querySelector(".item-count-container-case .total-count");
-    let selInner = row.querySelector(".item-count-container-inner .total-count");
+    let selCase = row.querySelector(".item-count-container-case .number-input");
+    let selInner = row.querySelector(".item-count-container-inner .number-input");
     let selUnit = row.querySelector(".item-count-container-unit .number-input");
 
     return {
         identifier: identifier,
         caseAmount: (selCase == null) ? null : parseFloatOrNull(selCase.value),
+        caseMultiplier: (selCase == null) ? null : parseFloatOrNull(selCase.dataset.unitQuantity),
+
         innerAmount: (selInner == null) ? null : parseFloatOrNull(selInner.value),
-        unitAmount: (selUnit == null) ? null : parseFloatOrNull(selUnit.value)
+        innerMultiplier: (selInner == null) ? null : parseFloatOrNull(selInner.dataset.unitQuantity),
+
+        unitAmount: (selUnit == null) ? null : parseFloatOrNull(selUnit.value),
+        unitMultiplier: (selUnit == null) ? null : parseFloatOrNull(selUnit.dataset.unitQuantity),
     };
 }
 
@@ -78,15 +84,18 @@ function getAllTableData() {
 function updateTotal(row) {
     let parsedData = getRowData(row);
 
+    //TODO now we need to update the individual inputs ahhh
+
     let totalCount = 0;
     if (parsedData.caseAmount !== null) {
-        totalCount += parsedData.caseAmount;
+        //TODO need to multiply by amount
+        totalCount += parsedData.caseAmount * parsedData.caseMultiplier;
     }
     if (parsedData.innerAmount !== null) {
-        totalCount += parsedData.innerAmount;
+        totalCount += parsedData.innerAmount * parsedData.innerMultiplier;
     }
     if (parsedData.unitAmount !== null) {
-        totalCount += parsedData.unitAmount;
+        totalCount += parsedData.unitAmount * parsedData.unitMultiplier;
     }
 
     let totalSelect = row.querySelectorAll(".item-count-container-total .total-count");
@@ -97,8 +106,28 @@ function updateTotal(row) {
             totalSelectElement.value = totalCount;
         } else if (calculationMethod.toLowerCase() === "heads".toLowerCase()) {
             totalSelectElement.value = (totalCount / 9);
+        } else {
+            console.log("Calculation method not set.");
         }
     }
+}
+
+
+function updateIndividualTotals(row) {
+    // let querySelector = row.querySelector(divClass);
+    // if (querySelector === null || querySelector === undefined) {
+    //     return;
+    // }
+    let selCase = row.querySelector(".item-count-container-case");
+    if (selCase !== null) {
+        countChanged(row, selCase.querySelector(".number-input"), selCase.querySelector(".total-count"));
+    }
+
+    let selInner = row.querySelector(".item-count-container-inner");
+    if (selInner !== null) {
+        countChanged(row, selInner.querySelector(".number-input"), selInner.querySelector(".total-count"));
+    }
+    updateTotal(row);
 }
 
 function countChanged(row, input, total) {
@@ -107,7 +136,9 @@ function countChanged(row, input, total) {
 
     let parsedValue = parseFloat(value);
 
-    total.value = (parsedValue) * input.dataset.unitQuantity;
+    if (!isNaN(parsedValue)) {
+        total.value = (parsedValue) * input.dataset.unitQuantity;
+    }
     updateTotal(row);
 
 //    TODO handle to 2dp
@@ -255,7 +286,6 @@ function showAllCount() {
 
             if (mergedData.has(currentStructure.identifier)) {
                 let currentMerged = mergedData.get(currentStructure.identifier);
-                console.log(currentMerged);
                 if (caseInput !== null) {
                     caseInput.value = currentMerged.caseAmount === undefined ? 0 : currentMerged.caseAmount;
                 }
@@ -268,6 +298,10 @@ function showAllCount() {
             }
 
             countTableBody.appendChild(createdRow);
+
+            //TODO update individual values for row function
+            updateIndividualTotals(createdRow);
+            // updateTotal(createdRow);
         }
     }
 }
@@ -329,6 +363,10 @@ function displayCountArea(button, area) {
                     }
                 }
             }
+
+            updateIndividualTotals(rowElement);
+            //TODO here
+            // updateTotal(rowElement);
         }
     }
 }

@@ -14,19 +14,23 @@
 <p>Time:</p>
 <p>Count Area</p>
 
-<button onclick="getMergedData()">Get merged data</button>
-
 <div id="count-area-container">
 
 </div>
 
-<p id = "current-count-area-text">Count area</p>
-<div id ="count-type-container">
-    <button>Fresh</button>
-    <button>Wasted</button>
-</div>
 <table class="count-table">
     <thead>
+    <tr>
+        <td colspan="5" id="current-count-area-text"></td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <div id="count-type-container">
+                <button>Fresh</button>
+                <button>Wasted</button>
+            </div>
+        </td>
+    </tr>
     <tr>
         <th class="count-table-header">Name</th>
         <th class="count-table-header">Case</th>

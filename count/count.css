@@ -71,7 +71,10 @@ body {
 }
 
 .count-table {
-    width: 100%;
+    /*width: 950px;*/
+    /*max-width: 100%;*/
+    min-width: 980px;
+    width: fit-content;
     font-family: Roboto;
 }
 
@@ -111,9 +114,10 @@ border spacing for table
 }
 
 .count-area-line button {
-    margin: 2px;
-    padding: 3px;
+    margin: 3px;
+    padding: 8px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 #current-count-area-text {
