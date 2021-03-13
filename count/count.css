@@ -1,0 +1,93 @@
+* {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+body {
+    background-color: skyblue;
+}
+
+.item-count-container {
+    display: flex;
+    border: solid 1px black;
+    margin: 2px;
+    padding: 2px;
+    font-family: Roboto;
+    align-items: center;
+}
+
+.item-count-container-case {
+    display: flex;
+    background-color: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.item-count-container-inner {
+    display: flex;
+    background-color: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.item-count-container-unit {
+    display: flex;
+    background-color: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.number-input {
+    text-align: center;
+    width: 50px;
+    margin-right: 5px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.total-count {
+    margin-left: 5px;
+    background-color: #433d4b;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+
+.item-count-name {
+    min-width: 120px;
+    text-align: center;
+}
+
+.count-table {
+    font-family: Roboto;
+}
+
+.count-table-header {
+    font-family: Roboto;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    font-weight: bold !important;
+    background-color: #1d7d74;
+}
+
+/*
+border spacing for table
+*/
+
+.count-table-category-separator {
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    padding: 2px;
+}
+
+.calc-div {
+    display: flex;
+    align-items: center;
+}

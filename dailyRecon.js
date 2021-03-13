@@ -48,6 +48,8 @@ function createTableEntry(name, structure, returnType = "total") {
 function createTableEntries() {
     let products = document.getElementById("products");
 
+    //TODO put this into a JS array and handle like that
+
     products.appendChild(createDividerRow("Chicken"));
     products.appendChild(createTableEntry("Original Recipe", cobStructure, "head"));
     products.appendChild(createTableEntry("Hot & Spicy", cobStructure, "head"));

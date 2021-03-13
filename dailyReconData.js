@@ -333,6 +333,8 @@ let burgerBunsStructure = [
     ]
 ];
 
+//TODO add this data for all, and then remove the old
+
 let flatbreadSlidersStructure = [
     [
         {
@@ -358,6 +360,9 @@ let flatbreadSlidersStructure = [
         }
     ]
 ];
+
+//TODO case, inner, unit, total, secondary total (head etc)
+//TODO more concise disgression on units etc - count, total, return
 
 let dinnerRollsStructure = [
     [
@@ -404,4 +409,123 @@ let tortillasStructure = [
             unit: "data-input-total-count"
         }
     ]
+];
+
+
+let allStructures = [
+    {
+        name: "Chicken",
+        structures: [
+            {
+                name: "Original Recipe",
+                data: cobStructure,
+                returnType: "head"
+            },
+            {
+                name: "Hot & Spicy",
+                data: cobStructure,
+                returnType: "head"
+            },
+            {
+                name: "Original Fillets",
+                data: filletsStructure,
+                returnType: "each"
+            },
+            {
+                name: "Zinger Fillets",
+                data: filletsStructure,
+                returnType: "each"
+            },
+            {
+                name: "Tenders",
+                data: tendersStructure,
+                returnType: "each"
+            },
+            {
+                name: "Wicked Wings",
+                data: wickedWingsStructure,
+                returnType: "each"
+            }
+        ]
+    },
+    {
+        name: "Freezer",
+        structures: [
+            {
+                name: "Chicken Nuggets",
+                data: nuggetsStructure,
+                returnType: "each"
+            },
+            {
+                name: "Popcorn Chicken",
+                data: popcornChickenStructure,
+                returnType: "each"
+            },
+            {
+                name: "Chips",
+                data: chipsStructure,
+                returnType: "each"
+            },
+            {
+                name: "Bacon",
+                data: baconStructure,
+                returnType: "each"
+            },
+            {
+                name: "Chocolate Mousse",
+                data: chocolateMousseStructure,
+                returnType: "each"
+            }
+        ]
+    },
+    {
+        name: "Salads",
+        structures: [
+            {
+                name: "Diced Tomato",
+                data: tomatoStructure,
+                returnType: "each"
+            },
+            {
+                name: "Lettuce",
+                data: lettuceStructure,
+                returnType: "each"
+            },
+            {
+                name: "Coleslaw (Small)",
+                data: smallColeslawStructure,
+                returnType: "each"
+            },
+            {
+                name: "Coleslaw (Large)",
+                data: largeColeslawStructure,
+                returnType: "each"
+            }
+        ]
+    },
+    {
+        name: "Breads",
+        structures: [
+            {
+                name: "Burger Buns",
+                data: burgerBunsStructure,
+                returnType: "each"
+            },
+            {
+                name: "Dinner Rolls",
+                data: dinnerRollsStructure,
+                returnType: "each"
+            },
+            {
+                name: "Flatbread",
+                data: flatbreadSlidersStructure,
+                returnType: "each"
+            },
+            {
+                name: "Tortillas",
+                data: tortillasStructure,
+                returnType: "each"
+            }
+        ]
+    }
 ];
