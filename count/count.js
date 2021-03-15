@@ -1,3 +1,7 @@
+let currentCountDatePicker = document.getElementById("current-count-date-picker");
+let currentCountTimePicker = document.getElementById("current-count-time-picker");
+let currentCountIDInput = document.getElementById("current-count-count-id");
+
 let countTableBody = document.getElementById("count-table-body");
 let countAreaHeader = document.getElementById("current-count-area-text");
 
@@ -7,10 +11,13 @@ let wastedButton = document.getElementById("wasted-button");
 let openCountArea = null;
 // let countData = new Map();
 
+//TODO it is important that we allow data to be saved to browser data because ipad may refresh and we will lose all data during the count
+//TODO also only insert area data etc first time when it is null, so it can be edited later
+
 let lastClickedButton = null;
 
-let freshData = new Map();
-let wastedData = new Map();
+// let freshData = new Map();
+// let wastedData = new Map();
 
 let countMode = null;
 
@@ -56,6 +63,11 @@ function parseFloatOrNull(val) {
     return isNaN(returnValue) ? null : returnValue;
 }
 
+/* Gets the data for a single row*
+ *
+ * @param row
+ * @returns {{identifier: string, innerAmount: (null|number), unitMultiplier: (null|number), caseAmount: (null|number), innerMultiplier: (null|number), unitAmount: (null|number), caseMultiplier: (null|number)}}
+ */
 function getRowData(row) {
     let identifier = row.dataset.productIdentifier;
 
@@ -76,6 +88,10 @@ function getRowData(row) {
     };
 }
 
+/**
+ * Gets the data out of all currently displayed rows
+ * @returns {[]}
+ */
 function getAllTableData() {
     let returnArray = [];
     let rows = countTableBody.querySelectorAll("tr");
@@ -85,7 +101,6 @@ function getAllTableData() {
             returnArray.push(getRowData(row));
         }
     }
-//    TODO handle wasted items
     return returnArray;
 }
 
@@ -120,10 +135,6 @@ function updateTotal(row) {
 
 
 function updateIndividualTotals(row) {
-    // let querySelector = row.querySelector(divClass);
-    // if (querySelector === null || querySelector === undefined) {
-    //     return;
-    // }
     let selCase = row.querySelector(".item-count-container-case");
     if (selCase !== null) {
         countChanged(row, selCase.querySelector(".number-input"), selCase.querySelector(".total-count"));
@@ -138,7 +149,6 @@ function updateIndividualTotals(row) {
 
 function countChanged(row, input, total) {
     let value = input.value;
-    //TODO nan error
 
     let parsedValue = parseFloat(value);
 
@@ -147,12 +157,8 @@ function countChanged(row, input, total) {
     }
     updateTotal(row);
     // saveCountData();
-
-//    TODO save data here rather than only on change
 //    TODO handle to 2dp
 //    TODO handle decimals too
-//    TODO update based on unit
-//    TODO update total in div, total at the end of the row
 }
 
 function createCountDiv(data, row, className) {
@@ -216,10 +222,10 @@ function createTotalDiv(data) {
 
 
 function createRowFromStructure(currentStructure, showCase, showInner, showUnit) {
-    //TODO if not showing units, dont do it
-
     let currentRow = document.createElement("tr");
     currentRow.setAttribute("data-product-identifier", currentStructure.identifier);
+
+    //TODO maybe blank box when we are not showing instead of nothing
 
     let nameTD = document.createElement("td");
     nameTD.classList.add("item-count-name");
@@ -252,29 +258,69 @@ function createRowFromStructure(currentStructure, showCase, showInner, showUnit)
     return currentRow;
 }
 
-function saveCountData() {
-    let countData = countMode === "fresh" ? freshData : wastedData;
-    if (openCountArea !== null) {
-        countData.set(openCountArea, getAllTableData());
+function setAllCounts(data) {
+    setStorageObj("count_all_counts", data);
+}
+
+function getAllCounts() {
+    return getStorageObj("count_all_counts");
+}
+
+function getCurrentCount() {
+    let currentCountIndex = getCurrentCountIndex();
+    if (currentCountIndex == null) {
+        console.log("Fatal error");
+        return null;
     }
+
+    let allCounts = getStorageObj("count_all_counts");
+    return allCounts[currentCountIndex];
+}
+
+/**
+ * Gets the immutable Map of whatever is the active data (e.g. fresh or wasted)
+ * @returns {Map<any, any>}
+ */
+function getCurrentCountActiveData() {
+    let currentCount = getCurrentCount();
+    return countMode === "fresh" ? currentCount.freshData : currentCount.wastedData;
+}
+
+function saveCountData() {
+    console.log("saveCountData()");
+    //TODO set, get
+    //TODO use current count stored in data
+    //TODO save
+    //    TODO else if equals wasted
+
+
+    if (openCountArea !== null) {
+        let allCounts = getAllCounts();
+
+        if (countMode === "fresh") {
+            //TODO area of concern
+            // allCounts[getCurrentCountIndex()].freshData.set(openCountArea, getAllTableData());
+            allCounts[getCurrentCountIndex()].freshData[openCountArea] = getAllTableData();
+        } else {
+            allCounts[getCurrentCountIndex()].wastedData[openCountArea] = getAllTableData();
+        }
+        setAllCounts(allCounts);
+    }
+
+    // let countData = countMode === "fresh" ? freshData : wastedData;
+    // if (openCountArea !== null) {
+    //     countData.set(openCountArea, getAllTableData());
+    // }
 }
 
 function showAllCount() {
     openCountArea = null;
-    // let countData = countMode === "fresh" ? freshData : wastedData;
-    // //TODO make a function to save this
-    // if (openCountArea !== null) {
-    //     countData.set(openCountArea, getAllTableData());
-    //     openCountArea = null;
-    // }
     deselectOpenCountButtons();
-    //TODO select ths
 
     countAreaHeader.innerText = "All";
     countTableBody.innerHTML = "";
 
     let mergedData = getMergedData();
-    // console.log(mergedData);
 
     for (let i = 0; i < allStructures.length; i++) {
         let currentCategory = allStructures[i];
@@ -285,12 +331,10 @@ function showAllCount() {
             let currentStructure = currentStructures[i2];
             let createdRow = createRowFromStructure(currentStructure, true, true, true);
 
-            //TODO default to 0
             let caseInput = createdRow.querySelector(".item-count-container-case .number-input");
             let innerInput = createdRow.querySelector(".item-count-container-inner .number-input");
             let unitInput = createdRow.querySelector(".item-count-container-unit .number-input");
 
-            //TODO some may be null
             if (caseInput !== null || undefined) {
                 caseInput.value = 0;
             }
@@ -316,9 +360,7 @@ function showAllCount() {
 
             countTableBody.appendChild(createdRow);
 
-            //TODO update individual values for row function
             updateIndividualTotals(createdRow);
-            // updateTotal(createdRow);
         }
     }
 }
@@ -330,11 +372,10 @@ function deselectOpenCountButtons() {
 }
 
 function displayCountArea(button, area) {
-    let countData = countMode === "fresh" ? freshData : wastedData;
+    getCurrentCount();
+    let countData = getCurrentCountActiveData();
+    // let countData = countMode === "fresh" ? freshData : wastedData;
 
-    // if (openCountArea !== null) {
-    //     countData.set(openCountArea, getAllTableData());
-    // }
     openCountArea = area.areaName;
 
     deselectOpenCountButtons();
@@ -355,7 +396,12 @@ function displayCountArea(button, area) {
         }
     }
 
-    let currentData = countData.get(area.areaName);
+    console.log(countData);
+
+    //TODO aREA OF CONCERN
+    let currentData = countData[area.areaName];
+
+    // let currentData = countData.get(area.areaName);
     if (currentData == null) {
         return;
     }
@@ -365,7 +411,6 @@ function displayCountArea(button, area) {
             for (let i = 0; i < currentData.length; i++) {
                 if (currentData[i].identifier === rowElement.dataset.productIdentifier) {
 
-                    //TODO the event to update the data is not trigering
                     let caseSelect = rowElement.querySelector(".item-count-container-case .number-input");
                     if (caseSelect !== null && currentData[i].caseAmount !== null) {
                         caseSelect.value = currentData[i].caseAmount;
@@ -382,10 +427,7 @@ function displayCountArea(button, area) {
                     }
                 }
             }
-
             updateIndividualTotals(rowElement);
-            //TODO here
-            // updateTotal(rowElement);
         }
     }
 }
@@ -407,8 +449,6 @@ function displayCountLocations() {
             };
 
             currentLineDiv.appendChild(areaButton);
-            //    TODO event handlers
-            //    TODO styling
         }
         countAreaContainer.appendChild(currentLineDiv);
     }
@@ -426,12 +466,15 @@ function displayCountLocations() {
 }
 
 function getMergedData() {
-    let countData = countMode === "fresh" ? freshData : wastedData;
+    let countData = getCurrentCountActiveData();
 
     let returnObj = new Map();
 
-    for (const fullObj of countData) {
-        for (const line of fullObj[1]) {
+    for (const key of Object.keys(countData)) {
+        let currentArea = countData[key];
+        for (let i = 0; i < currentArea.length; i++) {
+            let line = currentArea[i];
+
             if (!returnObj.has(line.identifier)) {
                 returnObj.set(line.identifier, {caseAmount: 0, innerAmount: 0, unitAmount: 0});
             }
@@ -440,6 +483,7 @@ function getMergedData() {
             returnObj.get(line.identifier).innerAmount += line.innerAmount;
             returnObj.get(line.identifier).unitAmount += line.unitAmount;
         }
+
     }
     return returnObj;
 }
@@ -449,6 +493,11 @@ function freshButtonClicked() {
     freshButton.classList.add("fresh-button-selected");
     wastedButton.classList.remove("wasted-button-selected");
 
+    refreshCount();
+}
+
+function refreshCount() {
+    //TODO is there a better way of doing this?
     if (lastClickedButton !== null) {
         lastClickedButton.click();
     }
@@ -458,14 +507,94 @@ function wastedButtonClicked() {
     countMode = "wasted";
     freshButton.classList.remove("fresh-button-selected");
     wastedButton.classList.add("wasted-button-selected");
-
-    if (lastClickedButton !== null) {
-        lastClickedButton.click();
-    }
-//    TODO method to 'refresh' data
+    refreshCount();
 }
 
-displayCountLocations();
+function selectFirstCountLocation() {
+    document.getElementById("count-area-container").querySelector("button").click();
+}
 
+function setStorageObj(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
+}
+
+function getStorageObj(key) {
+    let item = localStorage.getItem(key);
+    if (item === null || item === undefined) {
+        return null;
+    }
+    return JSON.parse(item);
+}
+
+function getTimeStringFromDate(date) {
+    let hour = (date.getHours() < 10 ? "0" : "") + date.getHours();
+    let minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+
+    return hour + ":" + minutes;
+}
+
+function setCurrentCountIndex(value) {
+    setStorageObj("count_current_count_index", value);
+}
+
+function getCurrentCountIndex() {
+    return getStorageObj("count_current_count_index");
+}
+
+// function loadCount(countID) {
+//     let allCounts = getStorageObj("count_all_counts");
+//     if (allCounts == null) {
+//         console.log("Fatal error");
+//         return;
+//     }
+//
+//     console.log(allCounts[countID]);
+// //    TODO verify
+// }
+
+function loadDefaultCount() {
+    let allCounts = getStorageObj("count_all_counts");
+    let currentCountIndex = getCurrentCountIndex();
+
+    if (currentCountIndex == null) {
+        console.log("No count index");
+
+        if (!allCounts) {
+            setStorageObj("count_all_counts", []);
+        }
+
+        let newCount = {
+            countDate: currentCountDatePicker.valueAsDate,
+            countTime: currentCountTimePicker.value,
+            freshData: new Map(),
+            wastedData: new Map()
+        };
+
+        allCounts = getStorageObj("count_all_counts");
+        allCounts.push(newCount);
+        setCurrentCountIndex(allCounts.indexOf(newCount));
+        setStorageObj("count_all_counts", allCounts);
+    } else {
+        // loadCount(currentCountIndex);
+        //    TODO load count is not needed, just rewrite other aspects of the program to work hehe
+    }
+//    TODO we have found a count, so show it, notify user and ask if they meant to continue count or create a new one
+}
+
+function setDefaultData() {
+    currentCountDatePicker.valueAsDate = new Date();
+    currentCountTimePicker.value = getTimeStringFromDate(new Date());
+}
+
+//Building the interface
+
+displayCountLocations();
+setDefaultData();
+
+//TODO if count is null, create new count
+
+loadDefaultCount();
+
+//This is out starting point
 freshButton.click();
-document.getElementById("count-area-container").querySelector("button").click();
+selectFirstCountLocation();

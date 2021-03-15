@@ -9,15 +9,29 @@
 </head>
 
 <body>
+<div class="button-header">
+    <button>New Count</button>
+    <button>Delete Count</button>
+    <button>Saved Counts</button>
+    <button>Products</button>
+    <button>Count Locations</button>
+    <button onclick="localStorage.clear()">Clear Local Storage</button>
+</div>
+
+<!--TODO all including wastage button-->
 
 <div class="header-div">
     <div class="header-div-box">
         <p>Date</p>
-        <input type="date">
+        <input id="current-count-date-picker" type="date">
     </div>
     <div class="header-div-box">
         <p>Time</p>
-        <input type="time">
+        <input id="current-count-time-picker" type="time">
+    </div>
+    <div class="header-div-box">
+        <p>Count ID</p>
+        <input id ="current-count-count-id" type="text">
     </div>
 </div>
 
