@@ -14,8 +14,7 @@ let wastedData = new Map();
 
 let countMode = null;
 
-//TODO handle wastage
-
+//TODO organise code a little neater
 //TODO we need to add support for promo
 
 function createCountTableHeader(name) {

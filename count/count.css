@@ -78,6 +78,52 @@ body {
     font-family: Roboto;
 }
 
+.count-table-th-name {
+    min-width: 134px;
+}
+
+.count-table-th-case {
+    min-width: 260px;
+}
+
+.count-table-th-inner {
+    min-width: 246px;
+}
+
+.count-table-th-unit {
+    min-width: 96px;
+}
+
+.count-table-th-total {
+    min-width: 234px;
+}
+
+.header-div {
+    display: flex;
+    justify-content: center;
+    font-family: Arial;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.header-div-box {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    min-width: 150px;
+    border: solid 1px black;
+}
+
+.header-div-box input {
+    padding: 5px;
+}
+
+.header-div-box p {
+    background-color: black;
+    color: white;
+    padding: 5px;
+}
+
 .count-table-header {
     font-family: Roboto;
     font-size: 20px;
@@ -156,3 +202,96 @@ border spacing for table
 .wasted-button-selected {
     background-color: red;
 }
+
+.keyboard-overlay-background {
+    background-color: rgba(0, 0, 0, 0.9);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.keyboard-overlay {
+    background-color: whitesmoke;
+    height: fit-content;
+    padding: 10px;
+    min-width: 400px;
+}
+
+.keyboard-display-container {
+    /*background-color: rgb(60,60,60);*/
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.keyboard-buttons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.keyboard-input {
+    background-color: rgb(60, 60, 60);
+    color: white;
+    text-align: center;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    font-family: Roboto;
+    font-size: 20px;
+}
+
+.keyboard-button-line {
+    width: fit-content;
+    margin-top: 2px;
+}
+
+.keyboard-button-line button {
+    background-color: rgba(0,0,0,0.7);
+    min-width: 80px;
+    min-height: 40px;
+    color: white;
+    font-size: 30px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+/*
+<div class="keyboard-overlay-background">
+    <div class="keyboard-overlay">
+        <div class="keyboard-display-container">
+            <input type="text" placeholder="10">
+            <p>Boxes x 720 EA</p>
+            <input type="text" placeholder="7200">
+        </div>
+        <div class="keyboard-buttons-container">
+            <div class="keyboard-button-line">
+                <button>1</button>
+                <button>2</button>
+                <button>3</button>
+            </div>
+            <div class="keyboard-button-line">
+                <button>4</button>
+                <button>5</button>
+                <button>6</button>
+            </div>
+            <div class="keyboard-button-line">
+                <button>7</button>
+                <button>8</button>
+                <button>9</button>
+            </div>
+            <div class="keyboard-button-line">
+                <button>.</button>
+                <button>0</button>
+                <button>Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+*/

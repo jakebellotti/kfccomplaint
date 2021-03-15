@@ -10,9 +10,16 @@
 
 <body>
 
-<p>Date:</p>
-<p>Time:</p>
-<p>Count Area</p>
+<div class="header-div">
+    <div class="header-div-box">
+        <p>Date</p>
+        <input type="date">
+    </div>
+    <div class="header-div-box">
+        <p>Time</p>
+        <input type="time">
+    </div>
+</div>
 
 <div id="count-area-container">
 
@@ -32,21 +39,53 @@
         </td>
     </tr>
     <tr>
-        <th class="count-table-header">Name</th>
-        <th class="count-table-header">Case</th>
-        <th class="count-table-header">Inner</th>
-        <th class="count-table-header">Unit</th>
-        <th class="count-table-header">Total</th>
+        <th class="count-table-header count-table-th-name">Name</th>
+        <th class="count-table-header count-table-th-case">Case</th>
+        <th class="count-table-header count-table-th-inner">Inner</th>
+        <th class="count-table-header count-table-th-unit">Unit</th>
+        <th class="count-table-header count-table-th-total">Total</th>
     </tr>
     </thead>
     <tbody id="count-table-body">
     </tbody>
 </table>
 
+<!--TODO finish tablet keyboard input-->
+
+<div style="display: none" class="keyboard-overlay-background">
+    <div class="keyboard-overlay">
+        <div class="keyboard-display-container">
+            <input class="keyboard-input" type="text" value="10">
+            <p>Boxes x 720 EA</p>
+            <input class="keyboard-input" type="text" value="7200">
+        </div>
+        <div class="keyboard-buttons-container">
+            <div class="keyboard-button-line">
+                <button>1</button>
+                <button>2</button>
+                <button>3</button>
+            </div>
+            <div class="keyboard-button-line">
+                <button>4</button>
+                <button>5</button>
+                <button>6</button>
+            </div>
+            <div class="keyboard-button-line">
+                <button>7</button>
+                <button>8</button>
+                <button>9</button>
+            </div>
+            <div class="keyboard-button-line">
+                <button>.</button>
+                <button>0</button>
+                <button>Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--TODO count date, time etc-->
 <!--TODO make own keyboard for number input-->
-
-<!--TODO make table for count items-->
 
 </body>
 </html>

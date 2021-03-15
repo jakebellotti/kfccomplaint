@@ -175,7 +175,7 @@ let countAreas = [
                     identifier: "chocolate_mousse",
                     includeCase: true,
                     includeInner: false,
-                    includeUnit: false
+                    includeUnit: true
                 }
             ]
         },
