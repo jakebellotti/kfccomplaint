@@ -406,6 +406,30 @@ let tortillasStructure = {
     ]
 };
 
+let hashBrownsStructure = {
+    case: {
+        name: "Boxes",
+        quantity: 168,
+        unitName: "EA"
+    },
+    inner: {
+        name: "Bags",
+        quantity: 28,
+        unitName: "EA"
+    },
+    unit: {
+        name: "Individual",
+        quantity: 1,
+        unitName: "EA"
+    },
+    total: [
+        {
+            name: "Hash Browns",
+            calculationMethod: "individual"
+        }
+    ]
+};
+
 let allStructures = [
     {
         name: "Chicken",
@@ -479,6 +503,11 @@ let allStructures = [
                 name: "Chocolate Mousse",
                 identifier: "chocolate_mousse",
                 data: chocolateMousseStructure,
+                returnType: "each"
+            }, {
+                name: "Hash Browns",
+                identifier: "hash_browns",
+                data: hashBrownsStructure,
                 returnType: "each"
             }
         ]

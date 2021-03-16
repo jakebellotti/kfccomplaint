@@ -29,9 +29,13 @@
         <p>Time</p>
         <input id="current-count-time-picker" type="time">
     </div>
-    <div class="header-div-box">
+    <div class="header-div-box-small">
         <p>Count ID</p>
         <input id ="current-count-count-id" type="text">
+    </div>
+    <div class="header-div-box">
+        <p>Items Counted</p>
+        <input id ="items-counted" type="text" placeholder="0/10">
     </div>
 </div>
 
@@ -63,6 +67,32 @@
     <tbody id="count-table-body">
     </tbody>
 </table>
+
+<div id="products-overlay" style="display: none" class="overlay-background">
+    <div class="overlay-window">
+        <p class="overlay-window-header">Products</p>
+        <table>
+            <thead id="products-table">
+            <tr>
+                <th>Name</th>
+                <th>Identifier</th>
+                <th>Case</th>
+                <th>Case Name</th>
+                <th>Inner</th>
+                <th>Inner Name</th>
+                <th>Unit</th>
+                <th>Unit Name</th>
+                <th>Measurement</th>
+            </tr>
+            </thead>
+            <tbody id="products-tbody">
+
+            </tbody>
+        </table>
+        <button>Add</button>
+        <button>Close</button>
+    </div>
+</div>
 
 <!--TODO finish tablet keyboard input-->
 

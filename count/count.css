@@ -10,13 +10,13 @@ body {
 
 .button-header {
     padding: 8px;
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     flex-direction: row-reverse;
 }
 
 .button-header button {
-    background-color: rgb(75,75,75);
+    background-color: rgb(75, 75, 75);
     color: white;
     padding: 8px;
     border-radius: 3px;
@@ -130,8 +130,30 @@ body {
     border: solid 1px black;
 }
 
+.header-div-box-small {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    width: 100px;
+    border: solid 1px black;
+}
+
+.header-div-box-small input {
+    padding: 5px;
+    text-align: center;
+    height: 100%;
+}
+
+.header-div-box-small p {
+    background-color: black;
+    color: white;
+    padding: 5px;
+}
+
 .header-div-box input {
     padding: 5px;
+    text-align: center;
+    height: 100%;
 }
 
 .header-div-box p {
@@ -269,13 +291,60 @@ border spacing for table
 }
 
 .keyboard-button-line button {
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     min-width: 80px;
     min-height: 40px;
     color: white;
     font-size: 30px;
     padding: 5px;
     cursor: pointer;
+}
+
+.overlay-background {
+    background-color: rgba(0,0,0,0.8);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.overlay-window {
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    margin-top: 10px;
+    width: fit-content;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: Arial;
+}
+
+.overlay-window-header {
+    text-align: center;
+    font-size: 24px;
+    font-family: Arial;
+}
+
+
+#products-table {
+
+}
+
+#products-table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#products-table td, th {
+    border: 1px solid #dddddd;
+    padding: 8px;
+}
+
+#products-tbody td {
+    text-align: center;
 }
 
 /*

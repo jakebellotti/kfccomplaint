@@ -176,6 +176,12 @@ let countAreas = [
                     includeCase: true,
                     includeInner: false,
                     includeUnit: true
+                },
+                {
+                    identifier: "hash_browns",
+                    includeCase: true,
+                    includeInner: true,
+                    includeUnit: true
                 }
             ]
         },
@@ -196,6 +202,12 @@ let countAreas = [
                 },
                 {
                     identifier: "chicken_nuggets",
+                    includeCase: false,
+                    includeInner: true,
+                    includeUnit: true
+                },
+                {
+                    identifier: "hash_browns",
                     includeCase: false,
                     includeInner: true,
                     includeUnit: true

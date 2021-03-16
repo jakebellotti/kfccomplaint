@@ -5,6 +5,8 @@ let currentCountIDInput = document.getElementById("current-count-count-id");
 let countTableBody = document.getElementById("count-table-body");
 let countAreaHeader = document.getElementById("current-count-area-text");
 
+let productsTableBody = document.getElementById("products-tbody");
+
 let freshButton = document.getElementById("fresh-button");
 let wastedButton = document.getElementById("wasted-button");
 
@@ -396,9 +398,6 @@ function displayCountArea(button, area) {
         }
     }
 
-    console.log(countData);
-
-    //TODO aREA OF CONCERN
     let currentData = countData[area.areaName];
 
     // let currentData = countData.get(area.areaName);
@@ -541,6 +540,44 @@ function getCurrentCountIndex() {
     return getStorageObj("count_current_count_index");
 }
 
+function createTDWithData(inner) {
+    let td = document.createElement("td");
+    td.innerText = inner;
+    return td;
+}
+
+function showProducts() {
+//    TODO this only adds the results it does not show the window
+
+    for (const area of allStructures) {
+        for (const item of area.structures) {
+            let tr = document.createElement("tr");
+            tr.appendChild(createTDWithData(item.name));
+            tr.appendChild(createTDWithData(item.identifier));
+            tr.appendChild(createTDWithData(item.data.case ? item.data.case.quantity : "-"));
+            tr.appendChild(createTDWithData(item.data.case ? item.data.case.name : "-"));
+
+            tr.appendChild(createTDWithData(item.data.inner ? item.data.inner.quantity : "-"));
+            tr.appendChild(createTDWithData(item.data.inner ? item.data.inner.name : "-"));
+
+            tr.appendChild(createTDWithData(item.data.unit ? item.data.unit.quantity : "-"));
+            tr.appendChild(createTDWithData(item.data.unit ? item.data.unit.name : "-"));
+
+            productsTableBody.appendChild(tr);
+        }
+    }
+}
+
+function loadCount(countID) {
+    let currentCount = getAllCounts()[countID];
+
+    currentCountDatePicker.valueAsDate = new Date(currentCount.countDate);
+    currentCountTimePicker.value = currentCount.countTime;
+    currentCountIDInput.value = countID;
+//    TODO handle everything
+//    TODO get and set data, time etc
+}
+
 // function loadCount(countID) {
 //     let allCounts = getStorageObj("count_all_counts");
 //     if (allCounts == null) {
@@ -552,6 +589,23 @@ function getCurrentCountIndex() {
 // //    TODO verify
 // }
 
+function createNewCount() {
+    console.log("createNewCount()");
+    //TODO return the true index
+    let newCount = {
+        countDate: new Date(),
+        countTime: getTimeStringFromDate(new Date()),
+        freshData: new Map(),
+        wastedData: new Map()
+    };
+
+    let allCounts = getStorageObj("count_all_counts");
+    allCounts.push(newCount);
+    let returnCountIndex = allCounts.indexOf(newCount);
+    setStorageObj("count_all_counts", allCounts);
+    return returnCountIndex;
+}
+
 function loadDefaultCount() {
     let allCounts = getStorageObj("count_all_counts");
     let currentCountIndex = getCurrentCountIndex();
@@ -559,31 +613,30 @@ function loadDefaultCount() {
     if (currentCountIndex == null) {
         console.log("No count index");
 
+        //If data is not initialized, insert new count
+
         if (!allCounts) {
             setStorageObj("count_all_counts", []);
         }
 
-        let newCount = {
-            countDate: currentCountDatePicker.valueAsDate,
-            countTime: currentCountTimePicker.value,
-            freshData: new Map(),
-            wastedData: new Map()
-        };
-
-        allCounts = getStorageObj("count_all_counts");
-        allCounts.push(newCount);
-        setCurrentCountIndex(allCounts.indexOf(newCount));
-        setStorageObj("count_all_counts", allCounts);
-    } else {
-        // loadCount(currentCountIndex);
-        //    TODO load count is not needed, just rewrite other aspects of the program to work hehe
+        let newCountIndex = createNewCount();
+        setCurrentCountIndex(newCountIndex);
     }
+
+    if (currentCountIndex !== null) {
 //    TODO we have found a count, so show it, notify user and ask if they meant to continue count or create a new one
+    }
+
+    loadCount(getCurrentCountIndex());
 }
 
 function setDefaultData() {
     currentCountDatePicker.valueAsDate = new Date();
     currentCountTimePicker.value = getTimeStringFromDate(new Date());
+}
+
+function productsButtonClicked() {
+//    TODO show products
 }
 
 //Building the interface
@@ -598,3 +651,5 @@ loadDefaultCount();
 //This is out starting point
 freshButton.click();
 selectFirstCountLocation();
+
+showProducts();
