@@ -45,8 +45,28 @@ function createTableEntry(name, structure, returnType = "total") {
     return row;
 }
 
+function createTableEntriesFromData() {
+    let products = document.getElementById("products");
+    console.log(allStructures);
+
+    for (const key of Object.keys(allStructures)) {
+        let category = allStructures[key];
+        products.appendChild(createDividerRow(category.name));
+        console.log(category);
+
+        for (let i = 0; i < category.structures.length; i++) {
+            let currentStructure = category.structures[i];
+            console.log(currentStructure);
+            products.append(createTableEntry(currentStructure.name, currentStructure));
+        }
+
+        //    TODO create structures
+    }
+}
+
 function createTableEntries() {
     let products = document.getElementById("products");
+    //TODO use function that builds all of this from a completed count, saves us from having to share the configuration over multiple locations
 
     //TODO put this into a JS array and handle like that
 
@@ -207,7 +227,7 @@ function createCountInputModalWindow(headerText, structure, field, returnType) {
         valueP.innerText = returnValue;
         field.appendChild(valueP);
         document.body.removeChild(document.querySelector(".modal-window-background"));
-    //    TODO set value, trigger event listeners for closing numbers etc
+        //    TODO set value, trigger event listeners for closing numbers etc
     }
 
     let cancelButton = document.createElement("button");
@@ -224,4 +244,5 @@ function createCountInputModalWindow(headerText, structure, field, returnType) {
 
 //TODO programatically create input popup
 
-createTableEntries();
+// createTableEntries();
+createTableEntriesFromData();

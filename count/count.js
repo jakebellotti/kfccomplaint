@@ -635,6 +635,8 @@ function setDefaultData() {
     currentCountTimePicker.value = getTimeStringFromDate(new Date());
 }
 
+//TODO function to extract data into a ready to go 'template' for daily recon
+
 function productsButtonClicked() {
 //    TODO show products
 }
