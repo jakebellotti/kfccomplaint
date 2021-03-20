@@ -8,9 +8,13 @@ function createDividerRow(name) {
     return row;
 }
 
-function createTableEntry(name, structure, returnType = "total") {
+function createTableEntry(name, structure, returnType = "each") {
+    // console.log(structure);
+
     let row = document.createElement("tr");
+    row.dataset.returnType = structure.returnType;
     row.classList.add("data-tr");
+    //TODO if head, handle differently
 
     let nameTD = document.createElement("td");
     nameTD.innerText = name;
@@ -21,6 +25,7 @@ function createTableEntry(name, structure, returnType = "total") {
     openTD.onclick = function () {
         //TODO rename
         //TODO on accept
+        //TODO create a modal window that accepts numbers only
         createCountInputModalWindow(name, structure, openTD, returnType);
     };
 
@@ -243,6 +248,7 @@ function createCountInputModalWindow(headerText, structure, field, returnType) {
 }
 
 //TODO programatically create input popup
+//TODO include identifier on every data-row
 
 // createTableEntries();
 createTableEntriesFromData();

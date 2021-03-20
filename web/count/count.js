@@ -464,9 +464,15 @@ function displayCountLocations() {
     countAreaContainer.appendChild(allButtonLineDiv);
 }
 
-function getMergedData() {
-    let countData = getCurrentCountActiveData();
+function getFreshMergedData() {
+    return getMergedData(getCurrentCount().freshData);
+}
 
+function getWastedMergedData() {
+    return getMergedData(getCurrentCount().wastedData);
+}
+
+function getMergedData(countData = getCurrentCountActiveData()) {
     let returnObj = new Map();
 
     for (const key of Object.keys(countData)) {
@@ -479,8 +485,11 @@ function getMergedData() {
             }
 
             returnObj.get(line.identifier).caseAmount += line.caseAmount;
+            returnObj.get(line.identifier).caseMultiplier = line.caseMultiplier;
             returnObj.get(line.identifier).innerAmount += line.innerAmount;
+            returnObj.get(line.identifier).innerMultiplier = line.innerMultiplier;
             returnObj.get(line.identifier).unitAmount += line.unitAmount;
+            returnObj.get(line.identifier).unitMultiplier = line.unitMultiplier;
         }
 
     }
@@ -633,6 +642,36 @@ function loadDefaultCount() {
 function setDefaultData() {
     currentCountDatePicker.valueAsDate = new Date();
     currentCountTimePicker.value = getTimeStringFromDate(new Date());
+}
+
+function exportToDailyReconciliation() {
+//    TODO print the data (do the all functionality first, see if it has enough
+//    TODO need to have another function for only wasted data
+
+    let returnObj = {};
+    returnObj.freshData = {};
+    returnObj.wastedData = {};
+
+    // let freshData = getMergedData();
+
+    console.log("Testing");
+
+    //TODO why is this an Object and not an actual map
+    for (const data of getFreshMergedData()) {
+        let identifier = data[0];
+        let o = data[1];
+
+        let total = 0;
+        total += (o.caseAmount * o.caseMultiplier);
+        total += (o.innerAmount * o.innerMultiplier);
+        total += (o.unitAmount * o.unitMultiplier);
+        returnObj.freshData[identifier] = total;
+    }
+
+    let wastedData = null;
+
+    //TODO actually export using REST API
+    console.log(returnObj);
 }
 
 //TODO function to extract data into a ready to go 'template' for daily recon

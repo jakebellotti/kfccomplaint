@@ -1,3 +1,6 @@
 Freezer stock with dates etc
 
 daily recon which adds end of day sales data and can calculate a chicken order
+
+
+Host everything on GitHub pages, make a rest API on google app script to get all the data

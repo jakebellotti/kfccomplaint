@@ -4,6 +4,10 @@
     border: none;
 }
 
+/*
+TODO use Arial as a back up font for anything with Roboto, test on iOS
+*/
+
 body {
     background-color: skyblue;
 }
