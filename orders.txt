@@ -1,0 +1,10 @@
+TODO page that you select day of the week, it shows all orders to do and has a timer for the cutoff
+
+GWF Tip Top (Cut off 2:00PM):
+
+Order Date                  |   Delivery date
+Sun 21-Mar-2021 4:40pm          Tue 23-Mar-2021
+Sat 20-Mar-2021 1:31PM          Mon 22-Mar-2021
+Thu 18-Mar-2021 4:10PM          Sat 20-Mar-2021 8:15AM
+Wed 17-Mar-2021 4:25PM          Fri 19-Mar-2021 10:39AM
+Tue 16-Mar-2021 10:27AM         Thu 18-Mar-2021 10:27AM

@@ -103,6 +103,12 @@ let countAreas = [
                     includeUnit: true
                 },
                 {
+                  identifier: "hot_and_crispy_boneless",
+                  includeCase: true,
+                  includeInner: true,
+                  includeUnit: true
+                },
+                {
                     identifier: "wicked_wings",
                     includeCase: true,
                     includeInner: true,

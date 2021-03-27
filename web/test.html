@@ -5,25 +5,14 @@
     <title>Title</title>
 </head>
 <body>
-<p>Testing CORS</p>
 
-<script>
+<style>
+    body {
+        background-color: rgb(20,20,20);
+        color: white;
+    }
+</style>
 
-    console.log("Testing..");
-
-    const url = "https://script.google.com/macros/s/AKfycbwnofpZmLJJNQkcc3SIU11vBTh-ksGslBI66FW8kjj3ATsMLPz7/exec?action=getAll";
-    const testURL = "https://script.google.com/macros/s/AKfycbx9PHSlKKe5UfPB6fViejx173J2P6AZWbTT4G6sPMTN/dev?action=getAll"
-
-    // fetch(url).then(data => {return data.json()}).
-    //     then(res => {console.log(res)});
-    fetch(url).then(data => {
-        return data.json();
-    }).then(res => {
-        let fin = JSON.parse(res.result);
-        console.log(fin);
-        console.log(new Date(fin[0][0]));
-    });
-
-</script>
+<a href="https://script.google.com/macros/s/AKfycbx9PHSlKKe5UfPB6fViejx173J2P6AZWbTT4G6sPMTN/dev?action=getAll" target="_blank">Get All</a>
 </body>
 </html>

@@ -17,13 +17,21 @@ function createRows() {
     for (let i = 0; i < 7; i++) {
         let row = document.createElement("tr");
         let date = moment(mondayDate).add(i, 'days');
-        let isCurrentDay = (moment().format("DD/MM/YYYY") === date.format("DD/MM/YYYY"));
+        let dateToString = date.format("DD/MM/YYYY");
+
+        let isCurrentDay = (moment().format("DD/MM/YYYY") === dateToString);
         if (isCurrentDay) {
             row.classList.add("current-day-row");
         }
 
         row.appendChild(createTDWithData(date.format('dddd')));
-        row.appendChild(createTDWithData(date.format('DD/MM/YYYY')));
+        row.appendChild(createTDWithData(dateToString));
+
+        //TODO button to view it
+
+        DailyReconciliationAPI.dayExists(dateToString, function (res) {
+            row.appendChild(createTDWithData(res.found));
+        });
 
         tbody.appendChild(row);
     }
@@ -33,5 +41,3 @@ function createRows() {
 // console.log(mondayDate);
 
 createRows();
-
-DailyReconciliationAPI.dayExists("20/03/2021");

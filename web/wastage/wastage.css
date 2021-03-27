@@ -1,0 +1,89 @@
+* {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(50, 50, 50);
+}
+
+#select-date-button-container {
+    /*    TODO style for the buttons*/
+    padding: 5px;
+}
+
+.date-select-button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    margin: 3px;
+    color: whitesmoke;
+    background-color: rgba(30, 30, 30);
+    cursor: pointer;
+}
+
+.date-select-button-selected {
+    background-color: cornflowerblue !important;
+}
+
+#enter-wastage-div {
+
+}
+
+.enter-wastage-item-container {
+    display: flex;
+    color: white;
+    font-family: Arial;
+    /*justify-content: center;*/
+    align-items: center;
+    background-color: darkcyan;
+    padding: 10px;
+    box-shadow: 1px 1px 5px 1px black;
+}
+
+.number-input-container {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    background-color: rgb(30, 30, 30);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.number-input-container p {
+    padding: 5px;
+}
+
+.number-input-container input {
+    font-size: 16px;
+    width: 60px;
+    text-align: center;
+    padding: 3px;
+    border-radius: 4px;
+}
+
+.enter-wastage-item-name {
+    padding: 10px;
+    margin-bottom: 5px;
+    min-width: 185px;
+}
+
+#current-wastage-sheet-header {
+    text-align: center;
+    color: whitesmoke;
+    font-family: Arial;
+    font-size: 24px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.category-header {
+    color: whitesmoke;
+    text-align: center;
+    background-color: rgb(30, 30, 30);
+    padding: 10px;
+    font-family: Arial;
+    font-size: 20px;
+}

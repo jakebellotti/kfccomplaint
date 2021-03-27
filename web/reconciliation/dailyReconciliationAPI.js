@@ -11,7 +11,7 @@ class DailyReconciliationAPI {
         return requestURL;
     }
 
-    static dayExists(dayString) {
+    static dayExists(dayString, callback) {
         let url = this.buildRequestURL([
             {
                 key: "action",
@@ -22,7 +22,11 @@ class DailyReconciliationAPI {
                 value: dayString
             }
         ]);
-        console.log(url);
+        fetch(url).then(data => {
+            return data.json();
+        }).then(res => {
+            callback(res);
+        });
     }
 
 }

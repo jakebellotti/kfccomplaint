@@ -74,6 +74,30 @@ let filletsStructure = {
     ]
 };
 
+let hotAndCrispyBonelessStructure = {
+    case: {
+        name: "Crates",
+        quantity: 240,
+        unitName: "EA"
+    },
+    inner: {
+        name: "Bags",
+        quantity: 20,
+        unitName: "EA"
+    },
+    unit: {
+        name: "Individual",
+        quantity: 1,
+        unitName: "EA"
+    },
+    total: [
+        {
+            name: "Pieces",
+            calculationMethod: "individual"
+        }
+    ]
+};
+
 let tendersStructure = {
     case: {
         name: "Crates",
@@ -468,6 +492,12 @@ let allStructures = [
                 name: "Wicked Wings",
                 identifier: "wicked_wings",
                 data: wickedWingsStructure,
+                returnType: "each"
+            },
+            {
+                name: "Hot & Crispy Boneless",
+                identifier: "hot_and_crispy_boneless",
+                data: hotAndCrispyBonelessStructure,
                 returnType: "each"
             }
         ]
