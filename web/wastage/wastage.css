@@ -87,3 +87,19 @@ body {
     font-family: Arial;
     font-size: 20px;
 }
+
+.total-wastage {
+    color: whitesmoke;
+    font-family: Arial;
+    font-size: 20px;
+}
+
+.actions-div {
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.actions-div * {
+    margin-left: 5px;
+}

@@ -4,6 +4,11 @@ let dateSelectContainer = document.getElementById("select-date-button-container"
 let enterWastageDiv = document.getElementById("enter-wastage-div");
 let currentWastageSheetHeader = document.getElementById("current-wastage-sheet-header");
 
+let formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+});
+
 function fillButtonDiv() {
     let monday = DateUtils.getMondayDate();
 
@@ -43,9 +48,28 @@ function selectDateButtonClicked(self) {
 //    TODO show the correct count
 }
 
+function onInput(row) {
+    let wastageAmountInput = row.querySelector(".wastage-amount-input");
+    let wastageTotalInput = row.querySelector(".wastage-total-input");
+    //TODO format properly
+
+    let pricePerUnit = wastageAmountInput.dataset.pricePerUnit;
+    let quantity = parseFloat(wastageAmountInput.value);
+    if (!quantity) {
+        console.log("error");
+        wastageTotalInput.value = "";
+        return;
+    }
+
+    let total = (pricePerUnit * quantity);
+    wastageTotalInput.value = formatter.format(total);
+
+}
+
 function createWastageItem(name, unit, pricePerUnit) {
     let container = document.createElement("div");
     container.classList.add("enter-wastage-item-container");
+    container.dataset.itemName = name;
 
     let itemName = document.createElement("p");
     itemName.classList.add("enter-wastage-item-name");
@@ -56,12 +80,16 @@ function createWastageItem(name, unit, pricePerUnit) {
 
     let wastedInput = document.createElement("input");
     wastedInput.setAttribute("type", "text");
-    //TODO event handler etc
+    wastedInput.dataset.pricePerUnit = pricePerUnit;
+    wastedInput.classList.add("wastage-amount-input");
+    wastedInput.oninput = () => onInput(container);
+
     let costP = document.createElement("p");
     costP.innerText = `${unit} x $${pricePerUnit}/${unit} = `;
 
     let totalInput = document.createElement("input");
     totalInput.setAttribute("type", "text");
+    totalInput.classList.add("wastage-total-input");
 
     numberInputContainer.appendChild(wastedInput);
     numberInputContainer.appendChild(costP);
@@ -107,6 +135,12 @@ function selectToday() {
 }
 
 function getAllWastage() {
+    console.log("wastage");
+
+    for (const element of enterWastageDiv.querySelectorAll(".enter-wastage-item-container")) {
+        //TODO add all
+
+    }
 }
 
 //TODO check if exists in DB
@@ -116,5 +150,6 @@ function getAllWastage() {
 fillButtonDiv();
 addAllWastageItems();
 
-
 selectToday();
+
+getAllWastage();
