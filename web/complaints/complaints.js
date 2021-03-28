@@ -338,8 +338,13 @@ function addComplaintWindowUpdateMatchingContacts() {
     }
 
     existingContactsTBody.innerHTML = "";
+    let added = 0;
 
     for (const m of matching) {
+        if (added === 10) {
+            break;
+        }
+
         let tr = document.createElement("tr");
         tr.classList.add("matching-result-tr");
         tr.onclick = function () {
@@ -352,6 +357,7 @@ function addComplaintWindowUpdateMatchingContacts() {
         tr.appendChild(createTD(m.customerNumbers[0]));
 
         existingContactsTBody.appendChild(tr);
+        added += 1;
     }
 
 }
@@ -638,6 +644,7 @@ function addOptionsToCreditOfferedBySelect() {
 }
 
 function showResolveComplaintWindow() {
+    window.scrollTo(0, 0);
     resolveComplaintClosedBySelect.selectedIndex = -1;
     resolveComplaintPromoFreeInput.value = "";
 
@@ -817,7 +824,7 @@ function addStaffInvolved(staffName, staffRole) {
 }
 
 function showAboutWindow() {
-    alert("Version 1.0 created by Jake Bellotti, KFC Albany");
+    alert("Version 1.0 created by Jake Bellotti, KFC Albany 7901, Area 23.");
 }
 
 function closeEditListWindow() {
@@ -1016,6 +1023,36 @@ function getCustomerContacts() {
         });
     }
     return returning;
+}
+
+function backupFileSelected(e) {
+    let file = e.files[0];
+    if (!file) {
+        return;
+    }
+
+    let reader = new FileReader();
+    reader.onload = function (e) {
+        let contents = e.target.result;
+        //TODO check data
+        let parse = JSON.parse(contents);
+        if (!parse) {
+            alert("Error");
+        }
+
+
+        //TODO set current data to old data,set new, refresh page
+        localStorage.setItem("old_complaintsData", localStorage.getItem("complaintData"));
+        localStorage.setItem("complaintData", JSON.stringify(parse));
+        location.reload();
+    };
+    reader.readAsText(file);
+}
+
+function importDataButtonClicked() {
+//    TODO implement
+    document.getElementById("file-input").click();
+//     alert("Not yet implemented.");
 }
 
 //Loads the data

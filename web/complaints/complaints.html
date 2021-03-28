@@ -154,7 +154,9 @@
         </div>
 
         <div class="add-complaint-window-buttons">
-            <button id="add-complaint-button" class="waves-light btn" onclick="addComplaintWindow_AddButtonClicked();">Add Complaint</button>
+            <button id="add-complaint-button" class="waves-light btn" onclick="addComplaintWindow_AddButtonClicked();">
+                Add Complaint
+            </button>
             <button class="waves-light btn" onclick="addComplaintWindow_CancelButtonClicked()">Cancel</button>
         </div>
     </div>
@@ -168,7 +170,7 @@
                 <th>Contact Number</th>
             </tr>
             </thead>
-            <tbody id = "existing-contacts-tbody">
+            <tbody id="existing-contacts-tbody">
             </tbody>
         </table>
     </div>
@@ -181,7 +183,8 @@
         <div class="settings-window-options-container">
             <!--            TODO finish-->
             <button class="waves-light btn" onclick="settings_backupDataButtonClicked()">Backup Data</button>
-            <button class="waves-light btn" onclick="alert('Not yet implemented.')">Import Data</button>
+            <button class="waves-light btn" onclick="importDataButtonClicked();">Import Data</button>
+            <input id="file-input" onchange="backupFileSelected(this)" type="file" name="name" style="display: none;"/>
             <button class="waves-light btn" onclick="settings_resetDataButtonClicked();">Reset Data</button>
         </div>
         <div class="settings-window-button-container">
