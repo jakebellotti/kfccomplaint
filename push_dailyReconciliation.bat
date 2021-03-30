@@ -1,5 +1,5 @@
 @ECHO OFF
 
-cd appscript
+cd appscript/dailyReconciliation
 clasp push --watch
 pause

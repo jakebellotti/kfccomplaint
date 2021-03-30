@@ -1,18 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+<body>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Test</title>
 </head>
-<body>
-
 <style>
     body {
         background-color: rgb(20,20,20);
         color: white;
     }
+
+    a {
+        background-color: whitesmoke;
+        padding:5px;
+        border-radius: 5px;
+        font-family: Arial;
+        text-decoration: none;
+        width: fit-content;
+        font-size: 22px;
+        margin-top: 6px;
+    }
+    a:hover {
+        background-color: #004d40;
+    }
+
+    .links-div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .links-div-header {
+        font-family: Arial;
+    }
 </style>
 
-<a href="https://script.google.com/macros/s/AKfycbx9PHSlKKe5UfPB6fViejx173J2P6AZWbTT4G6sPMTN/dev?action=getAll" target="_blank">Get All</a>
+<p class="links-div-header">Daily Reconciliation</p>
+<div class="links-div">
+    <a href="https://script.google.com/macros/s/AKfycbx9PHSlKKe5UfPB6fViejx173J2P6AZWbTT4G6sPMTN/dev?action=getAll" target="_blank">Get All (Dev)</a>
+</div>
+
+
+<p class="links-div-header">Wastage</p>
+<div class="links-div">
+    <a href="https://script.google.com/macros/s/AKfycbyuJebEDzrnrjcxYMAlfqhiXBb6E3mQy-35WR31zIZ9/dev/dev?action=getWastageForDay&dateAsString=30/03/2021" target="_blank">Get Wastage For Day (30/03/2021)</a>
+    <a href="https://script.google.com/macros/s/AKfycbyuJebEDzrnrjcxYMAlfqhiXBb6E3mQy-35WR31zIZ9/dev/dev?action=setWastageForDay&dateAsString=30/03/2021&dataAsJSON={key: 'value'}" target="_blank">Set Wastage For Day (30/03/2021)</a>
+</div>
 </body>
 </html>
