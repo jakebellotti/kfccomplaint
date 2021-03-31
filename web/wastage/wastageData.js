@@ -100,7 +100,7 @@ let wastageItems = [
         category: "salad"
     },
     {
-        name: "Small Coleslaw 450gm",
+        name: "Large Coleslaw 450gm",
         costPerUnit: 1.27,
         category: "salad"
     },

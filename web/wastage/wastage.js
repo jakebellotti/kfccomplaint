@@ -4,12 +4,21 @@ let dateSelectContainer = document.getElementById("select-date-button-container"
 let enterWastageDiv = document.getElementById("enter-wastage-div");
 let currentWastageSheetHeader = document.getElementById("current-wastage-sheet-header");
 
+let totalWastageAmount = document.getElementById("total-wastage-amount");
+
+let loadingOverlay = document.getElementById("loading-overlay");
+let loadingOverlayText = document.getElementById("loading-overlay-text");
+
+let selectedDate = null;
+
 let formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
 });
 
 function fillButtonDiv() {
+    //TODO in the future, go by date range
+
     let monday = DateUtils.getMondayDate();
 
     for (let i = 0; i < 7; i++) {
@@ -44,8 +53,39 @@ function selectDateButtonClicked(self) {
     //TODO if a few seconds ago, show today
 
     currentWastageSheetHeader.innerText = `${self.dataset.dateAsString} (${self.dataset.fromNow === "a few seconds ago" ? "today" : self.dataset.fromNow})`;
-    //TODO show string
-//    TODO show the correct count
+
+    selectedDate = self.dataset.date;
+
+    console.log("Selected date: " + selectedDate);
+
+    showLoadingOverlay(`Getting data for ${selectedDate}`);
+    getWastageDataForSelectedDate(function (data) {
+        hideLoadingOverlay();
+        if (data !== null) {
+            for (const container of document.querySelectorAll(".enter-wastage-item-container")) {
+                for (const object of data) {
+                    if (container.dataset.itemName === object.itemName) {
+                        let quantityInput = container.querySelector(".wastage-amount-input");
+                        quantityInput.value = object.itemQuantity;
+                        quantityInput.oninput();
+                    }
+                }
+            }
+        } else {
+            for (const container of document.querySelectorAll(".enter-wastage-item-container")) {
+                let quantityInput = container.querySelector(".wastage-amount-input");
+                quantityInput.value = '';
+                quantityInput.oninput();
+
+            }
+        }
+    });
+}
+
+function getWastageDataForSelectedDate(callback) {
+    database.ref(`wastage/${selectedDate.replaceAll("/", "-")}`).once("value").then((snapshot => {
+        callback(snapshot.val());
+    }));
 }
 
 function onInput(row) {
@@ -56,14 +96,14 @@ function onInput(row) {
     let pricePerUnit = wastageAmountInput.dataset.pricePerUnit;
     let quantity = parseFloat(wastageAmountInput.value);
     if (!quantity) {
-        console.log("error");
+        quantity = 0;
         wastageTotalInput.value = "";
-        return;
     }
 
     let total = (pricePerUnit * quantity);
     wastageTotalInput.value = formatter.format(total);
 
+    totalWastageAmount.innerText = formatter.format(getTotalWastageAmount());
 }
 
 function createWastageItem(name, unit, pricePerUnit) {
@@ -135,21 +175,120 @@ function selectToday() {
 }
 
 function getAllWastage() {
-    console.log("wastage");
+    let returnObj = [];
 
     for (const element of enterWastageDiv.querySelectorAll(".enter-wastage-item-container")) {
-        //TODO add all
+        let itemName = element.dataset.itemName;
+        let itemQuantity = 0;
+        let itemValue = 0;
 
+        let input = element.querySelector(".wastage-amount-input");
+        itemValue = input.dataset.pricePerUnit;
+
+        let quantityParsed = parseFloat(input.value);
+        if (quantityParsed) {
+            itemQuantity = quantityParsed;
+        }
+
+        returnObj.push({
+            itemName: itemName,
+            itemQuantity: itemQuantity,
+            itemValue: itemValue
+        });
     }
+
+    return returnObj;
+}
+
+function getTotalWastageAmount() {
+    let total = 0;
+    for (const o of getAllWastage()) {
+        total += (o.itemQuantity * o.itemValue);
+    }
+
+    return total;
+}
+
+function saveWastage() {
+    //TODO set params correctly
+    //TODO show overlay
+    //TODO get the date
+    let dateAsString = selectedDate.replaceAll("/", "-");
+
+
+    showLoadingOverlay("Saving data...");
+    database.ref(`wastage/${dateAsString}`).set(getAllWastage()).then(() => {
+        hideLoadingOverlay();
+    });
+}
+
+function showLoadingOverlay(text) {
+    loadingOverlay.classList.add("loading-overlay-showing");
+    loadingOverlayText.innerText = text;
+}
+
+function hideLoadingOverlay() {
+    loadingOverlay.classList.remove("loading-overlay-showing");
+}
+
+function getBatchWastageData(dateStrings) {
+    let left = dateStrings.length;
+    let allData = [];
+    let startTime = performance.now();
+
+    for (const ds of dateStrings) {
+        database.ref(`wastage/${ds}`).once("value").then((snapshot => {
+            allData[ds] = snapshot.val();
+            left = (left - 1);
+            console.log("Got: " + ds);
+
+            if (left === 0) {
+                console.log("Finished");
+                console.log(allData);
+                console.log(`Took ${performance.now() - startTime} ms.`);
+            }
+        }));
+    }
+
+    //TODO loop, return data, callback
+    // database.ref(`wastage/${selectedDate.replaceAll("/", "-")}`).once("value").then((snapshot => {
+    //     callback(snapshot.val());
+    // }));
+}
+
+/**
+ * For when we are logged in, start the application up.
+ */
+function startup() {
+    console.log("Starting up.")
+    selectToday();
+    getAllWastage();
 }
 
 //TODO check if exists in DB
 //TODO need to add functionality for saving changes
 //TODO be able to save count in localStorage for integrity
 
+
 fillButtonDiv();
 addAllWastageItems();
 
-selectToday();
+//TODO handle more elegantly (without the listener)
+showLoadingOverlay("Signing you in...");
+firebase.auth().onAuthStateChanged(function (user) {
+    if (!user) {
+        let password = prompt("Enter the password");
 
-getAllWastage();
+        if (password == null || password === "") {
+            //    TODO handle
+        } else {
+            firebase.auth().signInWithEmailAndPassword("7901@collinsfoods.com", password)
+                .then((userCredential) => {
+                    console.log("Signed in.");
+                });
+        }
+    } else {
+        hideLoadingOverlay();
+        startup();
+    }
+});

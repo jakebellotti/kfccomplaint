@@ -6,6 +6,14 @@ function returnJSON(data) {
         .setMimeType(ContentService.MimeType.JSON);
 }
 
+function doPost(req) {
+    return returnJSON({
+        rows: sheet.getLastRow(),
+        parameters: req.parameters,
+        message: "No action found",
+    });
+}
+
 function doGet(req) {
     let action = req.parameters["action"];
     if (action) {

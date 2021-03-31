@@ -98,8 +98,42 @@ body {
     padding: 5px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .actions-div * {
     margin-left: 5px;
+}
+
+.save-button {
+/*    TODO class for when we can save*/
+    padding: 8px;
+    border-radius: 4px;
+    background-color: rgb(30,30,30);
+    color: whitesmoke;
+    cursor: pointer;
+}
+
+.loading-overlay-showing {
+    display: flex !important;
+}
+
+#loading-overlay {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.9);
+    /*display: flex;*/
+    justify-items: center;
+    justify-content: center;
+}
+
+#loading-overlay-text {
+    color: white;
+    font-family: Arial;
+    font-size: 24px;
+    margin-top: 5px;
 }

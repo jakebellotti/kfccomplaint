@@ -6,6 +6,31 @@
     <link rel="stylesheet" href="wastage.css">
     <script src="../../lib/moment.min.js"></script>
     <script src="../../lib/DateUtils.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-functions.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyBbdMJFKUbHYf-ZnTaOA8duLA466C55GG8",
+            authDomain: "kfc-cloud-wastage.firebaseapp.com",
+            projectId: "kfc-cloud-wastage",
+            storageBucket: "kfc-cloud-wastage.appspot.com",
+            databaseURL: "https://kfc-cloud-wastage-default-rtdb.firebaseio.com/",
+            messagingSenderId: "984801089093",
+            appId: "1:984801089093:web:b005d7649f704e67e0b52c",
+            measurementId: "G-0J2EHJNKD5"
+        };
+        // Initialize Firebase
+        let db = firebase.initializeApp(firebaseConfig)
+
+        let database = firebase.database();
+
+    </script>
+
     <script src="wastageData.js"></script>
     <script src="wastage.js" defer></script>
 </head>
@@ -15,18 +40,22 @@
 <div id="select-date-button-container">
 
 </div>
-<p id="current-wastage-sheet-header">Sat 20th Mar (a day ago)</p>
+<p id="current-wastage-sheet-header"></p>
 <div class="actions-div">
-    <p class="total-wastage">Total: $0.00</p>
-    <button>Get All Data</button>
-    <button>Save</button>
+    <p class="total-wastage">Total: <span id="total-wastage-amount">$0.00</span></p>
+    <button class="save-button" onclick="saveWastage();">Save</button>
 </div>
 <div id="enter-wastage-div">
+</div>
+
+<div id = "loading-overlay">
+    <p id="loading-overlay-text"></p>
 </div>
 
 <!--TODO overview-->
 <!--TODO enter for today-->
 <!--TODO build from list-->
 <!--TODO include promo items in data, but don't show by default. Make a function to override the data-->
+
 </body>
 </html>
