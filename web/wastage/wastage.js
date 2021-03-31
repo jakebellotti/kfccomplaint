@@ -329,9 +329,7 @@ function checkLogin() {
 }
 
 weekStartDateInput.valueAsDate = DateUtils.getMondayDate();
-//TODO change week buttons
 
 fillButtonDiv();
 addAllWastageItems();
-//TODO set week start date to this monday
-// checkLogin();
+checkLogin();
