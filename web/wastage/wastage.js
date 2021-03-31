@@ -1,5 +1,7 @@
 //TODO loop and create sheet
 
+let weekStartDateInput = document.getElementById("week-start-date-input");
+
 let dateSelectContainer = document.getElementById("select-date-button-container");
 let enterWastageDiv = document.getElementById("enter-wastage-div");
 let currentWastageSheetHeader = document.getElementById("current-wastage-sheet-header");
@@ -16,14 +18,48 @@ let formatter = new Intl.NumberFormat('en-US', {
     currency: 'USD'
 });
 
-function fillButtonDiv() {
-    //TODO in the future, go by date range
+//TODO when manually selecting a week start date, if it is not a monday, set the date to the previous Monday
 
-    let monday = DateUtils.getMondayDate();
+function backOneWeekButtonClicked() {
+    weekStartDateInput.valueAsDate = moment(weekStartDateInput.valueAsDate).subtract(7, "days").toDate();
+    fillButtonDiv();
+//    TODO change, then update, select first
+    selectToday();
+
+}
+
+function forwardOneWeekButtonClicked() {
+//    TODO implement
+    weekStartDateInput.valueAsDate = moment(weekStartDateInput.valueAsDate).add(7, "days").toDate();
+    fillButtonDiv();
+    selectToday();
+}
+
+function setToCurrentWeekButtonClicked() {
+    weekStartDateInput.valueAsDate = DateUtils.getMondayDate();
+    fillButtonDiv();
+    selectToday();
+}
+
+function fillButtonDiv() {
+    dateSelectContainer.innerHTML = "";
+
+    //TODO when getting the date, strip the time (bug that says hours ago on current day etc)
+    //TODO maybe use a.diff(b, 'days') from moment js and do our own calculations
+
+    // console.log(weekStartDateInput.valueAsDate);
+    let monday = moment(DateUtils.getMondayDateFromDate(weekStartDateInput.valueAsDate));
+    // console.log(monday);
+
+
 
     for (let i = 0; i < 7; i++) {
         //TODO disable if in the future
         let today = moment(monday).add(i, "days");
+        // console.log(`Today: ${today}`)
+
+        let daysUntilString = DateUtils.getDaysFromNow(today.toDate());
+
         let todayAsString = today.format("ddd Do MMM");
         let todayAsDateString = today.format("DD/MM/YYYY");
 
@@ -31,13 +67,13 @@ function fillButtonDiv() {
         button.innerText = todayAsString;
         button.dataset.date = todayAsDateString;
         button.dataset.dateAsString = todayAsString;
-        button.dataset.fromNow = today.fromNow();
+        button.dataset.fromNow = daysUntilString;
+        //TODO custom
 
         button.classList.add("date-select-button");
         button.onclick = () => selectDateButtonClicked(button);
 
         dateSelectContainer.appendChild(button);
-        //TODO add class
     }
 }
 
@@ -166,12 +202,17 @@ function addAllWastageItems() {
 }
 
 function selectToday() {
-    for (const element of document.querySelectorAll(".date-select-button")) {
-        if (element.dataset.date === moment().format("DD/MM/YYYY")) {
+    console.log("select today");
+    let elements = document.querySelectorAll(".date-select-button");
+    let currentDateString = moment().format("DD/MM/YYYY");
+
+    for (const element of elements) {
+        if (element.dataset.date === currentDateString) {
             element.click();
-            break;
+            return;
         }
     }
+    elements[0].click();
 }
 
 function getAllWastage() {
@@ -265,30 +306,32 @@ function startup() {
     getAllWastage();
 }
 
-//TODO check if exists in DB
-//TODO need to add functionality for saving changes
-//TODO be able to save count in localStorage for integrity
+function checkLogin() {
+    //TODO handle more elegantly (without the listener)
+    showLoadingOverlay("Signing you in...");
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (!user) {
+            let password = prompt("Enter the password");
 
+            if (password == null || password === "") {
+                //    TODO handle
+            } else {
+                firebase.auth().signInWithEmailAndPassword("7901@collinsfoods.com", password)
+                    .then((userCredential) => {
+                        console.log("Signed in.");
+                    });
+            }
+        } else {
+            hideLoadingOverlay();
+            startup();
+        }
+    });
+}
+
+weekStartDateInput.valueAsDate = DateUtils.getMondayDate();
+//TODO change week buttons
 
 fillButtonDiv();
 addAllWastageItems();
-
-//TODO handle more elegantly (without the listener)
-showLoadingOverlay("Signing you in...");
-firebase.auth().onAuthStateChanged(function (user) {
-    if (!user) {
-        let password = prompt("Enter the password");
-
-        if (password == null || password === "") {
-            //    TODO handle
-        } else {
-            firebase.auth().signInWithEmailAndPassword("7901@collinsfoods.com", password)
-                .then((userCredential) => {
-                    console.log("Signed in.");
-                });
-        }
-    } else {
-        hideLoadingOverlay();
-        startup();
-    }
-});
+//TODO set week start date to this monday
+checkLogin();
