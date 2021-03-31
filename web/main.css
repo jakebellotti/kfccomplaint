@@ -1,0 +1,47 @@
+.kfc-cloud-header {
+    min-width: 100%;
+    min-height: 50px;
+    background-color: rgb(20, 20, 20);
+    display: flex;
+    margin-bottom: 20px;
+    box-shadow: 1px 1px 5px 1px black;
+    align-items: center;
+}
+
+.kfc-cloud-header p {
+    color: white;
+    font-family: Roboto;
+    font-size: 16px;
+}
+
+.kfc-cloud-header-logo {
+    margin-left: 3px;
+}
+
+.kfc-cloud-header-text {
+    margin-left: 6px;
+}
+
+.kfc-cloud-header-side-container {
+    display: flex;
+    align-items: center;
+    min-width: 200px;
+    min-height: 40px;
+}
+
+.kfc-cloud-header-current-page {
+    width: 100%;
+    text-align: center;
+    font-size: 26px !important;
+}
+
+.kfc-cloud-header-page-select {
+    padding: 8px 10px 8px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: rgba(40, 40, 40);
+    color: whitesmoke;
+    box-shadow: 1px 1px 5px 1px black;
+    display: inline-block !important;
+    border: none !important;
+}

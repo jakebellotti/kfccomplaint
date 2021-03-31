@@ -8,8 +8,28 @@
     <script defer src="../../lib/js/materialize.js"></script>
     <link rel="stylesheet" href="../../lib/fonts/MaterialIcons.css">
     <link rel="stylesheet" href="../../lib/css/materialize.css">
+    <link rel="stylesheet" href="../main.css">
+    <script src="../main.js" defer></script>
+    <link rel="stylesheet" href="materialize_elements.css">
 </head>
 <body>
+<!--Header to be put on all pages-->
+<div class="kfc-cloud-header">
+    <div class="kfc-cloud-header-side-container">
+        <img class="kfc-cloud-header-logo" src="../kfclogo.png" height="30px" width="30"/>
+        <p class="kfc-cloud-header-text">KFC CLOUD</p>
+    </div>
+    <p class="kfc-cloud-header-current-page">Complaints</p>
+    <div class="kfc-cloud-header-side-container">
+        <select onchange="headerPageSelectChanged(this);" class="kfc-cloud-header-page-select">
+            <option value="../complaints/complaints.html" selected>Complaints</option>
+            <option value="../count/count.html">Count</option>
+            <option value="../reconciliation/">Daily Reconciliation</option>
+            <option value="../wastage/wastage.html">Wastage</option>
+        </select>
+    </div>
+</div>
+
 
 <div id="settings-container">
     <button onclick="showSettingsWindow();" class="waves-light btn">Settings</button>

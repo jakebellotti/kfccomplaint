@@ -6,9 +6,28 @@
     <script src="../dailyReconData_new.js"></script>
     <script src="countAreas.js"></script>
     <script src="count.js" defer></script>
+    <link rel="stylesheet" href="../main.css">
+    <script src="../main.js"></script>
 </head>
 
 <body>
+<div class="kfc-cloud-header">
+    <div class="kfc-cloud-header-side-container">
+        <img class="kfc-cloud-header-logo" src="../kfclogo.png" height="30px" width="30"/>
+        <p class="kfc-cloud-header-text">KFC CLOUD</p>
+    </div>
+    <p class="kfc-cloud-header-current-page">Count</p>
+    <div class="kfc-cloud-header-side-container">
+        <select onchange="headerPageSelectChanged(this);" class="kfc-cloud-header-page-select">
+            <option value="../complaints/complaints.html">Complaints</option>
+            <option value="../count/count.html" selected>Count</option>
+            <option value="../reconciliation/">Daily Reconciliation</option>
+            <option value="../wastage/wastage.html">Wastage</option>
+        </select>
+    </div>
+</div>
+
+
 <div class="button-header">
     <button onclick="alert('Not yet implemented.');">New Count</button>
     <button onclick="alert('Not yet implemented.');">Delete Count</button>

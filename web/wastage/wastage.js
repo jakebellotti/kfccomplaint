@@ -334,4 +334,4 @@ weekStartDateInput.valueAsDate = DateUtils.getMondayDate();
 fillButtonDiv();
 addAllWastageItems();
 //TODO set week start date to this monday
-checkLogin();
+// checkLogin();
