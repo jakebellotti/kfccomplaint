@@ -1,5 +1,8 @@
 let tbody = document.getElementById("weekly-overview-table-body");
 
+let dayTypeSelect = document.getElementById("day-type-select");
+let createDayDateInput = document.getElementById("create-day-date-input");
+
 let currentDate = new Date();
 let mondayDate = moment().subtract((currentDate.getDay() - 1), 'days').toDate();
 
@@ -40,9 +43,10 @@ function createRows() {
             row.appendChild(createTDWithData(date.format('dddd')));
             row.appendChild(createTDWithData(dateToString));
             row.appendChild(createTDWithData(res !== null));
+            row.appendChild(createTDWithData(res === null ? "" : res.dayType));
             //TODO include this data if the row is actually present
-            row.appendChild(createTDWithData(""));
-            row.appendChild(createTDWithData(""));
+            row.appendChild(createTDWithData(res == null ? "" : res.amManager));
+            row.appendChild(createTDWithData(res == null ? "" : res.pmManager));
 
             let actionsTD = document.createElement("td");
             let createButton = buildButton("Create");
@@ -51,9 +55,14 @@ function createRows() {
             };
 
             let viewButton = buildButton("View");
+            viewButton.onclick = function () {
+                window.open(`dailyRecon.html?openDate=${dateToString}`, "_target");
+                //    TODO open in new tab, pass date param
+            };
 
             if (res === null) {
                 actionsTD.appendChild(createButton);
+                //TODO show the add page with the date, insert and then update
                 //    TODO add to database, on callback update this view, then open the reconciliation page
             }
             if (res !== null) {
@@ -62,6 +71,7 @@ function createRows() {
             //TODO onclick
 
 
+            //TODO delete button maybe
             row.appendChild(actionsTD);
             tbody.appendChild(row);
         });
@@ -70,27 +80,39 @@ function createRows() {
     }
 }
 
-function showCreateDayModalWindow(date) {
-//    TODO don't create manually, just write in HTML lol
-
-//    TODO create and then show a modal window, there will be multiple
-
-    let modalOverlay = document.createElement("div");
-    modalOverlay.classList.add("modal-window-overlay");
-
-    let modalWindow = document.createElement("div");
-    modalWindow.classList.add("modal-window");
-
-    let headerText = document.createElement("p");
-    headerText.innerText = "Create Day";
-    modalWindow.appendChild(headerText);
-    //TODO create the option
-
-    modalOverlay.appendChild(modalWindow);
-    document.body.appendChild(modalOverlay);
+function hideCreateDayModalWindow() {
+    let overlay = document.querySelector(".modal-window-overlay");
+    overlay.classList.remove("modal-window-overlay-shown");
 }
 
-// console.log(currentDate);
-// console.log(mondayDate);
+function showCreateDayModalWindow(date) {
+    let overlay = document.querySelector(".modal-window-overlay");
+    overlay.classList.add("modal-window-overlay-shown");
+    overlay.querySelector("input[type=date]").value = moment(date, "DD/MM/YYYY").format("YYYY-MM-DD");
+}
 
+function populateCreateDayValues() {
+    dayTypeSelect.innerHTML = "";
+    for (const dayType of DailyReconciliationAPI.getDayTypes()) {
+        let htmlOptionElement = document.createElement("option");
+        htmlOptionElement.innerText = dayType.value;
+        htmlOptionElement.value = dayType.key;
+        dayTypeSelect.appendChild(htmlOptionElement);
+    }
+}
+
+function createDayButtonClicked() {
+//    TODO make sure that everything is entered
+//    TODO data validation, check that the date isn't already added
+//    TODO insert the data and notify
+//    TODO then once the data is added, we need to refresh the overview page
+    let dayType = dayTypeSelect.value;
+    let date = createDayDateInput.valueAsDate;
+
+    DailyReconciliationAPI.createBlankDay(date, dayType);
+    hideCreateDayModalWindow();
+    createRows();
+}
+
+populateCreateDayValues();
 createRows();

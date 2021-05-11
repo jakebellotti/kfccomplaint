@@ -22,7 +22,6 @@ function getNumericalValueFromFirstInClassOrNull(parent, className) {
 
 function updateRow(row) {
 //    TODO update total, sold /used etc
-    console.log(row);
 
     //TODO error checking with negative values
 
@@ -48,9 +47,7 @@ function updateRow(row) {
     }
     totalInput.innerText = total;
 
-    if (closeQuantity|| closeQuantity === 0) {
-        console.log("cq");
-        console.log(soldInput);
+    if (closeQuantity || closeQuantity === 0) {
         sold = (total - closeQuantity);
         soldInput.innerText = sold;
     }
@@ -124,16 +121,13 @@ function createTableEntry(name, structure, returnType = "each") {
 
 function createTableEntriesFromData() {
     let products = document.getElementById("products");
-    console.log(allStructures);
 
     for (const key of Object.keys(allStructures)) {
         let category = allStructures[key];
         products.appendChild(createDividerRow(category.name));
-        console.log(category);
 
         for (let i = 0; i < category.structures.length; i++) {
             let currentStructure = category.structures[i];
-            console.log(currentStructure);
             products.append(createTableEntry(currentStructure.name, currentStructure));
         }
 
@@ -334,3 +328,15 @@ function createCountInputModalWindow(headerText, structure, field, returnType) {
 
 // createTableEntries();
 createTableEntriesFromData();
+
+//TODO check params and see what we are doing (loading a specific date for example).
+let params = new URLSearchParams(window.location.search);
+
+let openDate = params.get("openDate");
+if (openDate) {
+    console.log("Opening date: " + openDate);
+//    TODO validate
+//    TODO then load
+}
+
+//TODO functions to allow saving

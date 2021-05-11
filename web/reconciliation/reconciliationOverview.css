@@ -25,7 +25,13 @@ body {
     background-color: black;
 }
 
+.modal-window-overlay-shown {
+    display: block !important;
+}
+
 .modal-window-overlay {
+    display: none;
+
     background-color: rgba(0, 0, 0, 0.7);
     position: fixed;
     left: 0;
@@ -39,4 +45,10 @@ body {
     margin: 10px auto auto auto;
     width: 400px;
     height: 400px;
+}
+
+.modal-window-title {
+    text-align: center;
+    font-family: Arial;
+    font-size: 20px;
 }

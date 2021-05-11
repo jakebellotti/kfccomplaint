@@ -18,6 +18,7 @@
         <th>Day</th>
         <th>Date</th>
         <th>Exists</th>
+        <th>Day Type</th>
         <th>AM Manager</th>
         <th>PM Manager</th>
         <th>Actions</th>
@@ -31,12 +32,20 @@
 <!--Modal overlay-->
 <div class="modal-window-overlay">
     <div class="modal-window">
-        <p>Create Day</p>
-        <select>
-            <option></option>
-        </select>
+        <p class="modal-window-title">Create Day</p>
+        <div>
+            <label>
+                Date:
+                <input id="create-day-date-input" type="date">
+            </label>
 
-        <button>Create</button>
+        </div>
+        <select id="day-type-select">
+        </select>
+        <button onclick="createDayButtonClicked();">Create</button>
+        <br>
+        <br>
+        <button onclick="hideCreateDayModalWindow();">Close</button>
     </div>
 </div>
 
