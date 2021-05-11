@@ -1,32 +1,35 @@
 class DailyReconciliationAPI {
-    static baseURL = "https://script.google.com/macros/s/AKfycbwnofpZmLJJNQkcc3SIU11vBTh-ksGslBI66FW8kjj3ATsMLPz7/exec?";
 
-    static buildRequestURL(parameters) {
-        let requestURL = this.baseURL;
+    //TODO redo this aha
+    //TODO do temporarily in local storage, then implement this with Firebase.
 
-        for (const param of parameters) {
-            requestURL = requestURL.concat(param.key).concat("=").concat(param.value).concat("&");
+    static getDayTypes() {
+        return [
+            {
+                key: "store_open",
+                value: "Normal Day"
+            },
+            {
+                key: "store_closed",
+                value: "Store Closure"
+            }
+        ];
+    }
+
+    static getLocalData() {
+        let ls = localStorage.getItem("daily_recon_test_data");
+        if (ls) {
+            return JSON.parse(ls);
         }
-
-        return requestURL;
+        return {};
     }
 
     static dayExists(dayString, callback) {
-        let url = this.buildRequestURL([
-            {
-                key: "action",
-                value: "dayExists"
-            },
-            {
-                key: "dayString",
-                value: dayString
-            }
-        ]);
-        fetch(url).then(data => {
-            return data.json();
-        }).then(res => {
-            callback(res);
-        });
+        let data = this.getLocalData();
+        if (data.days) {
+            callback(data.days[dayString]);
+        }
+        callback(null);
     }
 
 }

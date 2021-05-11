@@ -2,46 +2,104 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>KFC</title>
+    <title>KFC Cloud</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="main.css">
+    <script src="index.js" defer></script>
 </head>
 <body>
-<style>
-    * {
-        padding: 0;
-        margin: 0;
-    }
+<div class="kfc-cloud-header">
+    <div class="kfc-cloud-header-side-container">
+        <img class="kfc-cloud-header-logo" src="kfclogo.png" height="30px" width="30"/>
+        <p class="kfc-cloud-header-text">KFC CLOUD</p>
+    </div>
+</div>
+<!--TODO make this beautiful-->
 
-    body {
-        background-color: #00b0ff;
-    }
-</style>
+<!--TODO on click-->
+<div class="link-box-container">
+    <div class="link-box" onclick="openLink('complaints/complaints.html')">
+        <p>Complaints</p>
+    </div>
+    <div class="link-box" onclick="openLink('reconciliation/dailyRecon.html')">
+        <p>Daily Reconciliation</p>
+    </div>
+    <div class="link-box" onclick="openLink('reconciliation/reconciliationOverview.html')">
+        <p>Daily Reconciliation Overview</p>
+    </div>
+    <div class="link-box" onclick="openLink('count/count.html')">
+        <p>Count</p>
+    </div>
+    <div class="link-box" onclick="openLink('wastage/wastage.html')">
+        <p>Wastage</p>
+    </div>
 
-<p>Local</p>
-<div style="background-color: #00bcd4; display: flex;flex-direction: column;padding: 5px;font-family: Arial;font-size: 20px;">
-    <a href="complaints/complaints.html">Complaints</a>
-    <a href="dailyRecon.html">Daily reconciliation</a>
-    <a href="count/count.html">Count</a>
-    <a href="reconciliation/reconciliationOverview.html">Reconciliation Overview</a>
-    <a href="wastage/wastage.html">Wastage</a>
-    <a href="test.html">Test</a>
 </div>
 
-<p>External</p>
+<div class="links-table-container">
+    <table class="links-table">
+        <thead>
+        <tr class="links-table-header">
+            <th>Name</th>
+            <th>Description</th>
+            <th>Link</th>
+        </tr>
+        </thead>
+        <tbody>
 
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Link</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
+        <!--        TODO styling for this-->
+        <tr>
+            <td class="table-category-header" colspan="3">Daily/Weekly</td>
+        </tr>
+        <tr>
+            <td>Daily Tracker</td>
+            <td></td>
+            <td><a target="_blank"
+                   href="https://collinsfoods-my.sharepoint.com/:x:/r/personal/jhow_collinsfoods_com/_layouts/15/Doc.aspx?sourcedoc=%7B529E6BCB-C06C-48CF-9350-BAA13A380D7F%7D&file=Daily%20Tracker%20Albany.xlsx&action=default&mobileredirect=true">Open</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Weekly TP Tracker</td>
+            <td></td>
+            <td><a target="_blank"
+                   href="https://collinsfoods-my.sharepoint.com/:x:/r/personal/jhow_collinsfoods_com/_layouts/15/Doc.aspx?sourcedoc=%7B81613A65-E04F-4E55-88D8-C91096CA4F19%7D&file=Weekly%20TP%20tracker%20-%20MOD.xlsx&action=default&mobileredirect=true">Open</a>
+            </td>
+        </tr>
 
-    </tr>
-    </tbody>
-</table>
+        <tr>
+            <td>Weekly Figures</td>
+            <td></td>
+            <td><a target="_blank"
+                   href="https://collinsfoods-my.sharepoint.com/:x:/r/personal/jhow_collinsfoods_com/_layouts/15/Doc.aspx?sourcedoc=%7B70AF2D59-E849-4F4B-ACB8-BCE602B483D6%7D&file=Weekly%20Figures%20Area%20Master.xlsx&action=default&mobileredirect=true&cid=2f8f0486-7cab-4a61-8e59-1348837b3076">Open</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Summit (TP)</td>
+            <td></td>
+            <td><a target="_blank"
+                   href="https://172.16.151.98:19080/login_ie.asp">Open</a>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="table-category-header" colspan="3">Intranet</td>
+        </tr>
+        <tr>
+            <td>Ask Jim Intranet</td>
+            <td></td>
+            <td><a target="_blank" href="https://collinsfoods.sharepoint.com/sites/KFC/Pages/Home.aspx">Open</a></td>
+        </tr>
+        <tr>
+            <td>Latest Newsletters</td>
+            <td></td>
+            <td><a target="_blank" href="https://collinsfoods.sharepoint.com/sites/KFC/Newsletters/Forms/AllItems.aspx">Open</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!---->
+
 <!--TODO links for everything
 forms
 learning zone

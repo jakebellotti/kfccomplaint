@@ -8,6 +8,56 @@ function createDividerRow(name) {
     return row;
 }
 
+function getNumericalValueFromFirstInClassOrNull(parent, className) {
+    //TODO whether or not to parse float or integer
+    let querySelector = parent.querySelector(className);
+    if (querySelector) {
+        let value = querySelector.innerText;
+        if (value && value.trim().length > 0) {
+            return parseFloat(value.trim());
+        }
+    }
+    return null;
+}
+
+function updateRow(row) {
+//    TODO update total, sold /used etc
+    console.log(row);
+
+    //TODO error checking with negative values
+
+    let openQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-open-quantity");
+    let receivedQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-received-quantity");
+    let wastedQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-wasted-quantity");
+    let closeQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-closing-quantity");
+
+    let totalInput = row.querySelector(".input-type-total");
+    let soldInput = row.querySelector(".input-type-sold-quantity");
+
+    let total = 0;
+    let sold = 0;
+
+    if (openQuantity) {
+        total += openQuantity;
+    }
+    if (receivedQuantity) {
+        total += receivedQuantity;
+    }
+    if (wastedQuantity) {
+        total -= wastedQuantity;
+    }
+    totalInput.innerText = total;
+
+    if (closeQuantity|| closeQuantity === 0) {
+        console.log("cq");
+        console.log(soldInput);
+        sold = (total - closeQuantity);
+        soldInput.innerText = sold;
+    }
+//    TODO sold/used
+
+}
+
 function createTableEntry(name, structure, returnType = "each") {
     // console.log(structure);
 
@@ -22,22 +72,44 @@ function createTableEntry(name, structure, returnType = "each") {
 
     let openTD = document.createElement("td");
     openTD.classList.add("editable-td");
+    openTD.classList.add("input-type-open-quantity");
+    //TODO include for all of them
     openTD.onclick = function () {
         //TODO rename
         //TODO on accept
         //TODO create a modal window that accepts numbers only
-        createCountInputModalWindow(name, structure, openTD, returnType);
+
+        // createCountInputModalWindow(name, structure, openTD, returnType);
+        // createSimpleInputModalWindow(name, structure, openTD, returnType);
+        createSimpleInputModalWindow(name, openTD, row);
     };
 
     let receivedTD = document.createElement("td");
     receivedTD.classList.add("editable-td");
+    receivedTD.classList.add("input-type-received-quantity");
+    receivedTD.onclick = function () {
+        createSimpleInputModalWindow(name, receivedTD, row);
+    };
 
     let wastedTD = document.createElement("td");
     wastedTD.classList.add("editable-td");
+    wastedTD.classList.add("input-type-wasted-quantity");
+    wastedTD.onclick = function () {
+        createSimpleInputModalWindow(name, wastedTD, row);
+    };
+
     let totalTD = document.createElement("td");
+    totalTD.classList.add("input-type-total");
+
     let closedTD = document.createElement("td");
     closedTD.classList.add("editable-td");
+    closedTD.classList.add("input-type-closing-quantity");
+    closedTD.onclick = function () {
+        createSimpleInputModalWindow(name, closedTD, row);
+    };
+
     let soldTD = document.createElement("td");
+    soldTD.classList.add("input-type-sold-quantity");
 
     row.appendChild(nameTD);
     row.appendChild(openTD);
@@ -165,6 +237,16 @@ function onIndividualUnitUpdated(event) {
         aElement.value = Math.floor(totalCount / 9);
     }
 
+}
+
+function createSimpleInputModalWindow(headerText, field, row) {
+//    TODO get number, insert number,
+//    TODO pass param for type we are entering (closing amount, opening amount etc)
+    let input = prompt(`Enter value for ${headerText}`, field.innerHTML);
+    if (input) {
+        field.innerText = input;
+        updateRow(row);
+    }
 }
 
 function createCountInputModalWindow(headerText, structure, field, returnType) {

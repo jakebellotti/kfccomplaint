@@ -1,0 +1,8 @@
+Data that should be stored in the firebase database
+
+-Key = date
+-DayType = E.g. store closed, store open etc
+-Numbers (for each product, the open, received, wasted, close numbers)
+-Comments (anything to note, add here).
+-AM Manager
+-PM Manager

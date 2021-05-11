@@ -1,0 +1,91 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: rgb(35, 35, 35);
+}
+
+.link-box-container {
+    display: flex;
+    padding: 5px;
+}
+
+.link-box {
+    width: 150px;
+    height: 100px;
+    background-color: rgb(25, 25, 25);
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px 0px rgb(15, 15, 15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.link-box p {
+    text-align: center;
+    font-family: Roboto;
+    color: white;
+    font-size: 20px;
+}
+
+.link-box:hover {
+    transition: width 0.5s, height 0.5s, margin 0.5s;
+    width: 160px;
+    height: 110px;
+    margin: -5px;
+    box-shadow: 0px 0px 5px 0px cornflowerblue;
+}
+
+.links-table {
+    width: 100%;
+    background-color: rgb(25, 25, 25);
+    border-radius: 10px;
+    box-shadow: 0px 0px 3px 0px rgb(50, 50, 50);
+}
+
+.links-table-header {
+    color: whitesmoke;
+    font-family: Roboto;
+    font-size: 22px;
+    font-weight: bold;
+    background-color: rgb(15, 15, 15);
+}
+
+.links-table-header th {
+    padding: 5px;
+}
+
+.links-table tbody tr td {
+    padding: 10px;
+    text-align: center;
+    font-family: Roboto, Arial, serif;
+    color: white;
+    font-size: 18px;
+}
+
+.links-table tbody tr td a {
+    font-family: Roboto, serif;
+    text-decoration: none;
+    color: white;
+    background-color: cornflowerblue;
+    padding: 7px;
+    border-radius: 5px;
+}
+
+.links-table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+}
+
+.links-table-container {
+    padding: 10px;
+}
+
+.table-category-header {
+    background-color: rgb(20, 20, 20);
+    padding: 5px !important;
+}

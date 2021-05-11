@@ -81,6 +81,18 @@ td {
 
 /*TODO custom class for only editable tds*/
 
+.input-type-sold-quantity {
+    text-align: center;
+}
+
+.input-type-total {
+    text-align: center;
+}
+
+.editable-td {
+    text-align: center;
+}
+
 .editable-td p {
     text-align: center;
 }
@@ -112,7 +124,7 @@ td, th {
 }
 
 .modal-window-background {
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     position: absolute;
     top: 0;
     bottom: 0;

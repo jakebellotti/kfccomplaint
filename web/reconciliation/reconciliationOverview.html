@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Daily Recon</title>
+    <title>Daily Recon Overview</title>
     <link rel="stylesheet" href="reconciliationOverview.css">
     <script src="../../lib/moment.min.js"></script>
     <script src="dailyReconciliationAPI.js"></script>
@@ -10,22 +10,35 @@
 </head>
 <body>
 
+<!--TODO neaten up, add navigation for dates etc, links to sold e.g.-->
+
 <table id="weekly-overview-table">
     <thead>
     <tr>
         <th>Day</th>
         <th>Date</th>
         <th>Exists</th>
-        <th>Starting Count</th>
-        <th>Ending Count</th>
         <th>AM Manager</th>
         <th>PM Manager</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody id="weekly-overview-table-body">
 
     </tbody>
 </table>
+
+<!--Modal overlay-->
+<div class="modal-window-overlay">
+    <div class="modal-window">
+        <p>Create Day</p>
+        <select>
+            <option></option>
+        </select>
+
+        <button>Create</button>
+    </div>
+</div>
 
 </body>
 </html>
