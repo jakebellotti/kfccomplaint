@@ -1,3 +1,5 @@
+//TODO redo this. make one object, keys are identifiers,
+
 let cobStructure = {
     case: {
         name: "Crates",

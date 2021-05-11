@@ -668,10 +668,12 @@ function exportToDailyReconciliation() {
         returnObj.freshData[identifier] = total;
     }
 
+    //TODO insert the wasted data here
     let wastedData = null;
 
-    //TODO actually export using REST API
+    window.open(`../reconciliation/dailyRecon.html?countData=${JSON.stringify(returnObj)}`, "_target");
     console.log(returnObj);
+//    TODO send get recon
 }
 
 //TODO function to extract data into a ready to go 'template' for daily recon

@@ -1,3 +1,5 @@
+//TODO remove the remnants of antiquated functions
+
 function createDividerRow(name) {
     let row = document.createElement("tr");
     row.classList.add("divider-row");
@@ -56,9 +58,8 @@ function updateRow(row) {
 }
 
 function createTableEntry(name, structure, returnType = "each") {
-    // console.log(structure);
-
     let row = document.createElement("tr");
+    row.dataset.itemIdentifier = structure.identifier;
     row.dataset.returnType = structure.returnType;
     row.classList.add("data-tr");
     //TODO if head, handle differently
@@ -333,6 +334,30 @@ createTableEntriesFromData();
 let params = new URLSearchParams(window.location.search);
 
 let openDate = params.get("openDate");
+let countData = params.get("countData");
+
+if (!countData) {
+} else {
+    console.log("Count data:");
+    let parsedData = JSON.parse(countData);
+    let freshData = parsedData.freshData;
+    for (const key of Object.keys(freshData)) {
+        let data = freshData[key];
+        for (const node of document.querySelectorAll("#products .data-tr")) {
+            if (node.dataset.itemIdentifier === key) {
+                console.log("yay");
+                //    TODO set the data, update the rows
+                node.querySelector(".input-type-closing-quantity").innerText = data;
+            }
+        }
+    }
+
+//    TODO load required date first
+//    TODO determine whether or not it is for close or open data
+//    TODO handle wastage items
+//    TODO parse, and then set
+}
+
 if (openDate) {
     console.log("Opening date: " + openDate);
 //    TODO validate
