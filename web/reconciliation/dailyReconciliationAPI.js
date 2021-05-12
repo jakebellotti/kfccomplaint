@@ -2,6 +2,7 @@ class DailyReconciliationAPI {
 
     //TODO redo this aha
     //TODO do temporarily in local storage, then implement this with Firebase.
+    //TODO create days as an object
 
     static getDayTypes() {
         return [
@@ -43,12 +44,26 @@ class DailyReconciliationAPI {
         callback(null);
     }
 
+    static deleteDay(dayString) {
+        let localData = this.getLocalData();
+        for (const day of localData) {
+            if (day.date === dayString) {
+                localData.splice(localData.indexOf(day), 1);
+                this.setLocalData(localData);
+                return true;
+            }
+        }
+        return false;
+    }
+
     //TODO add the option to create from the previous day so that ending count can be transferred to open figure
     static createBlankDay(date, dayType) {
         let localData = this.getLocalData();
 
         let dateAsString = moment(date).format("DD/MM/YYYY");
 
+
+        //TODO create object, call toJSON func
         localData.push({
             date: dateAsString,
             dayType: dayType,

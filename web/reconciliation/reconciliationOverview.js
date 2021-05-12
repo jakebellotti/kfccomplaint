@@ -60,6 +60,15 @@ function createRows() {
                 //    TODO open in new tab, pass date param
             };
 
+            let deleteButton = buildButton("Delete");
+            deleteButton.onclick = function () {
+                //    TODO implement this
+                //    TODO ask for confirmation first
+                let deleteResult = DailyReconciliationAPI.deleteDay(dateToString);
+                alert(deleteResult ? "Day deleted successfully." : "Error deleting the day.");
+                createRows();
+            };
+
             if (res === null) {
                 actionsTD.appendChild(createButton);
                 //TODO show the add page with the date, insert and then update
@@ -67,6 +76,7 @@ function createRows() {
             }
             if (res !== null) {
                 actionsTD.appendChild(viewButton);
+                actionsTD.appendChild(deleteButton);
             }
             //TODO onclick
 
