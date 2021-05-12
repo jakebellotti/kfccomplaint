@@ -7,9 +7,32 @@
 <!--    <script defer src="dailyReconData.js"></script>-->
 <!--    TODO make sure the data is universal standard, do one final proper version with ID from macromatix-->
     <script defer src="../dailyReconData_new.js"></script>
+    <script src="dailyReconciliationAPI.js"></script>
     <script defer src="dailyRecon.js"></script>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../main.css">
 </head>
 <body>
+<div class="kfc-cloud-header">
+    <div class="kfc-cloud-header-side-container">
+        <img class="kfc-cloud-header-logo" src="../kfclogo.png" height="30px" width="30"/>
+        <p class="kfc-cloud-header-text">KFC CLOUD</p>
+    </div>
+    <p class="kfc-cloud-header-current-page">Daily Reconciliation</p>
+<!--    TODO add the overview and recon to this header-->
+
+    <div class="kfc-cloud-header-side-container">
+        <select onchange="headerPageSelectChanged(this);" class="kfc-cloud-header-page-select">
+            <option value="../complaints/complaints.html">Complaints</option>
+            <option value="../count/count.html">Count</option>
+            <option value="../reconciliation/dailyRecon.html" selected>Daily Reconciliation</option>
+            <option value="../reconciliation/reconciliationOverview.html">Daily Recon Overview</option>
+            <option value="../wastage/wastage.html">Wastage</option>
+        </select>
+    </div>
+</div>
+<!--TODO put header on this-->
+
 <!--TODO don't even allow opening this without having the day set-->
 <!--TODO they can check the count on the overview first-->
 

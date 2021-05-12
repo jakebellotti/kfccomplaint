@@ -7,8 +7,31 @@
     <script src="../../lib/moment.min.js"></script>
     <script src="dailyReconciliationAPI.js"></script>
     <script src="reconciliationOverview.js" defer></script>
+    <link rel="stylesheet" href="../main.css">
+    <script src="../main.js"></script>
 </head>
 <body>
+<div class="kfc-cloud-header">
+    <a href="../index.html">
+        <div class="kfc-cloud-header-side-container">
+            <img class="kfc-cloud-header-logo" src="../kfclogo.png" height="30px" width="30"/>
+            <p class="kfc-cloud-header-text">KFC CLOUD</p>
+        </div>
+    </a>
+
+    <p class="kfc-cloud-header-current-page">Daily Reconciliation Overview</p>
+    <!--    TODO add the overview and recon to this header-->
+
+    <div class="kfc-cloud-header-side-container">
+        <select onchange="headerPageSelectChanged(this);" class="kfc-cloud-header-page-select">
+            <option value="../complaints/complaints.html">Complaints</option>
+            <option value="../count/count.html">Count</option>
+            <option value="../reconciliation/dailyRecon.html">Daily Reconciliation</option>
+            <option value="../reconciliation/reconciliationOverview.html" selected>Daily Recon Overview</option>
+            <option value="../wastage/wastage.html">Wastage</option>
+        </select>
+    </div>
+</div>
 
 <!--TODO neaten up, add navigation for dates etc, links to sold e.g.-->
 

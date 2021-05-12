@@ -8,6 +8,10 @@
     align-items: center;
 }
 
+.kfc-cloud-header a {
+    text-decoration: none;
+}
+
 .kfc-cloud-header p {
     color: white;
     font-family: Roboto;

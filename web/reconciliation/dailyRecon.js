@@ -324,6 +324,38 @@ function createCountInputModalWindow(headerText, structure, field, returnType) {
     document.body.appendChild(modalWindowBackground);
 }
 
+function openReconDate(date) {
+    console.log("Opening date: " + openDate);
+    DailyReconciliationAPI.dayExists(date, function (day) {
+    //    TODO update, maybe put loading screen on this too
+        console.log(day);
+    });
+//    TODO validate
+//    TODO then load
+}
+
+/**
+ * Called when it is detected that we are inputting data from a count upon opening the sheet
+ */
+function addDataFromCount(countData) {
+    let parsedData = JSON.parse(countData);
+    let freshData = parsedData.freshData;
+    for (const key of Object.keys(freshData)) {
+        let data = freshData[key];
+        for (const node of document.querySelectorAll("#products .data-tr")) {
+            if (node.dataset.itemIdentifier === key) {
+                node.querySelector(".input-type-closing-quantity").innerText = data;
+                //    TODO make it obvious that data was added by adding an animation to the boxes
+            }
+        }
+    }
+
+//    TODO load required date first
+//    TODO determine whether or not it is for close or open data
+//    TODO handle wastage items
+//    TODO parse, and then set
+}
+
 //TODO programatically create input popup
 //TODO include identifier on every data-row
 
@@ -338,30 +370,13 @@ let countData = params.get("countData");
 
 if (!countData) {
 } else {
-    console.log("Count data:");
-    let parsedData = JSON.parse(countData);
-    let freshData = parsedData.freshData;
-    for (const key of Object.keys(freshData)) {
-        let data = freshData[key];
-        for (const node of document.querySelectorAll("#products .data-tr")) {
-            if (node.dataset.itemIdentifier === key) {
-                console.log("yay");
-                //    TODO set the data, update the rows
-                node.querySelector(".input-type-closing-quantity").innerText = data;
-            }
-        }
-    }
-
-//    TODO load required date first
-//    TODO determine whether or not it is for close or open data
-//    TODO handle wastage items
-//    TODO parse, and then set
+    addDataFromCount(countData);
 }
 
 if (openDate) {
-    console.log("Opening date: " + openDate);
-//    TODO validate
-//    TODO then load
+    openReconDate(openDate);
 }
+
+//TODO if open date is not set, set to current day (or last day that exists)
 
 //TODO functions to allow saving
