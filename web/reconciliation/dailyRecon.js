@@ -48,6 +48,8 @@ function getRowData(row) {
     let receivedQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-received-quantity");
     let wastedQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-wasted-quantity");
     let closeQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-closing-quantity");
+
+    //TODO allow to return sold/used
     return {
         identifier: row.dataset.itemIdentifier,
         openQuantity: openQuantity,
@@ -98,12 +100,13 @@ function updateRow(row) {
     }
     totalInput.innerText = total;
 
-    if (closeQuantity || closeQuantity === 0) {
+    //TODO and open quantity
+    // if (closeQuantity || closeQuantity === 0) {
+    if (openQuantity && closeQuantity) {
+        //TODO if it goes below 0, there has been an error so log it
         sold = (total - closeQuantity);
-        soldInput.innerText = sold;
+        soldInput.innerText = Math.max(sold, 0);
     }
-//    TODO sold/used
-
 }
 
 function createTableEntry(name, structure, returnType = "each") {
@@ -128,21 +131,21 @@ function createTableEntry(name, structure, returnType = "each") {
 
         // createCountInputModalWindow(name, structure, openTD, returnType);
         // createSimpleInputModalWindow(name, structure, openTD, returnType);
-        createSimpleInputModalWindow(name, openTD, row);
+        createSimpleInputModalWindow("opening", name, openTD, row);
     };
 
     let receivedTD = document.createElement("td");
     receivedTD.classList.add("editable-td");
     receivedTD.classList.add("input-type-received-quantity");
     receivedTD.onclick = function () {
-        createSimpleInputModalWindow(name, receivedTD, row);
+        createSimpleInputModalWindow("receiving", name, receivedTD, row);
     };
 
     let wastedTD = document.createElement("td");
     wastedTD.classList.add("editable-td");
     wastedTD.classList.add("input-type-wasted-quantity");
     wastedTD.onclick = function () {
-        createSimpleInputModalWindow(name, wastedTD, row);
+        createSimpleInputModalWindow("wasting", name, wastedTD, row);
     };
 
     let totalTD = document.createElement("td");
@@ -152,7 +155,7 @@ function createTableEntry(name, structure, returnType = "each") {
     closedTD.classList.add("editable-td");
     closedTD.classList.add("input-type-closing-quantity");
     closedTD.onclick = function () {
-        createSimpleInputModalWindow(name, closedTD, row);
+        createSimpleInputModalWindow("closing", name, closedTD, row);
     };
 
     let soldTD = document.createElement("td");
@@ -283,14 +286,17 @@ function onIndividualUnitUpdated(event) {
 
 }
 
-function createSimpleInputModalWindow(headerText, field, row) {
-//    TODO get number, insert number,
-//    TODO pass param for type we are entering (closing amount, opening amount etc)
-    let input = prompt(`Enter value for ${headerText}`, field.innerHTML);
-    if (input) {
+function createSimpleInputModalWindow(inputDataType, headerText, field, row) {
+    let input = prompt(`Enter ${inputDataType} quantity for ${headerText}`, field.innerHTML);
+
+    let number = parseFloat(input);
+
+    if (input && !isNaN(number)) {
         field.innerText = input;
-        updateRow(row);
+    } else {
+        field.innerText = null;
     }
+    updateRow(row);
 }
 
 function createCountInputModalWindow(headerText, structure, field, returnType) {
@@ -524,7 +530,7 @@ function saveButtonClicked() {
         alert("No day is currently selected.");
         return;
     }
-    
+
     let newOpenDay = updateDataFromInputFields();
 
     let isChanged = JSON.stringify(openDay) !== JSON.stringify(newOpenDay);

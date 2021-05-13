@@ -258,3 +258,21 @@ td, th {
     cursor: pointer;
     font-size: 16px;
 }
+
+#sales-input {
+    text-align: center;
+    font-size: 18px;
+    width: 150px;
+}
+
+#customer-count-input {
+    text-align: center;
+    font-size: 18px;
+    width: 150px;
+}
+
+#cash-variance-input {
+    text-align: center;
+    font-size: 18px;
+    width: 150px;
+}
