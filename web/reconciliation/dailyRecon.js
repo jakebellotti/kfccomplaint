@@ -8,6 +8,11 @@ let openDayDate = document.getElementById("open-day-date");
 let amManagerInput = document.getElementById("am-manager-input");
 let pmManagerInput = document.getElementById("pm-manager-input");
 
+let salesInput = document.getElementById("sales-input");
+let customerCountInput = document.getElementById("customer-count-input");
+let cashVarianceInput = document.getElementById("cash-variance-input");
+let notesTextarea = document.getElementById("notes-textarea");
+
 function createDividerRow(name) {
     let row = document.createElement("tr");
     row.classList.add("divider-row");
@@ -394,6 +399,12 @@ function setCurrentDayData() {
     amManagerInput.value = openDay.amManager;
     pmManagerInput.value = openDay.pmManager;
 
+    //TODO proper formatting of cash etc
+    salesInput.value = openDay.sales;
+    customerCountInput.value = openDay.customerCount;
+    cashVarianceInput.value = openDay.cashVariance;
+    notesTextarea.value = openDay.notes;
+
     for (const row of openDay.data) {
         let foundRow = findDataRowWithItemIdentifier(row.identifier);
         if (foundRow) {
@@ -468,18 +479,65 @@ function nextDayButtonClicked() {
     }
 }
 
+function getInputAsIntegerOrNull(input) {
+    let val = input.value;
+    if (val) {
+        let result = parseInt(val);
+        if (result) {
+            return result;
+        }
+    }
+    return null;
+}
+
+function getInputAsFloatOrNull(input) {
+    let val = input.value;
+    if (val) {
+        let result = parseFloat(val);
+        if (result) {
+            return result;
+        }
+    }
+    return null;
+}
+
+/**
+ * Updates the local openDay object with the data from the input fields
+ */
+function updateDataFromInputFields() {
+    //TODO maybe clone the object, then the return of this function can be the cloned object, if we want to update the true data we just set the original data to the new cloned one, if we ever want to check if any changes have been made between a series of events we can simply check the result of this function against the current object LOL did you get all of that
+    let clonedObject = JSON.parse(JSON.stringify(openDay));
+
+    clonedObject.amManager = amManagerInput.value;
+    clonedObject.pmManager = pmManagerInput.value;
+    clonedObject.sales = getInputAsFloatOrNull(salesInput);
+    clonedObject.customerCount = getInputAsIntegerOrNull(customerCountInput);
+    clonedObject.cashVariance = getInputAsFloatOrNull(cashVarianceInput);
+    clonedObject.notes = notesTextarea.value;
+    clonedObject.data = getAllRowsData();
+
+    return clonedObject;
+}
+
 function saveButtonClicked() {
     if (openDay === null) {
         alert("No day is currently selected.");
         return;
     }
+    
+    let newOpenDay = updateDataFromInputFields();
 
-    openDay.data = getAllRowsData();
+    let isChanged = JSON.stringify(openDay) !== JSON.stringify(newOpenDay);
 
-    DailyReconciliationAPI.saveDay(openDay, function () {
-        alert("Saved data.");
-    });
-//    TODO additional information such as customers, sales, notes etc.
+    if (isChanged) {
+        openDay = newOpenDay;
+
+        DailyReconciliationAPI.saveDay(openDay, function () {
+            alert("Saved data.");
+        });
+    } else {
+        alert("No changes have been made");
+    }
 //    TODO defrosted
 }
 

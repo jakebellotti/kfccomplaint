@@ -49,18 +49,27 @@ function createRows() {
             row.appendChild(createTDWithData(res == null ? "" : res.pmManager));
 
             let actionsTD = document.createElement("td");
+            actionsTD.classList.add("actions-td");
+
             let createButton = buildButton("Create");
+            createButton.classList.add("action-button");
+            createButton.classList.add("create-button");
             createButton.onclick = function () {
                 showCreateDayModalWindow(dateToString);
             };
 
             let viewButton = buildButton("View");
+            viewButton.classList.add("action-button");
+            viewButton.classList.add("view-button");
             viewButton.onclick = function () {
                 window.open(`dailyRecon.html?openDate=${dateToString}`, "_target");
                 //    TODO open in new tab, pass date param
             };
 
             let deleteButton = buildButton("Delete");
+            deleteButton.classList.add("action-button");
+            deleteButton.classList.add("delete-button");
+
             deleteButton.onclick = function () {
                 //    TODO implement this
                 //    TODO ask for confirmation first

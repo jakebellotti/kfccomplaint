@@ -58,3 +58,34 @@ body {
     font-family: Arial;
     font-size: 20px;
 }
+
+.actions-td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.action-button {
+    padding: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+    width: 60px;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 1px 1px 6px 1px black;
+}
+
+.view-button {
+    color: white;
+    background-color: rgba(40, 40, 40);
+}
+
+.create-button {
+    background-color: #0f9d58;
+    color: white;
+}
+
+.delete-button {
+    color: white;
+    background-color: #962633;
+}

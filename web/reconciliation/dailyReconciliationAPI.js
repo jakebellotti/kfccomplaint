@@ -31,6 +31,11 @@ class DailyReconciliationAPI {
         return [];
     }
 
+    //TODO day is complete function (return the errors found and return in a result)
+    static isCompleteDay() {
+
+    }
+
     /**
      * Gets the reconciliation day based on today's date, and upon completion, executes the callback. If no day is found, it will return null.
      */
@@ -91,6 +96,10 @@ class DailyReconciliationAPI {
             dayType: dayType,
             amManager: null,
             pmManager: null,
+            sales: null,
+            customerCount: null,
+            cashVariance: null,
+            notes: null,
             data: []
         });
         //TODO data integrity, check if exists first
