@@ -3,6 +3,8 @@ let openDay = null;
 
 let productsTbody = document.getElementById("products");
 
+let unsavedDocumentSpan = document.getElementById("unsaved-document-span");
+
 let openDayName = document.getElementById("open-day-day");
 let openDayDate = document.getElementById("open-day-date");
 let amManagerInput = document.getElementById("am-manager-input");
@@ -74,8 +76,6 @@ function updateRowWithData(row, data) {
 }
 
 function updateRow(row) {
-//    TODO update total, sold /used etc
-
     //TODO error checking with negative values
 
     let openQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-open-quantity");
@@ -100,13 +100,13 @@ function updateRow(row) {
     }
     totalInput.innerText = total;
 
-    //TODO and open quantity
-    // if (closeQuantity || closeQuantity === 0) {
     if (openQuantity && closeQuantity) {
         //TODO if it goes below 0, there has been an error so log it
         sold = (total - closeQuantity);
         soldInput.innerText = Math.max(sold, 0);
     }
+
+    onDocumentDataChanged();
 }
 
 function createTableEntry(name, structure, returnType = "each") {
@@ -512,6 +512,8 @@ function getInputAsFloatOrNull(input) {
  */
 function updateDataFromInputFields() {
     //TODO maybe clone the object, then the return of this function can be the cloned object, if we want to update the true data we just set the original data to the new cloned one, if we ever want to check if any changes have been made between a series of events we can simply check the result of this function against the current object LOL did you get all of that
+
+    //TODO if the data is null, this will cause an error to occur
     let clonedObject = JSON.parse(JSON.stringify(openDay));
 
     clonedObject.amManager = amManagerInput.value;
@@ -539,12 +541,38 @@ function saveButtonClicked() {
         openDay = newOpenDay;
 
         DailyReconciliationAPI.saveDay(openDay, function () {
+            onDocumentDataChanged();
             alert("Saved data.");
         });
     } else {
         alert("No changes have been made");
     }
 //    TODO defrosted
+}
+
+/**
+ * Should be called after we are finished editing any kind of data
+ */
+function onDocumentDataChanged() {
+    let changes = documentHasUnsavedChanges();
+    if (changes) {
+        showUnsavedDocumentSpan();
+    } else {
+        hideUnsavedDocumentSpan();
+    }
+}
+
+function documentHasUnsavedChanges() {
+    let newOpenDay = updateDataFromInputFields();
+    return JSON.stringify(openDay) !== JSON.stringify(newOpenDay);
+}
+
+function showUnsavedDocumentSpan() {
+    unsavedDocumentSpan.classList.add("show-span");
+}
+
+function hideUnsavedDocumentSpan() {
+    unsavedDocumentSpan.classList.remove("show-span");
 }
 
 function createNextDayButtonClicked() {

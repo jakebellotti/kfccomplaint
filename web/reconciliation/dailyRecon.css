@@ -276,3 +276,11 @@ td, th {
     font-size: 18px;
     width: 150px;
 }
+
+#unsaved-document-span {
+    display: none;
+}
+
+.show-span {
+    display: inline-block !important;
+}
