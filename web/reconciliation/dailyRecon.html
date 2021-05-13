@@ -68,14 +68,14 @@
         <div class="header-box">
             <p class="header-box-text">AM Manager</p>
             <div class="header-box-content">
-                <input id="am-manager-input">
+                <input id="am-manager-input" onkeyup="onDocumentDataChanged()">
             </div>
         </div>
 
         <div class="header-box">
             <p class="header-box-text">PM Manager</p>
             <div class="header-box-content">
-                <input id="pm-manager-input">
+                <input id="pm-manager-input" onkeyup="onDocumentDataChanged()">
             </div>
         </div>
     </div>
@@ -99,26 +99,26 @@
         <div class="header-box">
             <p class="header-box-text">Sales</p>
             <div class="header-box-content">
-                <input id="sales-input" type="number">
+                <input id="sales-input" type="number" onkeyup="onDocumentDataChanged()">
             </div>
         </div>
         <div class="header-box">
             <p class="header-box-text">Customer Count</p>
             <div class="header-box-content">
-                <input id="customer-count-input" type="number">
+                <input id="customer-count-input" type="number" onkeyup="onDocumentDataChanged()">
             </div>
         </div>
-<!--        TODO center and do data validation on these inputs-->
+        <!--        TODO center and do data validation on these inputs-->
         <div class="header-box">
             <p class="header-box-text">Cash Variance</p>
             <div class="header-box-content">
-                <input id="cash-variance-input" type="number">
+                <input id="cash-variance-input" type="number" onkeyup="onDocumentDataChanged()">
             </div>
         </div>
         <div class="header-box header-box-widest">
             <p class="header-box-text">Notes</p>
             <div class="header-box-content">
-                <textarea id="notes-textarea"></textarea>
+                <textarea id="notes-textarea" onkeyup="onDocumentDataChanged()"></textarea>
             </div>
         </div>
     </div>

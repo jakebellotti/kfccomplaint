@@ -476,6 +476,8 @@ function previousDayButtonClicked() {
         alert("No day is currently selected.");
         return;
     }
+
+    //    TODO if there are unsaved changes, must ask whether or not we want to save first
 }
 
 function nextDayButtonClicked() {
@@ -483,6 +485,7 @@ function nextDayButtonClicked() {
         alert("No day is currently selected.");
         return;
     }
+//    TODO if there are unsaved changes, must ask whether or not we want to save first
 }
 
 function getInputAsIntegerOrNull(input) {
@@ -554,6 +557,7 @@ function saveButtonClicked() {
  * Should be called after we are finished editing any kind of data
  */
 function onDocumentDataChanged() {
+    //TODO now do this on editing all input fields
     let changes = documentHasUnsavedChanges();
     if (changes) {
         showUnsavedDocumentSpan();
