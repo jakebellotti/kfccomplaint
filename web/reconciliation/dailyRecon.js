@@ -1,6 +1,8 @@
 //TODO remove the remnants of antiquated functions
 let openDay = null;
 
+let productsTbody = document.getElementById("products");
+
 let openDayName = document.getElementById("open-day-day");
 let openDayDate = document.getElementById("open-day-date");
 let amManagerInput = document.getElementById("am-manager-input");
@@ -26,6 +28,42 @@ function getNumericalValueFromFirstInClassOrNull(parent, className) {
         }
     }
     return null;
+}
+
+function getAllRowsData() {
+    let returnObj = [];
+    for (const element of productsTbody.querySelectorAll(".data-tr")) {
+        returnObj.push(getRowData(element));
+    }
+    return returnObj;
+}
+
+function getRowData(row) {
+    let openQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-open-quantity");
+    let receivedQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-received-quantity");
+    let wastedQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-wasted-quantity");
+    let closeQuantity = getNumericalValueFromFirstInClassOrNull(row, ".input-type-closing-quantity");
+    return {
+        identifier: row.dataset.itemIdentifier,
+        openQuantity: openQuantity,
+        receivedQuantity: receivedQuantity,
+        wastedQuantity: wastedQuantity,
+        closeQuantity: closeQuantity
+    };
+}
+
+function updateRowWithData(row, data) {
+    let openQuantityInput = row.querySelector(".input-type-open-quantity");
+    let receivedQuantityInput = row.querySelector(".input-type-received-quantity");
+    let wastedQuantityInput = row.querySelector(".input-type-wasted-quantity");
+    let closingQuantityInput = row.querySelector(".input-type-closing-quantity");
+
+    openQuantityInput.innerHTML = data.openQuantity;
+    receivedQuantityInput.innerHTML = data.receivedQuantity;
+    wastedQuantityInput.innerHTML = data.wastedQuantity;
+    closingQuantityInput.innerHTML = data.closeQuantity;
+
+    updateRow(row);
 }
 
 function updateRow(row) {
@@ -331,6 +369,20 @@ function createCountInputModalWindow(headerText, structure, field, returnType) {
 }
 
 /**
+ * Returns the data row that contains a matching identifier. If it doesn't find any, it will just return null.
+ * @param itemIdentifier
+ */
+function findDataRowWithItemIdentifier(itemIdentifier) {
+    for (const row of productsTbody.querySelectorAll(".data-tr")) {
+        let identifier = row.dataset.itemIdentifier;
+        if (identifier && identifier === itemIdentifier) {
+            return row;
+        }
+    }
+    return null;
+}
+
+/**
  * Adds data from the currently loaded day
  */
 function setCurrentDayData() {
@@ -341,6 +393,15 @@ function setCurrentDayData() {
     openDayDate.value = openDay.date;
     amManagerInput.value = openDay.amManager;
     pmManagerInput.value = openDay.pmManager;
+
+    for (const row of openDay.data) {
+        let foundRow = findDataRowWithItemIdentifier(row.identifier);
+        if (foundRow) {
+            updateRowWithData(foundRow, row);
+        } else {
+            //    TODO if row with identifier doesn't exist make sure to show it,
+        }
+    }
 //    TODO set the item data now
 }
 
@@ -360,19 +421,34 @@ function openReconDate(date) {
  * Called when it is detected that we are inputting data from a count upon opening the sheet
  */
 function addDataFromCount(countData) {
-    let parsedData = JSON.parse(countData);
-    let freshData = parsedData.freshData;
-    for (const key of Object.keys(freshData)) {
-        let data = freshData[key];
-        for (const node of document.querySelectorAll("#products .data-tr")) {
-            if (node.dataset.itemIdentifier === key) {
-                node.querySelector(".input-type-closing-quantity").innerText = data;
-                //    TODO make it obvious that data was added by adding an animation to the boxes
+    //TODO get today date
+    //TODO save the data from the count (which includes wasted data) so that we can easily transfer it to the next day's reconciliation when the create next day button is clicked
+
+    DailyReconciliationAPI.getToday(function (dayData, index) {
+        if (dayData === null) {
+            //TODO handle with overlay
+            alert("No day exists for today");
+            return;
+        }
+        //TODO updatye
+        //TODO when setting the open day, maybe set it through a function so that
+        openDay = dayData;
+        setCurrentDayData();
+
+        let parsedData = JSON.parse(countData);
+        let freshData = parsedData.freshData;
+        for (const key of Object.keys(freshData)) {
+            let data = freshData[key];
+            for (const node of document.querySelectorAll("#products .data-tr")) {
+                if (node.dataset.itemIdentifier === key) {
+                    node.querySelector(".input-type-closing-quantity").innerText = data;
+                    //    TODO make it obvious that data was added by adding an animation to the boxes
+                }
             }
         }
-    }
+    });
 
-//    TODO load required date first
+//    TODO load required date first (default to current date)
 //    TODO determine whether or not it is for close or open data
 //    TODO handle wastage items
 //    TODO parse, and then set
@@ -397,6 +473,19 @@ function saveButtonClicked() {
         alert("No day is currently selected.");
         return;
     }
+
+    openDay.data = getAllRowsData();
+
+    DailyReconciliationAPI.saveDay(openDay, function () {
+        alert("Saved data.");
+    });
+//    TODO additional information such as customers, sales, notes etc.
+//    TODO defrosted
+}
+
+function createNextDayButtonClicked() {
+//    TODO validate the data is complete
+    alert("Not yet implemented.");
 }
 
 //TODO programatically create input popup

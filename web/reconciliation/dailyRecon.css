@@ -17,6 +17,8 @@ body {
 
 .recon-wrapper {
     width: fit-content;
+    padding: 10px;
+    margin: auto;
 }
 
 .worksheet-name {
@@ -189,7 +191,7 @@ td, th {
 }
 
 .daily-reconciliation-button-bar button {
-    width: 100px;
+    width: 110px;
     padding: 5px;
     border-radius: 5px;
     cursor: pointer;
@@ -224,4 +226,35 @@ td, th {
 
 #pm-manager-input {
     text-align: center;
+}
+
+.additional-data-container {
+    /*padding: 5px;*/
+    display: flex;
+    margin-top: 10px;
+}
+
+.additional-data-div {
+    display: flex;
+}
+
+.header-box-widest {
+    width: 100%;
+}
+
+.single-right-button-wrapper {
+    display: flex;
+    padding: 5px;
+    flex-direction: row-reverse;
+    margin-bottom: 20px;
+}
+
+#create-next-day-button {
+    padding: 10px;
+    background-color: limegreen;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    font-size: 16px;
 }

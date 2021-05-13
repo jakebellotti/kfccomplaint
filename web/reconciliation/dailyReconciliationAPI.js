@@ -1,8 +1,10 @@
 class DailyReconciliationAPI {
 
+    //TODO make this an interface, so we can switch between local storage and database storage (firebase).
     //TODO redo this aha
     //TODO do temporarily in local storage, then implement this with Firebase.
     //TODO create days as an object
+    //TODO day string will always be DD/MM/YYYY
 
     static getDayTypes() {
         return [
@@ -29,19 +31,26 @@ class DailyReconciliationAPI {
         return [];
     }
 
+    /**
+     * Gets the reconciliation day based on today's date, and upon completion, executes the callback. If no day is found, it will return null.
+     */
+    static getToday(callback) {
+        this.dayExists(moment().format("DD/MM/YYYY"), callback);
+    }
+
+    //TODO get previous day and next day functions
+
     static dayExists(dayString, callback) {
         let data = this.getLocalData();
 
-        // console.log(data);
-        for (const day of data) {
+        for (let i = 0; i < data.length; i++) {
+            const day = data[i];
             if (day.date === dayString) {
-                callback(day);
+                callback(day, i);
                 return;
             }
         }
-
-        //TODO correctly find
-        callback(null);
+        callback(null, null);
     }
 
     static deleteDay(dayString) {
@@ -54,6 +63,19 @@ class DailyReconciliationAPI {
             }
         }
         return false;
+    }
+
+    /**
+     * Saves the day data (If if exists). If you need to create a day, use the create blank day function as this only updates a record and does not insert anything new.
+     * @param day
+     */
+    static saveDay(day, onCompletionCallback) {
+        this.dayExists(day.date, function (foundData, index) {
+            let localData = DailyReconciliationAPI.getLocalData();
+            localData[index] = day;
+            DailyReconciliationAPI.setLocalData(localData);
+            onCompletionCallback();
+        });
     }
 
     //TODO add the option to create from the previous day so that ending count can be transferred to open figure

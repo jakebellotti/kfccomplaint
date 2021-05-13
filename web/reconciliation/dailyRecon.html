@@ -34,20 +34,22 @@
         </select>
     </div>
 </div>
-<!--TODO put header on this-->
+<!--TODO make it so you can add receiving from copy and pasting a invoice-->
+<!--TODO notification when the day we are viewing is not the current day-->
+<!--TODO make it more obvious that data has been changed when not saved (use a different colour)-->
 
 <!--TODO don't even allow opening this without having the day set-->
 <!--TODO they can check the count on the overview first-->
 
 <div class="daily-reconciliation-button-bar">
     <div class="button-bar-side">
-        <button onclick="previousDayButtonClicked();">Previous Day</button>
+        <button onclick="previousDayButtonClicked();">⮜ Previous Day</button>
     </div>
     <div class="button-bar-middle">
         <button onclick="saveButtonClicked();">Save Data</button>
     </div>
     <div class="button-bar-side">
-        <button onclick="nextDayButtonClicked();">Next Day</button>
+        <button onclick="nextDayButtonClicked();">Next Day ⮞</button>
     </div>
 </div>
 
@@ -92,6 +94,38 @@
         <tbody id="products">
         </tbody>
     </table>
+
+    <div class="additional-data-container">
+        <div class="header-box">
+            <p class="header-box-text">Sales</p>
+            <div class="header-box-content">
+                <input type="text">
+            </div>
+        </div>
+        <div class="header-box">
+            <p class="header-box-text">Customer Count</p>
+            <div class="header-box-content">
+                <input type="text">
+            </div>
+        </div>
+<!--        TODO center and do data validation on these inputs-->
+        <div class="header-box">
+            <p class="header-box-text">Cash Variance</p>
+            <div class="header-box-content">
+                <input type="text">
+            </div>
+        </div>
+        <div class="header-box header-box-widest">
+            <p class="header-box-text">Notes</p>
+            <div class="header-box-content">
+                <textarea></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="single-right-button-wrapper">
+        <button id="create-next-day-button" onclick="createNextDayButtonClicked();">Create Next Day +</button>
+    </div>
+    <!--    TODO some sort of padding maybe, even center it?-->
 </div>
 
 <!--<div class="modal-window-background">-->
