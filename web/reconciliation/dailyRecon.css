@@ -180,3 +180,48 @@ td, th {
     font-size: 24px;
     margin-bottom: 10px;
 }
+
+.daily-reconciliation-button-bar {
+    display: flex;
+    padding: 10px;
+    background-color: rgb(20, 20, 20);
+    margin-top: -20px;
+}
+
+.daily-reconciliation-button-bar button {
+    width: 100px;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 1px 1px 5px 1px black;
+    background-color: rgb(35, 35, 35);
+    color: white;
+    height: 35px;
+    font-size: 14px;
+}
+
+.button-bar-side {
+
+}
+
+.button-bar-middle {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#open-day-day {
+    text-align: center;
+}
+
+#open-day-date {
+    text-align: center;
+}
+
+#am-manager-input {
+    text-align: center;
+}
+
+#pm-manager-input {
+    text-align: center;
+}

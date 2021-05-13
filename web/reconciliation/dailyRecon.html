@@ -4,22 +4,25 @@
     <meta charset="UTF-8">
     <title>Daily Recon</title>
     <link rel="stylesheet" href="dailyRecon.css">
-<!--    <script defer src="dailyReconData.js"></script>-->
-<!--    TODO make sure the data is universal standard, do one final proper version with ID from macromatix-->
+    <!--    <script defer src="dailyReconData.js"></script>-->
+    <!--    TODO make sure the data is universal standard, do one final proper version with ID from macromatix-->
     <script defer src="../dailyReconData_new.js"></script>
     <script src="dailyReconciliationAPI.js"></script>
     <script defer src="dailyRecon.js"></script>
     <script src="../main.js"></script>
     <link rel="stylesheet" href="../main.css">
+    <script src="../../lib/moment.min.js"></script>
 </head>
 <body>
 <div class="kfc-cloud-header">
-    <div class="kfc-cloud-header-side-container">
-        <img class="kfc-cloud-header-logo" src="../kfclogo.png" height="30px" width="30"/>
-        <p class="kfc-cloud-header-text">KFC CLOUD</p>
-    </div>
+    <a href="../index.html">
+        <div class="kfc-cloud-header-side-container">
+            <img class="kfc-cloud-header-logo" src="../kfclogo.png" height="30px" width="30"/>
+            <p class="kfc-cloud-header-text">KFC CLOUD</p>
+        </div>
+    </a>
     <p class="kfc-cloud-header-current-page">Daily Reconciliation</p>
-<!--    TODO add the overview and recon to this header-->
+    <!--    TODO add the overview and recon to this header-->
 
     <div class="kfc-cloud-header-side-container">
         <select onchange="headerPageSelectChanged(this);" class="kfc-cloud-header-page-select">
@@ -36,6 +39,18 @@
 <!--TODO don't even allow opening this without having the day set-->
 <!--TODO they can check the count on the overview first-->
 
+<div class="daily-reconciliation-button-bar">
+    <div class="button-bar-side">
+        <button onclick="previousDayButtonClicked();">Previous Day</button>
+    </div>
+    <div class="button-bar-middle">
+        <button onclick="saveButtonClicked();">Save Data</button>
+    </div>
+    <div class="button-bar-side">
+        <button onclick="nextDayButtonClicked();">Next Day</button>
+    </div>
+</div>
+
 <div class="recon-wrapper">
     <div class="page-header">
         <div class="worksheet-name-wrapper">
@@ -44,21 +59,21 @@
         <div class="header-box">
             <p class="header-box-text">Day/Date</p>
             <div class="header-box-content">
-                <input type="date">
-                <input style="margin-top:3px;">
+                <input id="open-day-day" readonly>
+                <input id="open-day-date" readonly>
             </div>
         </div>
         <div class="header-box">
             <p class="header-box-text">AM Manager</p>
             <div class="header-box-content">
-                <input>
+                <input id="am-manager-input">
             </div>
         </div>
 
         <div class="header-box">
             <p class="header-box-text">PM Manager</p>
             <div class="header-box-content">
-                <input>
+                <input id="pm-manager-input">
             </div>
         </div>
     </div>

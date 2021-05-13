@@ -1,4 +1,10 @@
 //TODO remove the remnants of antiquated functions
+let openDay = null;
+
+let openDayName = document.getElementById("open-day-day");
+let openDayDate = document.getElementById("open-day-date");
+let amManagerInput = document.getElementById("am-manager-input");
+let pmManagerInput = document.getElementById("pm-manager-input");
 
 function createDividerRow(name) {
     let row = document.createElement("tr");
@@ -324,11 +330,27 @@ function createCountInputModalWindow(headerText, structure, field, returnType) {
     document.body.appendChild(modalWindowBackground);
 }
 
+/**
+ * Adds data from the currently loaded day
+ */
+function setCurrentDayData() {
+    console.log(openDay);
+
+    let momentDate = moment(openDay.date, "DD/MM/YYYY");
+    openDayName.value = momentDate.format("dddd");
+    openDayDate.value = openDay.date;
+    amManagerInput.value = openDay.amManager;
+    pmManagerInput.value = openDay.pmManager;
+//    TODO set the item data now
+}
+
 function openReconDate(date) {
     console.log("Opening date: " + openDate);
     DailyReconciliationAPI.dayExists(date, function (day) {
-    //    TODO update, maybe put loading screen on this too
-        console.log(day);
+        //    TODO update, maybe put loading screen on this too
+        //TODO if the day is null, handle that
+        openDay = day;
+        setCurrentDayData();
     });
 //    TODO validate
 //    TODO then load
@@ -354,6 +376,27 @@ function addDataFromCount(countData) {
 //    TODO determine whether or not it is for close or open data
 //    TODO handle wastage items
 //    TODO parse, and then set
+}
+
+function previousDayButtonClicked() {
+    if (openDay === null) {
+        alert("No day is currently selected.");
+        return;
+    }
+}
+
+function nextDayButtonClicked() {
+    if (openDay === null) {
+        alert("No day is currently selected.");
+        return;
+    }
+}
+
+function saveButtonClicked() {
+    if (openDay === null) {
+        alert("No day is currently selected.");
+        return;
+    }
 }
 
 //TODO programatically create input popup

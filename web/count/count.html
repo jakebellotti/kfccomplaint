@@ -12,10 +12,12 @@
 
 <body>
 <div class="kfc-cloud-header">
-    <div class="kfc-cloud-header-side-container">
-        <img class="kfc-cloud-header-logo" src="../kfclogo.png" height="30px" width="30"/>
-        <p class="kfc-cloud-header-text">KFC CLOUD</p>
-    </div>
+    <a href="../index.html">
+        <div class="kfc-cloud-header-side-container">
+            <img class="kfc-cloud-header-logo" src="../kfclogo.png" height="30px" width="30"/>
+            <p class="kfc-cloud-header-text">KFC CLOUD</p>
+        </div>
+    </a>
     <p class="kfc-cloud-header-current-page">Count</p>
     <div class="kfc-cloud-header-side-container">
         <select onchange="headerPageSelectChanged(this);" class="kfc-cloud-header-page-select">
@@ -36,7 +38,7 @@
     <button onclick="alert('Not yet implemented.');">Products</button>
     <button onclick="alert('Not yet implemented.');">Count Locations</button>
     <button onclick="exportToDailyReconciliation();">Export To Reconciliation</button>
-    <button onclick="localStorage.clear();location.reload();">Clear Local Storage</button>
+    <button onclick="clearCountData();">Clear Local Storage</button>
 </div>
 
 <!--TODO all including wastage button-->

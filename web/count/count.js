@@ -65,6 +65,13 @@ function parseFloatOrNull(val) {
     return isNaN(returnValue) ? null : returnValue;
 }
 
+function clearCountData() {
+    //TODO only remove count data
+    localStorage.removeItem("count_all_counts");
+    localStorage.removeItem("count_current_count_index");
+    location.reload();
+}
+
 /* Gets the data for a single row*
  *
  * @param row
