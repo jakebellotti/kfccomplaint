@@ -1,4 +1,6 @@
 //TODO remove the remnants of antiquated functions
+//TODO new way of entering data for receiving, store 2 types of data, one for frozen and one for receiving
+
 let openDay = null;
 
 let productsTbody = document.getElementById("products");
@@ -89,18 +91,19 @@ function updateRow(row) {
     let total = 0;
     let sold = 0;
 
-    if (openQuantity) {
+    if (openQuantity !== null) {
         total += openQuantity;
     }
-    if (receivedQuantity) {
+    if (receivedQuantity !== null) {
         total += receivedQuantity;
     }
-    if (wastedQuantity) {
+    if (wastedQuantity !== null) {
         total -= wastedQuantity;
     }
     totalInput.innerText = total;
 
-    if (openQuantity && closeQuantity) {
+    //TODO does not work when it is 0
+    if (openQuantity !== null && closeQuantity !== null) {
         //TODO if it goes below 0, there has been an error so log it
         sold = (total - closeQuantity);
         soldInput.innerText = Math.max(sold, 0);
@@ -463,6 +466,8 @@ function addDataFromCount(countData) {
                 }
             }
         }
+
+        onDocumentDataChanged();
     });
 
 //    TODO load required date first (default to current date)
@@ -476,6 +481,15 @@ function previousDayButtonClicked() {
         alert("No day is currently selected.");
         return;
     }
+    let goToPreviousDay = true;
+
+    if (documentHasUnsavedChanges()) {
+        goToPreviousDay = window.confirm("This document has unsaved changes. Are you sure you want to navigate to the previous day?");
+    }
+    if (!goToPreviousDay) {
+        return;
+    }
+    alert("Not yet implemented.");
 
     //    TODO if there are unsaved changes, must ask whether or not we want to save first
 }
@@ -485,7 +499,17 @@ function nextDayButtonClicked() {
         alert("No day is currently selected.");
         return;
     }
-//    TODO if there are unsaved changes, must ask whether or not we want to save first
+    let goToNextDay = true;
+
+    if (documentHasUnsavedChanges()) {
+        goToNextDay = window.confirm("This document has unsaved changes. Are you sure you want to navigate to the next day?");
+    }
+    if (!goToNextDay) {
+        return;
+    }
+    alert("Not yet implemented.");
+//    TODO check if next day exists
+//    TODO if does not exist, call api to insert it (with wasted and frozen data if applic)
 }
 
 function getInputAsIntegerOrNull(input) {
@@ -581,7 +605,33 @@ function hideUnsavedDocumentSpan() {
 
 function createNextDayButtonClicked() {
 //    TODO validate the data is complete
-    alert("Not yet implemented.");
+//    TODO this being completed is probably the last part before I can consider it to be usable at a bare minimum
+//    TODO once this is done, start to work on the averages etc workbook look alike page
+
+    for (const row of getAllRowsData()) {
+        //    TODO use the full name and not the identifier so it looks nicer, also tell exactly what figures are missing instead of being ambiguous
+        let quantitiesPresent = (row.openQuantity !== null) && (row.closeQuantity !== null);
+        if (!quantitiesPresent) {
+            alert(`Missing open or closing figures for ${row.identifier}.`);
+            return;
+        }
+    }
+
+    DailyReconciliationAPI.nextDayExists(openDay.date, function (found) {
+        if (found !== null) {
+            alert("The next day has already been created.");
+            return;
+        } else {
+            //TODO insert wasted data if present and defrosted data
+            DailyReconciliationAPI.createNextDay(openDay.date, openDay, null, null, function (newDate) {
+                alert("Next day created.");
+                window.location = `dailyRecon.html?openDate=${newDate.date}`;
+                //    TODO should we open?
+            });
+        }
+    });
+
+    //TODO check the rest of the compulsory values
 }
 
 //TODO programatically create input popup

@@ -45,6 +45,47 @@ class DailyReconciliationAPI {
 
     //TODO get previous day and next day functions
 
+    static createNextDay(todayString, openDay, wastedData, defrostedData, callback) {
+        let localData = this.getLocalData();
+        let nextDayDate = moment(todayString, "DD/MM/YYYY").add(1, "days").format("DD/MM/YYYY");
+
+        //TODO defaults to store open, should that ever be a problem? idk?
+
+        let dateData = [];
+
+        for (const day of openDay.data) {
+            dateData.push({
+                identifier: day.identifier,
+                openQuantity: day.closeQuantity,
+                receivedQuantity: null,
+                wastedQuantity: null,
+                closeQuantity: null
+            });
+        }
+        //TODO create the date
+
+        let newDate = {
+            date: nextDayDate,
+            dayType: "store_open",
+            amManager: null,
+            pmManager: null,
+            sales: null,
+            customerCount: null,
+            cashVariance: null,
+            notes: null,
+            data: dateData
+        };
+
+        localData.push(newDate);
+        //TODO data integrity, check if exists first
+        this.setLocalData(localData);
+        callback(newDate);
+    }
+
+    static nextDayExists(todayString, callback) {
+        DailyReconciliationAPI.dayExists(moment(todayString, "DD/MM/YYYY").add(1, "days").format("DD/MM/YYYY"), callback);
+    }
+
     static dayExists(dayString, callback) {
         let data = this.getLocalData();
 
