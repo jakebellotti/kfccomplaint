@@ -1,3 +1,5 @@
+//TODO render items etc only if active
+
 let currentCountDatePicker = document.getElementById("current-count-date-picker");
 let currentCountTimePicker = document.getElementById("current-count-time-picker");
 let currentCountIDInput = document.getElementById("current-count-count-id");

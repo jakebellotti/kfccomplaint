@@ -1,5 +1,6 @@
 //TODO remove the remnants of antiquated functions
 //TODO new way of entering data for receiving, store 2 types of data, one for frozen and one for receiving
+//TODO allow deleting of promo items from recon (for once promo is ended and we aren't counting, to avoid error from not entering it).
 
 let openDay = null;
 
@@ -112,16 +113,20 @@ function updateRow(row) {
     onDocumentDataChanged();
 }
 
-function createTableEntry(name, structure, returnType = "each") {
+function createTableEntryFromItemConfigData(itemData) {
+    //TODO special styling if it is a promo item
     let row = document.createElement("tr");
-    row.dataset.itemIdentifier = structure.identifier;
-    row.dataset.returnType = structure.returnType;
+    row.dataset.itemIdentifier = itemData.itemIdentifier;
+    // row.dataset.returnType = structure.returnType;
     row.classList.add("data-tr");
     //TODO if head, handle differently
 
     let nameTD = document.createElement("td");
-    nameTD.innerText = name;
+    nameTD.innerText = itemData.itemNamePref;
     nameTD.classList.add("name-td");
+    if (itemData.availability === "promotion") {
+        nameTD.classList.add("name-td-promotional-item");
+    }
 
     let openTD = document.createElement("td");
     openTD.classList.add("editable-td");
@@ -134,21 +139,21 @@ function createTableEntry(name, structure, returnType = "each") {
 
         // createCountInputModalWindow(name, structure, openTD, returnType);
         // createSimpleInputModalWindow(name, structure, openTD, returnType);
-        createSimpleInputModalWindow("opening", name, openTD, row);
+        createSimpleInputModalWindow("opening", itemData.itemNamePref, openTD, row);
     };
 
     let receivedTD = document.createElement("td");
     receivedTD.classList.add("editable-td");
     receivedTD.classList.add("input-type-received-quantity");
     receivedTD.onclick = function () {
-        createSimpleInputModalWindow("receiving", name, receivedTD, row);
+        createSimpleInputModalWindow("receiving", itemData.itemNamePref, receivedTD, row);
     };
 
     let wastedTD = document.createElement("td");
     wastedTD.classList.add("editable-td");
     wastedTD.classList.add("input-type-wasted-quantity");
     wastedTD.onclick = function () {
-        createSimpleInputModalWindow("wasting", name, wastedTD, row);
+        createSimpleInputModalWindow("wasting", itemData.itemNamePref, wastedTD, row);
     };
 
     let totalTD = document.createElement("td");
@@ -158,7 +163,7 @@ function createTableEntry(name, structure, returnType = "each") {
     closedTD.classList.add("editable-td");
     closedTD.classList.add("input-type-closing-quantity");
     closedTD.onclick = function () {
-        createSimpleInputModalWindow("closing", name, closedTD, row);
+        createSimpleInputModalWindow("closing", itemData.itemNamePref, closedTD, row);
     };
 
     let soldTD = document.createElement("td");
@@ -175,60 +180,78 @@ function createTableEntry(name, structure, returnType = "each") {
     return row;
 }
 
-function createTableEntriesFromData() {
-    let products = document.getElementById("products");
-
-    for (const key of Object.keys(allStructures)) {
-        let category = allStructures[key];
-        products.appendChild(createDividerRow(category.name));
-
-        for (let i = 0; i < category.structures.length; i++) {
-            let currentStructure = category.structures[i];
-            products.append(createTableEntry(currentStructure.name, currentStructure));
+function itemIsActiveOrPresent(item, currentDay) {
+    let currentlyActive = ItemData.isItemActive(item);
+    if (currentlyActive) {
+        //If the item is currently active, include it and don't continue
+        return true;
+    }
+    for (const row of currentDay.data) {
+        if (row.identifier === item.itemIdentifier) {
+            //The item is included in the count, so we will include it (in case we are viewing historical data).
+            return true;
         }
+    }
+    return false;
+}
 
-        //    TODO create structures
+function createTableEntriesFromItemConfigData(currentDay) {
+    if (!currentDay) {
+        console.log("No day specified.");
+        return;
+    }
+
+    let products = document.getElementById("products");
+    // console.log()
+//    chicken
+//    TODO organise by preference
+    //TODO if active or present in recon we are opening
+    products.appendChild(createDividerRow("Chicken"));
+    for (const item of ItemData.getAllChickenItems()) {
+
+
+        let isItemActive = ItemData.isItemActive(item);
+        if (itemIsActiveOrPresent(item, currentDay)) {
+            products.append(createTableEntryFromItemConfigData(item));
+        }
+    }
+
+    products.appendChild(createDividerRow("Freezer"));
+    for (const item of ItemData.getAllFreezerItems()) {
+        let isItemActive = ItemData.isItemActive(item);
+        if (isItemActive) {
+            products.append(createTableEntryFromItemConfigData(item));
+        }
+    }
+
+    products.appendChild(createDividerRow("Salads"));
+    for (const item of ItemData.getAllSaladItems()) {
+        let isItemActive = ItemData.isItemActive(item);
+        if (isItemActive) {
+            products.append(createTableEntryFromItemConfigData(item));
+        }
+    }
+
+    products.appendChild(createDividerRow("Breads"));
+    for (const item of ItemData.getAllBreadItems()) {
+        let isItemActive = ItemData.isItemActive(item);
+        if (isItemActive) {
+            products.append(createTableEntryFromItemConfigData(item));
+        }
+    }
+
+    products.appendChild(createDividerRow("Misc"));
+    for (const item of ItemData.getAllMiscItems()) {
+        let isItemActive = ItemData.isItemActive(item);
+        if (isItemActive) {
+            products.append(createTableEntryFromItemConfigData(item));
+        }
     }
 }
 
-function createTableEntries() {
-    let products = document.getElementById("products");
-    //TODO use function that builds all of this from a completed count, saves us from having to share the configuration over multiple locations
+//TODO create another function to do the same as this, but take active rows into consideration
+//TODO what if we are opening a recon that includes data from a currently disabled item?
 
-    //TODO put this into a JS array and handle like that
-
-    products.appendChild(createDividerRow("Chicken"));
-    products.appendChild(createTableEntry("Original Recipe", cobStructure, "head"));
-    products.appendChild(createTableEntry("Hot & Spicy", cobStructure, "head"));
-    products.appendChild(createTableEntry("Original Fillets", filletsStructure));
-    products.appendChild(createTableEntry("Zinger Fillets", filletsStructure));
-    products.appendChild(createTableEntry("Tenders", tendersStructure));
-    products.appendChild(createTableEntry("Wicked Wings", wickedWingsStructure));
-
-    products.appendChild(createDividerRow("Freezer"));
-    products.appendChild(createTableEntry("Chicken Nuggets", nuggetsStructure));
-    products.appendChild(createTableEntry("Popcorn Chicken", popcornChickenStructure));
-    products.appendChild(createTableEntry("Chips", chipsStructure));
-    products.appendChild(createTableEntry("Bacon", baconStructure));
-    products.appendChild(createTableEntry("Chocolate Mousse", chocolateMousseStructure));
-
-    products.appendChild(createDividerRow("Salads"));
-    products.appendChild(createTableEntry("Diced Tomato", tomatoStructure));
-    products.appendChild(createTableEntry("Lettuce", lettuceStructure));
-    products.appendChild(createTableEntry("Coleslaw (Small)", smallColeslawStructure));
-    products.appendChild(createTableEntry("Coleslaw (Large)", largeColeslawStructure));
-
-    products.appendChild(createDividerRow("Breads"));
-    products.appendChild(createTableEntry("Burger Buns", burgerBunsStructure));
-    products.appendChild(createTableEntry("Dinner Rolls", dinnerRollsStructure));
-    products.appendChild(createTableEntry("Flatbread", flatbreadSlidersStructure));
-    products.appendChild(createTableEntry("Tortillas", tortillasStructure));
-
-    //TODO handle promo different
-    products.appendChild(createDividerRow("Misc"));
-    products.appendChild(createTableEntry("Promo"));
-
-}
 
 function updateUnitsFromTotal(total, sender) {
     let window = sender.parentElement.parentElement.parentElement;
@@ -431,6 +454,7 @@ function openReconDate(date) {
         //    TODO update, maybe put loading screen on this too
         //TODO if the day is null, handle that
         openDay = day;
+        createTableEntriesFromItemConfigData(day);
         setCurrentDayData();
     });
 //    TODO validate
@@ -453,8 +477,11 @@ function addDataFromCount(countData) {
         //TODO updatye
         //TODO when setting the open day, maybe set it through a function so that
         openDay = dayData;
+        createTableEntriesFromItemConfigData(dayData);
         setCurrentDayData();
 
+
+        //TODO decide which calculation method we use
         let parsedData = JSON.parse(countData);
         let freshData = parsedData.freshData;
         for (const key of Object.keys(freshData)) {
@@ -638,7 +665,11 @@ function createNextDayButtonClicked() {
 //TODO include identifier on every data-row
 
 // createTableEntries();
-createTableEntriesFromData();
+//TODO remove this when we finish the other
+//T
+// createTableEntriesFromData();
+//TODO this shoudldn't be called by default, should only let it be called when opening something so we can selectively add promo items if they are present etc
+// createTableEntriesFromItemConfigData();
 
 //TODO check params and see what we are doing (loading a specific date for example).
 let params = new URLSearchParams(window.location.search);

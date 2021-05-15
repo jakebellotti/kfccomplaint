@@ -125,6 +125,10 @@ td, th {
     width: 150px;
 }
 
+.name-td-promotional-item {
+    font-weight: bold;
+}
+
 .modal-window-background {
     background-color: rgba(0, 0, 0, 0.7);
     position: absolute;

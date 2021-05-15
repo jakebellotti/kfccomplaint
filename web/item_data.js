@@ -46,7 +46,7 @@ const allProductsData = [
     {
         itemID: "506932",
         itemIdentifier: "zinger_fillets",
-        itemNamePref: "Zingers",
+        itemNamePref: "Zinger Fillets",
         itemNameFull: "Zinger Fillets",
         category: "chicken",
         availability: "always",
@@ -624,7 +624,6 @@ class ItemData {
         } else if (itemData.availability === "promotion") {
             return false;
         }
-
         return true;
     }
 
