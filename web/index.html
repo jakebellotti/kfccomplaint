@@ -5,7 +5,10 @@
     <title>KFC Cloud</title>
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="main.css">
+    <script src="orders/scheduledOrders.js"></script>
     <script src="index.js" defer></script>
+    <link rel="stylesheet" href="orders/scheduledOrders.css">
+    <script src="../lib/moment.min.js"></script>
 </head>
 <body>
 <div class="kfc-cloud-header">
@@ -47,6 +50,21 @@
         <p>Help</p>
     </div>
 </div>
+
+<div class="scheduled-orders-container">
+    <p class="scheduled-orders-header">Today's Scheduled Orders</p>
+    <div class="scheduled-orders-div">
+        <div class="scheduled-order-div">
+            <p class="scheduled-order-label">Tip Top (Bread) : in 2 hours</p>
+            <div class="scheduled-order-progress-bar"></div>
+        </div>
+        <div class="scheduled-order-div">
+            <p class="scheduled-order-label">Tip Top (Bread) : in 2 hours</p>
+            <div class="scheduled-order-progress-bar"></div>
+        </div>
+    </div>
+</div>
+
 
 <div class="links-table-container">
     <table class="links-table">

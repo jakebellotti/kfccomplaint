@@ -1,10 +1,13 @@
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 
 body {
     background-color: rgb(35, 35, 35);
+    display: flex;
+    flex-direction: column;
 }
 
 .link-box-container {
@@ -88,4 +91,50 @@ body {
 .table-category-header {
     background-color: rgb(20, 20, 20);
     padding: 5px !important;
+}
+
+.scheduled-orders-container {
+    box-shadow: 1px 1px 5px 1px black;
+    background-color: rgb(20, 20, 20);
+}
+
+.scheduled-orders-div {
+    width: 100%;
+    padding: 0 30px 30px 30px;
+}
+
+.scheduled-orders-header {
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial;
+    padding-top: 10px;
+    background-color: rgb(20, 20, 20);
+}
+
+.scheduled-order-div {
+    background-color: rgb(35, 35, 35);
+    border-radius: 10px;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.scheduled-order-label {
+    text-align: center;
+    font-family: Arial;
+    color: white;
+    padding: 10px;
+}
+
+.scheduled-order-progress-bar {
+    background-color: #6656f4;
+    width: 58%;
+
+    height: 10px;
+    border-radius: 0 10px 10px 10px;
+}
+
+.scheduled-order-progress-bar-missed {
+    background-color: #df1d29 !important;
 }
