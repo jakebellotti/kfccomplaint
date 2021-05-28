@@ -5,6 +5,7 @@
     <title>Product Sold</title>
     <link rel="stylesheet" href="productSold.css">
     <link rel="stylesheet" href="../../main.css">
+    <script src="../../../lib/MomentAPI.js"></script>
     <script src="../../main.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
@@ -78,10 +79,13 @@
             <option value="sunday">Sunday</option>
         </select>
     </div>
+
+    <button id="resize-to-viewport-button" onclick="resizeToViewportButtonClicked();">Resize To Viewport</button>
+
 </div>
 
 
-<table class="sold-products-table">
+<table id="sold-products-table" class="sold-products-table">
     <thead>
     <tr id="sold-product-table-header">
         <td>No data.</td>

@@ -7,7 +7,26 @@ let soldProductsTbody = document.getElementById("sold-products-tbody");
 let showOnlyProductColumnsCheckBox = document.getElementById("show-only-product-columns-checkbox");
 let selectDaySelect = document.getElementById("select-day-select");
 
+let resizeToViewportButton = document.getElementById("resize-to-viewport-button");
+
 CloudDailyReconciliationAPI.initFirebase();
+
+function resizeToViewportButtonClicked() {
+//    TODO if no items shown, return
+//    TODO if we are already resized, reset it
+    let viewportWidth = window.innerWidth;
+    let productsTable = document.getElementById("sold-products-table");
+    let tableWidth = productsTable.offsetWidth;
+    let newWidthPercentage = (((100 / tableWidth) * viewportWidth) / 100);
+
+    if (productsTable.style.transform !== "") {
+        productsTable.style.transform = "";
+        return;
+    }
+
+    productsTable.style.transform = `scale(${newWidthPercentage})`;
+}
+
 
 function createElementWithInnerText(element, text, classes) {
     let toReturn = document.createElement(element);
@@ -152,8 +171,14 @@ function showOnlyProductColumnsChanged() {
 }
 
 //TODO don't hardcode this, instead make it 'this week' preset
-viewRangeStartDate.value = "2021-05-24";
-viewRangeEndDate.value = "2021-05-30";
+// viewRangeStartDate.value = "2021-05-24";
+// viewRangeEndDate.value = "2021-05-30";
+
+let weekStart = moment(MomentAPI.getMondayThisWeek());
+let weekEnd = moment(weekStart).add(6, "days");
+
+viewRangeStartDate.value = weekStart.format("YYYY-MM-DD");
+viewRangeEndDate.value = weekEnd.format("YYYY-MM-DD");
 
 // updateSoldItemsData(testData);
 

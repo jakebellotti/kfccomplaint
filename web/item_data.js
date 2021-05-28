@@ -622,9 +622,12 @@ class ItemData {
     static isItemActive(itemData) {
         //    TODO query local storage
         //TODO if doesn't exist, create
+        //TODO why is undefind being passed?
         let itemDataStorage = this.getItemDataStorage();
         //    TODO if override is present, return, otherwise calculate default (promo isn;t active by default, available alewyas is alswyd sacfitgv
+
         for (const override of itemDataStorage.itemActivationOverride) {
+            //TODO this does not work
             if (override.itemIdentifier === itemData.itemIdentifier) {
                 return override.active;
             }

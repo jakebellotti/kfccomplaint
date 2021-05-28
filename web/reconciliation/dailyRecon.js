@@ -478,6 +478,10 @@ function addDataFromCount(countData) {
     //TODO get today date
     //TODO save the data from the count (which includes wasted data) so that we can easily transfer it to the next day's reconciliation when the create next day button is clicked
 
+    if (true) {
+        alert("Not yet implemented.");
+        return;
+    }
     DailyReconciliationAPI.getToday(function (dayData, index) {
         if (dayData === null) {
             //TODO handle with overlay
@@ -526,9 +530,17 @@ function previousDayButtonClicked() {
     if (!goToPreviousDay) {
         return;
     }
-    alert("Not yet implemented.");
 
-    //    TODO if there are unsaved changes, must ask whether or not we want to save first
+    ModalOverlay.showModalWindow("Checking...")
+    CloudDailyReconciliationAPI.previousDayExists(openDay.date, function (data) {
+        if (data !== undefined) {
+            ModalOverlay.hideModalWindow();
+            window.location = `dailyRecon.html?openDate=${moment(openDay.date, "DD-MM-YYYY").subtract(1, "days").format("DD-MM-YYYY")}`;
+        } else {
+            ModalOverlay.hideModalWindow();
+            alert("Next day does not exist.");
+        }
+    });
 }
 
 function nextDayButtonClicked() {
@@ -544,8 +556,17 @@ function nextDayButtonClicked() {
     if (!goToNextDay) {
         return;
     }
-    alert("Not yet implemented.");
-//    TODO check if next day exists
+
+    ModalOverlay.showModalWindow("Checking...")
+    CloudDailyReconciliationAPI.nextDayExists(openDay.date, function (data) {
+        if (data !== undefined) {
+            ModalOverlay.hideModalWindow();
+            window.location = `dailyRecon.html?openDate=${moment(openDay.date, "DD-MM-YYYY").add(1, "days").format("DD-MM-YYYY")}`;
+        } else {
+            ModalOverlay.hideModalWindow();
+            alert("Next day does not exist.");
+        }
+    });
 //    TODO if does not exist, call api to insert it (with wasted and frozen data if applic)
 }
 
@@ -604,9 +625,10 @@ function saveButtonClicked() {
     if (isChanged) {
         openDay = newOpenDay;
 
+        ModalOverlay.showModalWindow("Saving data...");
         CloudDailyReconciliationAPI.saveDay(openDay, function () {
             onDocumentDataChanged();
-            alert("Saved data.");
+            ModalOverlay.hideModalWindow();
         });
 
         // DailyReconciliationAPI.saveDay(openDay, function () {
@@ -664,13 +686,16 @@ function createNextDayButtonClicked() {
         }
     }
 
+    ModalOverlay.showModalWindow("Creating next day...");
     CloudDailyReconciliationAPI.nextDayExists(openDay.date, function (data) {
         if (data !== undefined) {
             alert("The next day has already been created.");
+            ModalOverlay.hideModalWindow();
         } else {
             CloudDailyReconciliationAPI.createNextDay(openDay.date, openDay, null, null, function (newDate) {
-                alert("Next day created.");
-                window.location = `dailyRecon.html?openDate=${newDate.date}`;
+                ModalOverlay.hideModalWindow();
+                // alert("Next day created.");
+                // window.location = `dailyRecon.html?openDate=${newDate.date}`;
                 //TODO should we open in new window?
             });
         }
@@ -716,6 +741,8 @@ if (!countData) {
 
 if (openDate) {
     openReconDate(openDate);
+} else {
+    ModalOverlay.showModalWindow("No day has been selected.");
 }
 
 //TODO if open date is not set, set to current day (or last day that exists)

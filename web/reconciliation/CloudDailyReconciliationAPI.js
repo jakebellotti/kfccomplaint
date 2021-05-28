@@ -58,6 +58,10 @@ class CloudDailyReconciliationAPI {
         // citiesRef.where('country', 'not-in', ['USA', 'Japan']);
     }
 
+    static previousDayExists(todayString, callback) {
+        CloudDailyReconciliationAPI.dayExists(moment(todayString, "DD-MM-YYYY").subtract(1, "days").format("DD-MM-YYYY"), callback);
+    }
+
     static nextDayExists(todayString, callback) {
         CloudDailyReconciliationAPI.dayExists(moment(todayString, "DD-MM-YYYY").add(1, "days").format("DD-MM-YYYY"), callback);
     }
@@ -88,6 +92,10 @@ class CloudDailyReconciliationAPI {
         let dateData = [];
 
         for (const day of openDay.data) {
+            let active = ItemData.isItemActive(ItemData.getDataForIdentifier(day.identifier));
+            if (!active) {
+                continue;
+            }
             dateData.push({
                 identifier: day.identifier,
                 openQuantity: day.closeQuantity,
@@ -96,7 +104,6 @@ class CloudDailyReconciliationAPI {
                 closeQuantity: null
             });
         }
-        //TODO create the date
 
         let newDate = {
             date: nextDayDate,

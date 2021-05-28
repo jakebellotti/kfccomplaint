@@ -10,6 +10,8 @@ body {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     min-width: 100%;
+    transform-origin: left;
+    /*TODO allow to scale to the viewport*/
     /*table-layout: fixed;*/
     box-shadow: 1px 1px 5px 1px black;
     border: solid 1px black;
@@ -115,4 +117,10 @@ body {
 .highlight-day-select-container select {
     font-size: 16px;
     margin-left: 5px;
+}
+
+#resize-to-viewport-button {
+    font-size: 16px;
+    margin-top: 5px;
+    cursor: pointer;
 }

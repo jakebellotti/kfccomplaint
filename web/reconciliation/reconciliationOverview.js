@@ -1,5 +1,6 @@
 CloudDailyReconciliationAPI.initFirebase();
 
+let weekStartDateInput = document.getElementById("week-start-date-input");
 
 let tbody = document.getElementById("weekly-overview-table-body");
 
@@ -7,9 +8,9 @@ let dayTypeSelect = document.getElementById("day-type-select");
 let createDayDateInput = document.getElementById("create-day-date-input");
 
 let currentDate = new Date();
-let mondayDate = moment().subtract((currentDate.getDay() - 1), 'days').toDate();
+let mondayDate = MomentAPI.getMondayThisWeek();
 
-//TODO fill with data from recon google sheets
+weekStartDateInput.valueAsDate = mondayDate;
 
 function createTDWithData(data) {
     let td = document.createElement("td");
@@ -23,34 +24,28 @@ function buildButton(text) {
     return button;
 }
 
-function createRows() {
+function createRowsEfficiently() {
     tbody.innerHTML = "";
+    let weekStart = moment(weekStartDateInput.value).toDate();
+    let weekEnd = moment(weekStartDateInput.value).add(6, 'days').toDate();
 
-    for (let i = 0; i < 7; i++) {
-        let row = document.createElement("tr");
-        let date = moment(mondayDate).add(i, 'days');
-        let dateToString = date.format("DD-MM-YYYY");
+    ModalOverlay.showModalWindow("Loading...")
+    CloudDailyReconciliationAPI.getDateRange(weekStart, weekEnd, function (list) {
+        for (let i = 0; i < list.length; i++) {
+            let row = document.createElement("tr");
+            let date = moment(list[i].key, "DD-MM-YYYY");
+            let data = list[i].value;
+            let dateToString = date.format("DD-MM-YYYY");
 
-        let isCurrentDay = (moment().format("DD-MM-YYYY") === date.format("DD-MM-YYYY"));
-        if (isCurrentDay) {
-            row.classList.add("current-day-row");
-        }
+            let isCurrentDay = (moment().format("DD-MM-YYYY") === date.format("DD-MM-YYYY"));
+            if (isCurrentDay) {
+                row.classList.add("current-day-row");
+            }
 
-        //TODO remove remnants of dd/mm/yyyy and replace with dd-mm-yyyy
-
-
-        //TODO create each row fully
-
-        //TODO button to view it
-
-        //TODO day string will be --
-        // DailyReconciliationAPI.dayExists(dateToString, function (res) {
-        CloudDailyReconciliationAPI.dayExists(date.format("DD-MM-YYYY"), function (data) {
             row.appendChild(createTDWithData(date.format('dddd')));
             row.appendChild(createTDWithData(date.format("DD/MM/YYYY")));
             row.appendChild(createTDWithData(data !== undefined));
             row.appendChild(createTDWithData(data === undefined ? "" : data.dayType));
-            //TODO include this data if the row is actually present
             row.appendChild(createTDWithData(data === undefined ? "" : data.amManager));
             row.appendChild(createTDWithData(data === undefined ? "" : data.pmManager));
 
@@ -69,40 +64,41 @@ function createRows() {
             viewButton.classList.add("view-button");
             viewButton.onclick = function () {
                 window.open(`dailyRecon.html?openDate=${dateToString}`, "_target");
-                //    TODO open in new tab, pass date param
             };
+
 
             let deleteButton = buildButton("Delete");
             deleteButton.classList.add("action-button");
             deleteButton.classList.add("delete-button");
 
             deleteButton.onclick = function () {
-                //    TODO ask for confirmation first
+
+                let result = confirm(`Are you sure that you want to delete reconciliation for ${dateToString}?`);
+                if (!result) {
+                    return;
+                }
+                ModalOverlay.showModalWindow("Deleting...");
                 CloudDailyReconciliationAPI.deleteDay(dateToString, function () {
-                    // alert(deleteResult ? "Day deleted successfully." : "Error deleting the day.");
-                    //TODO actually confirm
-                    alert("Deleted");
-                    createRows();
+                    ModalOverlay.hideModalWindow();
+                    alert("Deleted.");
+                    createRowsEfficiently();
                 });
             };
 
             if (!data) {
                 actionsTD.appendChild(createButton);
-                //TODO show the add page with the date, insert and then update
-                //    TODO add to database, on callback update this view, then open the reconciliation page
             }
             if (data) {
                 actionsTD.appendChild(viewButton);
                 actionsTD.appendChild(deleteButton);
             }
-            //TODO onclick
 
-
-            //TODO delete button maybe
             row.appendChild(actionsTD);
             tbody.appendChild(row);
-        });
-    }
+        }
+        ModalOverlay.hideModalWindow();
+    });
+
 }
 
 function hideCreateDayModalWindow() {
@@ -126,6 +122,12 @@ function populateCreateDayValues() {
     }
 }
 
+function weekStartInputChanged() {
+    let newVal = weekStartDateInput.value;
+    weekStartDateInput.valueAsDate = MomentAPI.getStartOfWeek(new Date(newVal));
+    createRowsEfficiently();
+}
+
 function createDayButtonClicked() {
 //    TODO make sure that everything is entered
 //    TODO data validation, check that the date isn't already added
@@ -136,15 +138,17 @@ function createDayButtonClicked() {
 
     //TODO loading indication
 
+    ModalOverlay.showModalWindow("Creating day...");
     CloudDailyReconciliationAPI.createBlankDay(date, dayType, function () {
         hideCreateDayModalWindow();
-        createRows();
+        ModalOverlay.hideModalWindow();
+        createRowsEfficiently();
     });
-    // DailyReconciliationAPI.createBlankDay(date, dayType);
 }
 
 populateCreateDayValues();
-createRows();
+
+createRowsEfficiently();
 
 //TODO use date range to generate the list, show loading overlay
 //TODO test getting a list of dates
