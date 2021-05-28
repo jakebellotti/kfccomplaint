@@ -524,6 +524,16 @@ class ItemData {
 //    TODO add utility methods
 //    TODO method to get all for category
 
+
+    static getDataForIdentifier(identifier) {
+        for (const data of this.getAllItemsData()) {
+            if (data.itemIdentifier === identifier) {
+                return data;
+            }
+        }
+    }
+
+
     static getAllItemsData() {
         return allProductsData;
     }

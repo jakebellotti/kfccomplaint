@@ -16,18 +16,42 @@ class DailyReconciliationDay {
     constructor(date, dayType) {
         this._date = date;
         this._dayType = dayType;
-        this._amManager = null;
-        this._pmManager = null;
-        this._data = [];
+    }
+
+    calculateSold(itemIdentifier) {
+        for (const d of this._data) {
+            if (d.identifier === itemIdentifier) {
+                if (d.openQuantity !== null && d.closeQuantity !== null) {
+                    let open = d.openQuantity;
+                    if (d.wastedQuantity !== null) {
+                        open = (open - d.wastedQuantity);
+                    }
+                    if (open < 0) {
+                        open = 0;
+                    }
+                    if (d.receivedQuantity !== null) {
+                        open += d.receivedQuantity;
+                    }
+                    return (open - d.closeQuantity);
+                }
+            }
+        }
+        return null;
     }
 
     static constructFromJSON(jsonObj) {
-        //TODO implement
-        //TODO error check the object
+        if (!jsonObj) {
+            return null;
+        }
+        //TODO double check that the object contains all of the needed variables
         let obj = new DailyReconciliationDay(jsonObj.date, jsonObj.dayType);
         obj._amManager = jsonObj.amManager;
         obj._pmManager = jsonObj.pmManager;
-        obj._data = jsonObj._data;
+        obj._sales = jsonObj.sales;
+        obj._notes = jsonObj.notes;
+        obj._data = jsonObj.data;
+        obj._cashVariance = jsonObj.cashVariance;
+        obj._customerCount = jsonObj.customerCount;
         return obj;
     }
 

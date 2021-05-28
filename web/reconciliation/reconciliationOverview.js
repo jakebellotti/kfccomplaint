@@ -1,3 +1,6 @@
+CloudDailyReconciliationAPI.initFirebase();
+
+
 let tbody = document.getElementById("weekly-overview-table-body");
 
 let dayTypeSelect = document.getElementById("day-type-select");
@@ -26,27 +29,30 @@ function createRows() {
     for (let i = 0; i < 7; i++) {
         let row = document.createElement("tr");
         let date = moment(mondayDate).add(i, 'days');
-        let dateToString = date.format("DD/MM/YYYY");
+        let dateToString = date.format("DD-MM-YYYY");
 
-        let isCurrentDay = (moment().format("DD/MM/YYYY") === dateToString);
+        let isCurrentDay = (moment().format("DD-MM-YYYY") === date.format("DD-MM-YYYY"));
         if (isCurrentDay) {
             row.classList.add("current-day-row");
         }
+
+        //TODO remove remnants of dd/mm/yyyy and replace with dd-mm-yyyy
 
 
         //TODO create each row fully
 
         //TODO button to view it
 
-        DailyReconciliationAPI.dayExists(dateToString, function (res) {
-            //TODO make sure this works from localstorage first
+        //TODO day string will be --
+        // DailyReconciliationAPI.dayExists(dateToString, function (res) {
+        CloudDailyReconciliationAPI.dayExists(date.format("DD-MM-YYYY"), function (data) {
             row.appendChild(createTDWithData(date.format('dddd')));
-            row.appendChild(createTDWithData(dateToString));
-            row.appendChild(createTDWithData(res !== null));
-            row.appendChild(createTDWithData(res === null ? "" : res.dayType));
+            row.appendChild(createTDWithData(date.format("DD/MM/YYYY")));
+            row.appendChild(createTDWithData(data !== undefined));
+            row.appendChild(createTDWithData(data === undefined ? "" : data.dayType));
             //TODO include this data if the row is actually present
-            row.appendChild(createTDWithData(res == null ? "" : res.amManager));
-            row.appendChild(createTDWithData(res == null ? "" : res.pmManager));
+            row.appendChild(createTDWithData(data === undefined ? "" : data.amManager));
+            row.appendChild(createTDWithData(data === undefined ? "" : data.pmManager));
 
             let actionsTD = document.createElement("td");
             actionsTD.classList.add("actions-td");
@@ -71,19 +77,21 @@ function createRows() {
             deleteButton.classList.add("delete-button");
 
             deleteButton.onclick = function () {
-                //    TODO implement this
                 //    TODO ask for confirmation first
-                let deleteResult = DailyReconciliationAPI.deleteDay(dateToString);
-                alert(deleteResult ? "Day deleted successfully." : "Error deleting the day.");
-                createRows();
+                CloudDailyReconciliationAPI.deleteDay(dateToString, function () {
+                    // alert(deleteResult ? "Day deleted successfully." : "Error deleting the day.");
+                    //TODO actually confirm
+                    alert("Deleted");
+                    createRows();
+                });
             };
 
-            if (res === null) {
+            if (!data) {
                 actionsTD.appendChild(createButton);
                 //TODO show the add page with the date, insert and then update
                 //    TODO add to database, on callback update this view, then open the reconciliation page
             }
-            if (res !== null) {
+            if (data) {
                 actionsTD.appendChild(viewButton);
                 actionsTD.appendChild(deleteButton);
             }
@@ -94,8 +102,6 @@ function createRows() {
             row.appendChild(actionsTD);
             tbody.appendChild(row);
         });
-
-
     }
 }
 
@@ -128,10 +134,17 @@ function createDayButtonClicked() {
     let dayType = dayTypeSelect.value;
     let date = createDayDateInput.valueAsDate;
 
-    DailyReconciliationAPI.createBlankDay(date, dayType);
-    hideCreateDayModalWindow();
-    createRows();
+    //TODO loading indication
+
+    CloudDailyReconciliationAPI.createBlankDay(date, dayType, function () {
+        hideCreateDayModalWindow();
+        createRows();
+    });
+    // DailyReconciliationAPI.createBlankDay(date, dayType);
 }
 
 populateCreateDayValues();
 createRows();
+
+//TODO use date range to generate the list, show loading overlay
+//TODO test getting a list of dates

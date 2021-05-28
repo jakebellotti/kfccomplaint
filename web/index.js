@@ -34,8 +34,6 @@ function createScheduledOrderDiv(order) {
     }
     progressBar.style.width = `${percentage}%`;
 
-    //TODO update progress bar
-
     outerDiv.appendChild(label);
     outerDiv.appendChild(progressBar);
     return outerDiv;

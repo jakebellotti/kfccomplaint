@@ -2,6 +2,10 @@
 //TODO new way of entering data for receiving, store 2 types of data, one for frozen and one for receiving
 //TODO allow deleting of promo items from recon (for once promo is ended and we aren't counting, to avoid error from not entering it).
 
+//TODO migrate to firebase
+
+CloudDailyReconciliationAPI.initFirebase();
+
 let openDay = null;
 
 let productsTbody = document.getElementById("products");
@@ -449,14 +453,20 @@ function setCurrentDayData() {
 }
 
 function openReconDate(date) {
-    console.log("Opening date: " + openDate);
-    DailyReconciliationAPI.dayExists(date, function (day) {
-        //    TODO update, maybe put loading screen on this too
-        //TODO if the day is null, handle that
-        openDay = day;
-        createTableEntriesFromItemConfigData(day);
-        setCurrentDayData();
+    ModalOverlay.showModalWindow(`Loading reconciliation for date: ${openDate}`);
+    CloudDailyReconciliationAPI.dayExists(date, function (day) {
+        if (day === undefined) {
+            alert("Day is null");
+        } else {
+            openDay = day;
+            createTableEntriesFromItemConfigData(day);
+            setCurrentDayData();
+        }
+
+        ModalOverlay.hideModalWindow();
     });
+
+    //    TODO update, maybe put loading screen on this too
 //    TODO validate
 //    TODO then load
 }
@@ -594,10 +604,14 @@ function saveButtonClicked() {
     if (isChanged) {
         openDay = newOpenDay;
 
-        DailyReconciliationAPI.saveDay(openDay, function () {
+        CloudDailyReconciliationAPI.saveDay(openDay, function () {
             onDocumentDataChanged();
             alert("Saved data.");
         });
+
+        // DailyReconciliationAPI.saveDay(openDay, function () {
+        //
+        // });
     } else {
         alert("No changes have been made");
     }
@@ -635,6 +649,12 @@ function createNextDayButtonClicked() {
 //    TODO this being completed is probably the last part before I can consider it to be usable at a bare minimum
 //    TODO once this is done, start to work on the averages etc workbook look alike page
 
+    //TODO if unsaved changes, prompt to save it first as it will avoid a bug
+    if (documentHasUnsavedChanges()) {
+        alert("Unsaved changes. Save before clicking this button and then try again.")
+        return;
+    }
+
     for (const row of getAllRowsData()) {
         //    TODO use the full name and not the identifier so it looks nicer, also tell exactly what figures are missing instead of being ambiguous
         let quantitiesPresent = (row.openQuantity !== null) && (row.closeQuantity !== null);
@@ -644,19 +664,31 @@ function createNextDayButtonClicked() {
         }
     }
 
-    DailyReconciliationAPI.nextDayExists(openDay.date, function (found) {
-        if (found !== null) {
+    CloudDailyReconciliationAPI.nextDayExists(openDay.date, function (data) {
+        if (data !== undefined) {
             alert("The next day has already been created.");
-            return;
         } else {
-            //TODO insert wasted data if present and defrosted data
-            DailyReconciliationAPI.createNextDay(openDay.date, openDay, null, null, function (newDate) {
+            CloudDailyReconciliationAPI.createNextDay(openDay.date, openDay, null, null, function (newDate) {
                 alert("Next day created.");
                 window.location = `dailyRecon.html?openDate=${newDate.date}`;
-                //    TODO should we open?
+                //TODO should we open in new window?
             });
         }
     });
+
+    // DailyReconciliationAPI.nextDayExists(openDay.date, function (found) {
+    //     if (found !== null) {
+    //         alert("The next day has already been created.");
+    //         return;
+    //     } else {
+    //         //TODO insert wasted data if present and defrosted data
+    //         DailyReconciliationAPI.createNextDay(openDay.date, openDay, null, null, function (newDate) {
+    //             alert("Next day created.");
+    //             window.location = `dailyRecon.html?openDate=${newDate.date}`;
+    //             //    TODO should we open?
+    //         });
+    //     }
+    // });
 
     //TODO check the rest of the compulsory values
 }

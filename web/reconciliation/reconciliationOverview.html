@@ -6,9 +6,13 @@
     <link rel="stylesheet" href="reconciliationOverview.css">
     <script src="../../lib/moment.min.js"></script>
     <script src="dailyReconciliationAPI.js"></script>
-    <script src="reconciliationOverview.js" defer></script>
+    <script src="CloudDailyReconciliationAPI.js"></script>
     <link rel="stylesheet" href="../main.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+
     <script src="../main.js"></script>
+    <script src="reconciliationOverview.js" defer></script>
 </head>
 <body>
 <div class="kfc-cloud-header">
@@ -56,19 +60,20 @@
 <div class="modal-window-overlay">
     <div class="modal-window">
         <p class="modal-window-title">Create Day</p>
-        <div>
+        <div class="create-day-date-container">
             <label>
                 Date:
                 <input id="create-day-date-input" type="date">
             </label>
 
         </div>
-        <select id="day-type-select">
-        </select>
-        <button onclick="createDayButtonClicked();">Create</button>
-        <br>
-        <br>
-        <button onclick="hideCreateDayModalWindow();">Close</button>
+        <div class="create-day-type-container">
+            <select id="day-type-select"></select>
+            <button class="create-day-button" onclick="createDayButtonClicked();">Create</button>
+        </div>
+        <div class="center-button-wrapper">
+            <button class="create-day-button" onclick="hideCreateDayModalWindow();">Close</button>
+        </div>
     </div>
 </div>
 

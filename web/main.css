@@ -49,3 +49,20 @@
     display: inline-block !important;
     border: none !important;
 }
+
+.modal-window-background {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-window-text {
+    text-align: center;
+    color: white;
+    font-family: Arial;
+    font-size: 30px;
+    padding: 20px;
+}

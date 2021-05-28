@@ -51,12 +51,14 @@ body {
     margin: 10px auto auto auto;
     width: 400px;
     height: 400px;
+    box-shadow: 1px 1px 5px 1px black;
 }
 
 .modal-window-title {
     text-align: center;
     font-family: Arial;
     font-size: 20px;
+    margin-bottom: 10px;
 }
 
 .actions-td {
@@ -88,4 +90,34 @@ body {
 .delete-button {
     color: white;
     background-color: #962633;
+}
+
+.create-day-date-container {
+    display: flex;
+    justify-content: center;
+}
+
+.create-day-type-container {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+
+.center-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 275px;
+}
+
+#day-type-select {
+    border: solid 1px black;
+}
+
+.create-day-button {
+    padding: 5px;
+    box-shadow: 0px 0px 1px 0px black;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+    height: fit-content;
 }

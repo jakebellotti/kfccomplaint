@@ -4,21 +4,102 @@
     <meta charset="UTF-8">
     <title>Product Sold</title>
     <link rel="stylesheet" href="productSold.css">
+    <link rel="stylesheet" href="../../main.css">
+    <script src="../../main.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+
+    <script src="../../item_data.js"></script>
+    <script src="../CloudDailyReconciliationAPI.js"></script>
+    <script src="../DailyReconciliationDay.js"></script>
+    <script src="../../../lib/moment.min.js"></script>
+    <script src="testResponse.js"></script>
+    <script src="productSold.js" defer></script>
 </head>
 <body>
+
+<div class="kfc-cloud-header">
+    <a href="../../index.html">
+        <div class="kfc-cloud-header-side-container">
+            <img class="kfc-cloud-header-logo" src="../../kfclogo.png" height="30px" width="30"/>
+            <p class="kfc-cloud-header-text">KFC CLOUD</p>
+        </div>
+    </a>
+    <p class="kfc-cloud-header-current-page">Product Sold</p>
+    <!--    TODO add the overview and recon to this header-->
+
+    <div class="kfc-cloud-header-side-container">
+        <select onchange="headerPageSelectChanged(this);" class="kfc-cloud-header-page-select">
+            <option value="productSold.html" selected>Product Sold</option>
+            <option value="../../complaints/complaints.html">Complaints</option>
+            <option value="../../count/count.html">Count</option>
+            <option value="../../reconciliation/dailyRecon.html">Daily Reconciliation</option>
+            <option value="../../reconciliation/reconciliationOverview.html">Daily Recon Overview</option>
+            <option value="../../wastage/wastage.html">Wastage</option>
+        </select>
+    </div>
+</div>
 
 <!--TODO maybe monday, tuesaday etc, show for the last 4 of those days-->
 <!--TODO allow to choose 4,5, 6 week average etc-->
 
+<div class="view-range-form">
+    <p>View Range</p>
+    <div class="date-select-form">
+        <div class="date-selection-container-div">
+            <p>Start</p>
+            <input id="view-range-start-date" type="date">
+        </div>
+        <div class="date-selection-container-div">
+            <p>End</p>
+            <input id="view-range-end-date" type="date">
+        </div>
+    </div>
+    <button id="update-range-button" onclick="updateViewingRange();">Update</button>
+
+    <div>
+        <input type="checkbox" id="show-only-product-columns-checkbox" name="showOnlyProductColumns"
+               onchange="showOnlyProductColumnsChanged();">
+        <label id="show-only-product-columns-checkbox-label" for="show-only-product-columns-checkbox">Show only product
+            columns</label><br>
+    </div>
+
+    <div class="highlight-day-select-container">
+        <label for="select-day-select">Select day:</label>
+        <select id="select-day-select" onchange="selectDaySelectChanged();">
+            <option value="none">None</option>
+            <option value="monday">Monday</option>
+            <option value="tuesday">Tuesday</option>
+            <option value="wednesday">Wednesday</option>
+            <option value="thursday">Thursday</option>
+            <option value="friday">Friday</option>
+            <option value="saturday">Saturday</option>
+            <option value="sunday">Sunday</option>
+        </select>
+    </div>
+</div>
+
+
+<table class="sold-products-table">
+    <thead>
+    <tr id="sold-product-table-header">
+        <td>No data.</td>
+    </tr>
+    </thead>
+    <tbody id="sold-products-tbody">
+    </tbody>
+</table>
+
 <!--TODO product going downwards, and date going right-->
 
-<p>Monday</p>
-<!--TODO include the date range-->
-<p>Tuesday</p>
-<p>Wednesday</p>
-<p>Thursday</p>
-<p>Friday</p>
-<p>Saturday</p>
-<p>Sunday</p>
+<!--<p>Monday</p>-->
+<!--&lt;!&ndash;TODO include the date range&ndash;&gt;-->
+<!--<p>Tuesday</p>-->
+<!--<p>Wednesday</p>-->
+<!--<p>Thursday</p>-->
+<!--<p>Friday</p>-->
+<!--<p>Saturday</p>-->
+<!--<p>Sunday</p>-->
 </body>
 </html>
