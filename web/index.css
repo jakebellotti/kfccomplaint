@@ -138,3 +138,51 @@ body {
 .scheduled-order-progress-bar-missed {
     background-color: #df1d29 !important;
 }
+
+.new-window-dialog {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+}
+
+.new-window-banner {
+    background-color: white;
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    padding: 20px;
+}
+
+.new-window-banner p {
+    font-size: 20px;
+    font-family: Arial;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.new-window-dialog-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.new-window-dialog-button-container button {
+    margin-left: 10px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    background-color: cornflowerblue;
+    color: white;
+}
+
+#close-button {
+    background-color: red;
+}

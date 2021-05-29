@@ -1,5 +1,30 @@
+let newWindowDialog = document.getElementById("new-window-dialog");
+
+function hideOpenLinkDialog() {
+    newWindowDialog.style.display = "none";
+}
+
+function showOpenLinkDialog(link) {
+    newWindowDialog.style.display = "flex";
+
+    let newWindowLinkButton = document.getElementById("new-window-link-button");
+    newWindowLinkButton.onclick = function () {
+        window.open(link, "_blank");
+        hideOpenLinkDialog();
+    };
+
+    let sameWindowLinkButton = document.getElementById("same-window-link-button");
+    sameWindowLinkButton.onclick = function () {
+        window.open(link, "_self");
+        hideOpenLinkDialog();
+    };
+}
+
 function openLink(url) {
-    window.open(url, "_blank");
+    //TODO window that asks if you want top o
+    showOpenLinkDialog(url);
+
+    // window.open(url, "_blank");
 }
 
 // <div className="scheduled-orders-div">
