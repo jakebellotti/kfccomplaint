@@ -30,7 +30,7 @@ body {
 
 .link-box p {
     text-align: center;
-    font-family: Roboto;
+    font-family: Roboto, Arial, serif;
     color: white;
     font-size: 20px;
 }
@@ -52,7 +52,7 @@ body {
 
 .links-table-header {
     color: whitesmoke;
-    font-family: Roboto;
+    font-family: Roboto, Arial, sans-serif;
     font-size: 22px;
     font-weight: bold;
     background-color: rgb(15, 15, 15);
