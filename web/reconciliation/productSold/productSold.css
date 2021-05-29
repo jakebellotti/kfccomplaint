@@ -16,6 +16,7 @@ body {
     box-shadow: 1px 1px 5px 1px black;
     border: solid 1px black;
     border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 .spacer-tr {
@@ -68,7 +69,6 @@ body {
     flex-direction: column;
     align-items: center;
     /*margin-left: 100px;*/
-    margin: 20px;
     border-radius: 10px;
     color: white;
     font-family: Arial;
@@ -122,4 +122,33 @@ body {
     font-size: 16px;
     margin-top: 5px;
     cursor: pointer;
+}
+
+.form-container {
+    padding: 10px;
+    display: flex;
+}
+
+.range-presets-form {
+    margin-left: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 10px;
+    border: solid 1px black;
+    box-shadow: 1px 1px 5px 1px black;
+    height: fit-content;
+}
+
+.range-presets-form p {
+    color: white;
+    font-family: Arial;
+    text-align: center;
+    padding: 5px;
+}
+
+.range-presets-form button {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16x;
+    margin: 2px;
 }

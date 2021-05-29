@@ -76,6 +76,7 @@ function selectDaySelectChanged() {
 function updateSoldItemsData(data) {
     let uniqueIdentifiers = getUniqueItemIdentifiersFromData(data);
 //TODO then order them however we would like first
+//    TODO if selecting a range without any data, product items aren't shown
 
     soldProductTableHeader.innerHTML = "";
     soldProductTableHeader.appendChild(createElementWithInnerText("th", "Day", ["min-width-td"]));
@@ -90,8 +91,6 @@ function updateSoldItemsData(data) {
     soldProductTableHeader.appendChild(createElementWithInnerText("th", "Cash", ["min-width-td", "non-product-data"]));
     soldProductTableHeader.appendChild(createElementWithInnerText("th", "Customers", ["min-width-td", "non-product-data"]));
     soldProductTableHeader.appendChild(createElementWithInnerText("th", "Notes", ["min-width-td", "non-product-data"]));
-
-    //TODO add spacer at bottom of every sunday
 
     soldProductsTbody.innerHTML = "";
     for (let i = 0; i < data.length; i++) {
@@ -168,6 +167,26 @@ function showOnlyProductColumnsChanged() {
             nonProduct.classList.add("hide-data");
         }
     }
+}
+
+function updateRange(weekStart, weekEnd) {
+    viewRangeStartDate.value = weekStart.format("YYYY-MM-DD");
+    viewRangeEndDate.value = weekEnd.format("YYYY-MM-DD");
+    updateViewingRange();
+//    TODO update data
+}
+
+function rangePresetWeekStartButtonClicked() {
+    let weekStart = moment(MomentAPI.getMondayThisWeek());
+    let weekEnd = moment(weekStart).add(6, "days");
+    updateRange(weekStart, weekEnd);
+}
+
+function rangePresetLast4WeeksButtonClicked() {
+    let weekStart = moment(MomentAPI.getMondayThisWeek());
+    let start = moment(weekStart).subtract(28, "days");
+    let end = moment(weekStart).subtract(1, "days");
+    updateRange(start, end);
 }
 
 //TODO don't hardcode this, instead make it 'this week' preset

@@ -45,43 +45,53 @@
 <!--TODO maybe monday, tuesaday etc, show for the last 4 of those days-->
 <!--TODO allow to choose 4,5, 6 week average etc-->
 
-<div class="view-range-form">
-    <p>View Range</p>
-    <div class="date-select-form">
-        <div class="date-selection-container-div">
-            <p>Start</p>
-            <input id="view-range-start-date" type="date">
+<div class="form-container">
+    <div class="view-range-form">
+        <p>View Range</p>
+        <div class="date-select-form">
+            <div class="date-selection-container-div">
+                <p>Start</p>
+                <input id="view-range-start-date" type="date">
+            </div>
+            <div class="date-selection-container-div">
+                <p>End</p>
+                <input id="view-range-end-date" type="date">
+            </div>
         </div>
-        <div class="date-selection-container-div">
-            <p>End</p>
-            <input id="view-range-end-date" type="date">
+        <button id="update-range-button" onclick="updateViewingRange();">Update</button>
+
+        <div>
+            <input type="checkbox" id="show-only-product-columns-checkbox" name="showOnlyProductColumns"
+                   onchange="showOnlyProductColumnsChanged();">
+            <label id="show-only-product-columns-checkbox-label" for="show-only-product-columns-checkbox">Show only
+                product
+                columns</label><br>
         </div>
-    </div>
-    <button id="update-range-button" onclick="updateViewingRange();">Update</button>
 
-    <div>
-        <input type="checkbox" id="show-only-product-columns-checkbox" name="showOnlyProductColumns"
-               onchange="showOnlyProductColumnsChanged();">
-        <label id="show-only-product-columns-checkbox-label" for="show-only-product-columns-checkbox">Show only product
-            columns</label><br>
-    </div>
+        <div class="highlight-day-select-container">
+            <label for="select-day-select">Select day:</label>
+            <select id="select-day-select" onchange="selectDaySelectChanged();">
+                <option value="none">None</option>
+                <option value="monday">Monday</option>
+                <option value="tuesday">Tuesday</option>
+                <option value="wednesday">Wednesday</option>
+                <option value="thursday">Thursday</option>
+                <option value="friday">Friday</option>
+                <option value="saturday">Saturday</option>
+                <option value="sunday">Sunday</option>
+            </select>
+        </div>
 
-    <div class="highlight-day-select-container">
-        <label for="select-day-select">Select day:</label>
-        <select id="select-day-select" onchange="selectDaySelectChanged();">
-            <option value="none">None</option>
-            <option value="monday">Monday</option>
-            <option value="tuesday">Tuesday</option>
-            <option value="wednesday">Wednesday</option>
-            <option value="thursday">Thursday</option>
-            <option value="friday">Friday</option>
-            <option value="saturday">Saturday</option>
-            <option value="sunday">Sunday</option>
-        </select>
+        <button id="resize-to-viewport-button" onclick="resizeToViewportButtonClicked();">Resize To Viewport</button>
+
     </div>
 
-    <button id="resize-to-viewport-button" onclick="resizeToViewportButtonClicked();">Resize To Viewport</button>
-
+    <div class="range-presets-form">
+        <p>Range Presets</p>
+        <button onclick="rangePresetWeekStartButtonClicked();">Start Of This Week</button>
+        <button onclick="rangePresetLast4WeeksButtonClicked();">Last 4 Weeks</button>
+<!--        TODO last 4 weeks (including this week)-->
+    </div>
 </div>
 
 
