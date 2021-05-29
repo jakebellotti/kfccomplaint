@@ -46,12 +46,20 @@ body {
     align-items: center;
 }
 
+.item-count-container-case p {
+    font-family: Roboto, Arial, sans-serif;
+}
+
 .item-count-container-inner {
     display: flex;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 10px;
     border-radius: 10px;
     align-items: center;
+}
+
+.item-count-container-inner p {
+    font-family: Roboto, Arial, sans-serif;
 }
 
 .item-count-container-unit {
@@ -68,6 +76,10 @@ body {
     padding: 10px;
     border-radius: 10px;
     align-items: center;
+}
+
+.item-count-container-total p {
+    font-family: Roboto, Arial, sans-serif;
 }
 
 .number-input {
@@ -89,6 +101,7 @@ body {
 .item-count-name {
     min-width: 120px;
     text-align: center;
+    font-family: Roboto, Arial, sans-serif;
 }
 
 .count-table {
@@ -168,7 +181,7 @@ body {
 }
 
 .count-table-header {
-    font-family: Roboto;
+    font-family: Roboto, Arial, sans-serif;
     font-size: 20px;
     color: white;
     text-align: center;
@@ -214,7 +227,7 @@ border spacing for table
     background-color: rgba(75, 75, 75, 1);
     font-size: 30px;
     color: white;
-    font-family: Roboto;
+    font-family: Roboto, Arial, sans-serif;
     padding: 5px;
 }
 

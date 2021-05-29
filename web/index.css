@@ -71,7 +71,7 @@ body {
 }
 
 .links-table tbody tr td a {
-    font-family: Roboto, serif;
+    font-family: Roboto, Arial, sans-serif;
     text-decoration: none;
     color: white;
     background-color: cornflowerblue;

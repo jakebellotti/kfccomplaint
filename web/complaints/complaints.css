@@ -221,7 +221,7 @@ header p {
     display: flex;
     flex-direction: row-reverse;
     padding: 5px;
-    margin-bottom: -35px;
+    margin-bottom: -30px;
 }
 
 #settings-container button {
