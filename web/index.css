@@ -26,6 +26,7 @@ body {
     justify-content: center;
     align-items: center;
     margin: 10px;
+    padding: 5px;
 }
 
 .link-box p {

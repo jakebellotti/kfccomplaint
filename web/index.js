@@ -27,7 +27,6 @@ function openLink(url) {
     // window.open(url, "_blank");
 }
 
-//GES: 5/18/2021 - 6/5/2021
 
 function calculateGESPeriod() {
     let startWeek = moment("20/04/2021", "DD/MM/YYYY");
@@ -37,8 +36,6 @@ function calculateGESPeriod() {
 
         let todayMoment = moment().startOf("day");
         let withinRange = MomentAPI.momentIsBetweenRange(todayMoment, startWeek, endWeek);
-
-        console.log(`${startWeek.format("DD/MM/YYYY")} - ${endWeek.format("DD/MM/YYYY")}`);
 
         if (withinRange) {
             document.getElementById("ges-reporting-start").innerHTML = startWeek.format("DD/MM/YYYY");
@@ -56,7 +53,6 @@ function calculateGESPeriod() {
     }
 }
 
-//TODO do testing
 function calculateYumPeriod() {
     let weekStartDate = moment("31/05/2021", "DD/MM/YYYY");
     let weekEndDate = moment(weekStartDate).add(6, "days");
@@ -83,17 +79,6 @@ function calculateYumPeriod() {
         weekEndDate = moment(weekStartDate).add(6, "days");
     }
 }
-
-// <div className="scheduled-orders-div">
-//     <div className="scheduled-order-div">
-//         <p className="scheduled-order-label">Tip Top (Bread) : in 2 hours</p>
-//         <div className="scheduled-order-progress-bar"></div>
-//     </div>
-//     <div className="scheduled-order-div">
-//         <p className="scheduled-order-label">Tip Top (Bread) : in 2 hours</p>
-//         <div className="scheduled-order-progress-bar"></div>
-//     </div>
-// </div>
 
 function createScheduledOrderDiv(order) {
     let cutoffProgressBarData = order.getCutoffProgressBarData();
@@ -133,10 +118,14 @@ function updateScheduledOrders() {
     }
 }
 
-updateScheduledOrders();
+function startUp() {
+    updateScheduledOrders();
+    calculateYumPeriod();
+    calculateGESPeriod();
+}
+
+startUp();
 
 //Update every 10 seconds
-setInterval(updateScheduledOrders, (1000 * 10));
+setInterval(startUp, (1000 * 10));
 
-calculateYumPeriod();
-calculateGESPeriod();
