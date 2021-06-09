@@ -57,10 +57,25 @@
     </div>
 </div>
 
-<div class="period-information">
-    <p>Period <span id = "period-display"></span>, Week <span id="period-week-display"></span></p>
-    <p>GES Reporting Period: <span id="ges-reporting-start"></span> - <span id="ges-reporting-end"></span> (<span id="ges-period-days-remaining"></span>). Expected responses: <span id="ges-expected-responses"></span></p>
+<!--TODO display these more nicely-->
+
+<div class="info-box-container">
+    <div class="info-box">
+        <p class="info-box-header">Collins Period</p>
+        <p class="info-box-paragraph">Period <span id = "period-display"></span></p>
+        <p class="info-box-paragraph">Week <span id="period-week-display"></span></p>
+    </div>
+
+    <div class="info-box">
+        <p class="info-box-header">GES Reporting Period</p>
+        <p class="info-box-paragraph"><span id="ges-reporting-start"></span> - <span id="ges-reporting-end"></span></p>
+        <p><span id="ges-period-days-remaining"></span></p>
+        <p class="info-box-paragraph">Expected responses: <span id="ges-expected-responses"></span></p>
+    </div>
+
 </div>
+
+<!--TODO show 2 of these boxes, add todays scheduled tasks-->
 
 <div class="scheduled-orders-container">
     <p class="scheduled-orders-header">Today's Scheduled Orders</p>
