@@ -186,3 +186,14 @@ body {
 #close-button {
     background-color: red;
 }
+
+.period-information {
+    color: white;
+    padding: 10px;
+    font-family: Arial;
+    font-size: 18px;
+}
+
+.period-information p {
+    margin: 5px;
+}
