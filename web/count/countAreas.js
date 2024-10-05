@@ -61,18 +61,26 @@ let countAreas = [
                     includeInner: false,
                     includeUnit: true
                 },
+
+                {
+                    identifier: "lettuce_slaw",
+                    includeCase: true,
+                    includeInner: true,
+                    includeUnit: false
+                },
+
                 {
                     identifier: "coleslaw_large",
                     includeCase: true,
                     includeInner: false,
                     includeUnit: true
                 },
-                {
-                    identifier: "diced_tomato",
-                    includeCase: true,
-                    includeInner: true,
-                    includeUnit: false
-                },
+                // {
+                //     identifier: "diced_tomato",
+                //     includeCase: true,
+                //     includeInner: true,
+                //     includeUnit: false
+                // },
                 {
                     identifier: "lettuce",
                     includeCase: true,

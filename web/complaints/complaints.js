@@ -192,7 +192,16 @@ function getData() {
 
         return;
     }
+    console.log(this.calculateBytes(item));
     loadedData = JSON.parse(item);
+
+
+}
+
+function calculateBytes(str) {
+    const encoder = new TextEncoder();
+    const encodedStr = encoder.encode(str);
+    return encodedStr.length;
 }
 
 function saveData(data) {
@@ -584,9 +593,11 @@ function showComplaints() {
 
     matching.sort((a, b) => new Date(a.complaintDate) - new Date(b.complaintDate));
 
+    let fragment = document.createDocumentFragment();
     for (const complaint of matching) {
-        shownComplaintsTBody.appendChild(createComplaintTableRow(complaint));
+        fragment.appendChild(createComplaintTableRow(complaint));
     }
+    shownComplaintsTBody.appendChild(fragment);
 }
 
 function showSettingsWindow() {

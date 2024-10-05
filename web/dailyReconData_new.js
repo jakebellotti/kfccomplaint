@@ -308,6 +308,30 @@ let tomatoStructure = {
     ]
 };
 
+let lettuceSlawStructure = {
+    case: {
+        name: "Boxes",
+        quantity: 4,
+        unitName: "KG"
+    },
+    inner: {
+        name: "Bags",
+        quantity: 1,
+        unitName: "KG"
+    },
+    unit: {
+        name: "Individual",
+        quantity: 1,
+        unitName: "KG"
+    },
+    total: [
+        {
+            name: "KG",
+            calculationMethod: "individual"
+        }
+    ]
+};
+
 let baconStructure = {
     case: {
         name: "Boxes",
@@ -330,7 +354,7 @@ let baconStructure = {
 let chocolateMousseStructure = {
     case: {
         name: "Boxes",
-        quantity: 45,
+        quantity: 36,
         unitName: "EA"
     },
     unit: {
@@ -345,6 +369,7 @@ let chocolateMousseStructure = {
         }
     ]
 };
+
 
 let burgerBunsStructure = {
     inner: {
@@ -553,6 +578,14 @@ let allStructures = [
                 data: tomatoStructure,
                 returnType: "each"
             },
+
+            {
+                name: "Salad Lettuce Slaw",
+                identifier: "lettuce_slaw",
+                data: lettuceSlawStructure,
+                returnType: "each"
+            },
+
             {
                 name: "Lettuce",
                 identifier: "lettuce",

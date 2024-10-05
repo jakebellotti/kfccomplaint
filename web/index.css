@@ -27,6 +27,7 @@ body {
     align-items: center;
     margin: 10px;
     padding: 5px;
+    transition: width 0.5s, height 0.5s, margin 0.5s, background-color 0.3s;
 }
 
 .link-box p {
@@ -34,10 +35,15 @@ body {
     font-family: Roboto, Arial, serif;
     color: white;
     font-size: 20px;
+    transition: color 0.3s;
+}
+
+.link-box:hover p {
+    color: black;
 }
 
 .link-box:hover {
-    transition: width 0.5s, height 0.5s, margin 0.5s;
+    background-color: cornflowerblue;
     width: 160px;
     height: 110px;
     margin: -5px;

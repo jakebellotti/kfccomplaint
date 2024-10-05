@@ -25,8 +25,26 @@ header p {
     color: white;
 }
 
+#reports-window .modal-window {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#reports-window-results-container {
+    max-height: 500px;
+    overflow: auto;
+}
+
 #show-complaints {
 
+}
+
+.existing-contacts-wrapper {
+    padding: 5px;
+    overflow: auto;
+    max-height: 614px;
 }
 
 #show-complaints-buttons {
@@ -56,6 +74,7 @@ header p {
     margin-top: 10px;
     margin-left: 10px;
     height: fit-content;
+    border-radius: 10px;
 }
 
 .modal-window {
@@ -64,6 +83,7 @@ header p {
     margin: auto;
     padding: 10px;
     margin-top: 10px;
+    border-radius: 10px;
 }
 
 .add-complaint-window {
@@ -73,6 +93,7 @@ header p {
     height: fit-content;
     padding: 10px;
     margin-top: 10px;
+    border-radius: 10px;
 }
 
 .add-complaint-window-buttons {

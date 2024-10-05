@@ -316,6 +316,32 @@ const allProductsData = [
         },
         calculationMethods: [{name: "KG", method: "individual"}]
     },
+
+
+    {
+        itemID: "507611",
+        itemIdentifier: "lettuce_slaw",
+        itemNamePref: "Salad Lettuce Slaw",
+        itemNameFull: "Salad Lettuce Slaw",
+        category: "salads",
+        availability: "always",
+        unit: "KG",
+        storageCase: {
+            name: "Boxes",
+            quantity: "4"
+        },
+        storageInner: {
+            name: "Bags",
+            quantity: "1"
+        },
+        storageUnit: {
+            name: "Individual",
+            quantity: 1
+        },
+        calculationMethods: [{name: "KG", method: "individual"}]
+    },
+
+
     {
         itemID: "504990",
         itemIdentifier: "diced_tomato",
@@ -368,7 +394,7 @@ const allProductsData = [
         unit: "EA",
         storageCase: {
             name: "Boxes",
-            quantity: "45"
+            quantity: "36"
         },
         storageUnit: {
             name: "Individual",

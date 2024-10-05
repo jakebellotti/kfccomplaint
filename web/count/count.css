@@ -88,6 +88,7 @@ body {
     margin-right: 5px;
     font-size: 20px;
     cursor: pointer;
+    border-radius: 4px;
 }
 
 .total-count {
@@ -220,6 +221,7 @@ border spacing for table
     padding: 8px;
     cursor: pointer;
     font-size: 16px;
+    border-radius: 5px;
 }
 
 #current-count-area-text {

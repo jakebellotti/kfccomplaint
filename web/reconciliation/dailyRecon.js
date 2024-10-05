@@ -655,6 +655,10 @@ function onDocumentDataChanged() {
 
 function documentHasUnsavedChanges() {
     let newOpenDay = updateDataFromInputFields();
+
+    // console.log(openDay);
+    // console.log(newOpenDay);
+
     return JSON.stringify(openDay) !== JSON.stringify(newOpenDay);
 }
 
